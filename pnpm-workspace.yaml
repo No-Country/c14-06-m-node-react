@@ -1,0 +1,18 @@
+packages:
+  - backend
+  - frontend
+# hooks:
+#   readPackage: |
+#     if (pkg.name === 'frontend') {
+#       pkg.husky = {
+#         hooks: {
+#           'pre-commit': 'cd frontend && npm run lint-staged'
+#         }
+#       };
+#     } else if (pkg.name === 'backend') {
+#       pkg.husky = {
+#         hooks: {
+#           'pre-commit': 'cd backend && npm run lint-staged'
+#         }
+#       };
+#     }

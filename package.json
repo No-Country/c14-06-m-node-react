@@ -1,0 +1,21 @@
+{
+  "name": "c14-06-m-node-react",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "pnpm --stream -r start",
+    "dev": "pnpm --parallel --stream -r run dev",
+    "build": "pnpm --stream -r run build",
+    "pre-commit": "pnpm run --filter backend --filter frontend pre-commit",
+    "prepare": "husky install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@commitlint/cli": "^17.7.2",
+    "@commitlint/config-conventional": "^17.7.0",
+    "husky": "^8.0.3"
+  }
+}
