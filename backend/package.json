@@ -8,15 +8,15 @@
 		"start": "node src/index.js",
 		"dev": "nodemon src/index.js",
 		"lint": "eslint .",
-		"lint:fix": "eslint . --fix",
-		"format": "pnpm exec prettier src/ --write",
+		"lint:fix": "eslint ./src/** --fix",
+		"format": "pnpm exec prettier ./src/ --write",
 		"pre-commit": "lint-staged"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "MIT",
 	"devDependencies": {
-		"@types/node": "^20.8.3",
+		"@types/node": "18.18.0",
 		"eslint-config-prettier": "^9.0.0",
 		"eslint-plugin-prettier": "^5.0.0",
 		"lint-staged": "^14.0.1",
