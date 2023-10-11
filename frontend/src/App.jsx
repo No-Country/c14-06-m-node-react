@@ -1,10 +1,13 @@
+import { Routes, Route } from 'react-router-dom';
 import Categories from './components/Categories';
+import ProfesionalList from './components/ProfesionalList';
 
 const App = () => {
 	return (
-		<>
-			<Categories />
-		</>
+		<Routes>
+			<Route path="/" element={<Categories />} />
+			<Route path="/profesionalsList" element={<ProfesionalList />} />
+		</Routes>
 	);
 };
 

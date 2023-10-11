@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import carpenter from '../assets/images/carpenter.png';
 import electrician from '../assets/images/electrician.png';
@@ -17,7 +18,7 @@ const CategoriesContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 `;
-const CategoriesList = styled.div`
+const CategoriesListContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 	gap: 50px;
@@ -63,48 +64,76 @@ const Icon = styled.img`
 	background-size: 100%;
 `;
 
+const CategoriesList = [
+	{
+		title: 'Pintor',
+		icon: painter,
+	},
+	{
+		title: 'Plomero',
+		icon: plumber,
+	},
+	{
+		title: 'Electricista',
+		icon: electrician,
+	},
+	{
+		title: 'Albañil',
+		icon: bricklayer,
+	},
+	{
+		title: 'Carpintero',
+		icon: carpenter,
+	},
+	{
+		title: 'Fletes',
+		icon: freight,
+	},
+	{
+		title: 'Cerrajero',
+		icon: locksmith,
+	},
+	{
+		title: 'Jardinero',
+		icon: gardener,
+	},
+	{
+		title: 'Gasista',
+		icon: gasman,
+	},
+	{
+		title: 'Fumigación',
+		icon: fumigation,
+	},
+	{
+		title: 'Aire Acondicionado',
+		icon: aa,
+	},
+	{
+		title: 'Electrodomesticos',
+		icon: appliances,
+	},
+];
+
 const Categories = () => {
 	return (
 		<CategoriesContainer>
 			<Title>Todos los servicios</Title>
-			<CategoriesList>
-				<Card>
-					<Icon icon={painter} /> Pintor
-				</Card>
-				<Card>
-					<Icon icon={plumber} /> Plomero
-				</Card>
-				<Card>
-					<Icon icon={electrician} /> Electricista
-				</Card>
-				<Card>
-					<Icon icon={bricklayer} /> Albañil
-				</Card>
-				<Card>
-					<Icon icon={carpenter} /> Carpintero
-				</Card>
-				<Card>
-					<Icon icon={freight} /> Fletes
-				</Card>
-				<Card>
-					<Icon icon={locksmith} /> Cerrajero
-				</Card>
-				<Card>
-					<Icon icon={gardener} /> Jardinero
-				</Card>
-				<Card>
-					<Icon icon={gasman} /> Gasista
-				</Card>
-				<Card>
-					<Icon icon={fumigation} /> Fumigación
-				</Card>
-				<Card>
-					<Icon icon={aa} /> Aire Acondicionado
-				</Card>
-				<Card>
-					<Icon icon={appliances} /> Electrodomesticos
-				</Card>
-			</CategoriesList>
+			<CategoriesListContainer>
+				{CategoriesList.map((category) => (
+					<Link
+						to={{
+							pathname: '/profesionalsList',
+							state: category.title,
+						}}
+						key={category.title}
+					>
+						<Card>
+							<Icon icon={category.icon} /> {category.title}
+						</Card>
+					</Link>
+				))}
+			</CategoriesListContainer>
 		</CategoriesContainer>
 	);
 };
