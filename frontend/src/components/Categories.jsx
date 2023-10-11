@@ -48,6 +48,7 @@ const Card = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	text-align: center;
 	padding: 20px;
 	box-shadow: rgba(0, 0, 0, 0.12) 0px 5px 9px 0px;
 	gap: 20px;
@@ -66,51 +67,51 @@ const Icon = styled.img`
 
 const CategoriesList = [
 	{
-		title: 'Pintor',
+		title: 'Pintores',
 		icon: painter,
 	},
 	{
-		title: 'Plomero',
+		title: 'Plomeros',
 		icon: plumber,
 	},
 	{
-		title: 'Electricista',
+		title: 'Electricistas',
 		icon: electrician,
 	},
 	{
-		title: 'Albañil',
+		title: 'Albañiles',
 		icon: bricklayer,
 	},
 	{
-		title: 'Carpintero',
+		title: 'Carpinteros',
 		icon: carpenter,
 	},
 	{
-		title: 'Fletes',
+		title: 'Fleteros',
 		icon: freight,
 	},
 	{
-		title: 'Cerrajero',
+		title: 'Cerrajeros',
 		icon: locksmith,
 	},
 	{
-		title: 'Jardinero',
+		title: 'Jardineros',
 		icon: gardener,
 	},
 	{
-		title: 'Gasista',
+		title: 'Gasistas',
 		icon: gasman,
 	},
 	{
-		title: 'Fumigación',
+		title: 'Fumigadores',
 		icon: fumigation,
 	},
 	{
-		title: 'Aire Acondicionado',
+		title: 'Técnicos en Aire Acondicionado',
 		icon: aa,
 	},
 	{
-		title: 'Electrodomesticos',
+		title: 'Técnicos en Electrodomesticos',
 		icon: appliances,
 	},
 ];
@@ -123,8 +124,7 @@ const Categories = () => {
 				{CategoriesList.map((category) => (
 					<Link
 						to={{
-							pathname: '/profesionalsList',
-							state: category.title,
+							pathname: `/profesionalsList/${category.title}`,
 						}}
 						key={category.title}
 					>

@@ -1,12 +1,15 @@
 import { Routes, Route } from 'react-router-dom';
 import Categories from './components/Categories';
-import ProfesionalList from './components/ProfesionalList';
+import ProfesionalsList from './components/ProfesionalsList';
 
 const App = () => {
 	return (
 		<Routes>
 			<Route path="/" element={<Categories />} />
-			<Route path="/profesionalsList" element={<ProfesionalList />} />
+			<Route
+				path="/profesionalsList/:categoryTitle"
+				element={<ProfesionalsList />}
+			/>
 		</Routes>
 	);
 };
