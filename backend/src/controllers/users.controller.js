@@ -1,10 +1,11 @@
-import userList from '../mock/users.mock.js';
+import UsersService from '../service/users.service.js';
 
-const users = userList;
+const usersService = new UsersService();
 
 class UsersController {
 	static async getAll(req, res, next) {
 		try {
+			const users = await usersService.getUsers();
 			res.status(200).json({
 				status: 'success',
 				response: users,
@@ -17,7 +18,7 @@ class UsersController {
 	static async getById(req, res, next) {
 		const { userId } = req.params;
 		try {
-			const user = users.find((item) => item.Id === userId);
+			const user = await usersService.getUserById(userId);
 			res.status(200).json({
 				status: 'success',
 				response: user,
@@ -28,12 +29,12 @@ class UsersController {
 	}
 
 	static async addOne(req, res, next) {
-		const user = req.body;
+		const userPayload = req.body;
 		try {
-			users.push(user);
+			const createUser = await usersService.createUser(userPayload);
 			res.status(201).json({
 				status: 'created',
-				response: users,
+				response: createUser,
 			});
 		} catch (error) {
 			next(error);
@@ -42,19 +43,12 @@ class UsersController {
 
 	static async updateOne(req, res, next) {
 		const { userId } = req.params;
-		const payload = req.body;
+		const userPayload = req.body;
 		try {
-			const userIndex = users.findIndex((user) => user.Id === userId);
-			if (userIndex === -1) {
-				return next({
-					status: 404,
-					error: 'User not found',
-				});
-			}
-			users.splice(userIndex, 1, payload);
+			const updatedUser = await usersService.updateUser(userId, userPayload);
 			res.status(200).json({
 				status: 'success',
-				response: 'User updated',
+				response: updatedUser,
 			});
 		} catch (error) {
 			next(error);
@@ -64,17 +58,10 @@ class UsersController {
 	static async remove(req, res, next) {
 		const { userId } = req.params;
 		try {
-			const userIndex = users.findIndex((item) => item.Id === userId);
-			if (userIndex === -1) {
-				return next({
-					status: 404,
-					error: 'User not found',
-				});
-			}
-			users.splice(userIndex, 1);
+			const deletedUser = await usersService.deleteUser(userId);
 			res.status(200).json({
 				status: 'success',
-				response: 'User deleted',
+				response: deletedUser,
 			});
 		} catch (error) {
 			next(error);
