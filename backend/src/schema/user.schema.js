@@ -4,9 +4,7 @@ const userSchema = {
 	id: {
 		$id: 'userId',
 		description: 'ID del usuario',
-		type: 'integer',
-		minimum: 1,
-		errorMessage: 'El ID debe ser mayor o igual a 1',
+		type: 'string',
 	},
 
 	name: {

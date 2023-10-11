@@ -1,51 +1,75 @@
-import { v4 as uuidv4 } from 'uuid';
-import userList from '../mock/users.mock.js';
 import HTTP_STATUS from '../utils/http-constants.js';
+import '../database/mongo-client.js';
+import getClient from '../database/mongo-client.js';
+import { ObjectId } from 'mongodb';
 
-const users = userList;
+const getUsersCollection = async () => {
+	const connectedClient = await getClient();
+	const db = connectedClient.db('ServiciosClub');
+	const usersCollection = db.collection('Users');
+	return {
+		usersCollection,
+		connectedClient,
+	};
+};
 
 class UsersService {
 	async getUsers() {
-		//Validaciones y llamada a la bbdd
+		const { usersCollection, connectedClient } = await getUsersCollection();
+		const users = await usersCollection.find({}).toArray();
+		await connectedClient.close();
 		return users;
 	}
 
 	async getUserById(userId) {
-		const user = users.find((item) => item.Id === userId);
+		const { usersCollection, connectedClient } = await getUsersCollection();
+		const objectId = new ObjectId(userId);
+		const user = await usersCollection.findOne({ _id: objectId });
 		if (!user) {
 			const customError = new Error('Usuario no encontrado');
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
+		await connectedClient.close();
 		return user;
 	}
 
 	async createUser(userPayload) {
-		userPayload.Id = uuidv4();
-		users.push(userPayload);
-		return users;
+		const { usersCollection, connectedClient } = await getUsersCollection();
+		const createdUser = await usersCollection.insertOne(userPayload);
+		await connectedClient.close();
+		return createdUser;
 	}
 
 	async updateUser(userId, userPayload) {
-		const userIndex = users.findIndex((user) => user.Id === userId);
-		if (userIndex === -1) {
+		const { usersCollection, connectedClient } = await getUsersCollection();
+		const objectId = new ObjectId(userId);
+		const user = await usersCollection.findOne({ _id: objectId });
+		if (!user) {
 			const customError = new Error('Usuario no encontrado');
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
-		users.splice(userIndex, 1, userPayload);
-		return userPayload;
+		const userUpdated = await usersCollection.replaceOne(
+			{ _id: objectId },
+			userPayload
+		);
+		await connectedClient.close();
+		return userUpdated;
 	}
 
 	async deleteUser(userId) {
-		const userIndex = users.findIndex((item) => item.Id === userId);
-		if (userIndex === -1) {
+		const { usersCollection, connectedClient } = await getUsersCollection();
+		const objectId = new ObjectId(userId);
+		const user = await usersCollection.findOne({ _id: objectId });
+		if (!user) {
 			const customError = new Error('Usuario no encontrado');
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
-		users.splice(userIndex, 1);
-		return users;
+		const deletedUser = await usersCollection.deleteOne({ _id: objectId });
+		await connectedClient.close();
+		return deletedUser;
 	}
 }
 
