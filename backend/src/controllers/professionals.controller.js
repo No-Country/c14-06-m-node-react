@@ -33,45 +33,52 @@ class ProfessionalsController {
 		}
 	}
 
-	// static async addOne(req, res, next) {
-	// 	const userPayload = req.body;
-	// 	try {
-	// 		const createUser = await usersService.createUser(userPayload);
-	// 		res.status(201).json({
-	// 			status: 'created',
-	// 			response: createUser,
-	// 		});
-	// 	} catch (error) {
-	// 		next(error);
-	// 	}
-	// }
+	static async addOne(req, res, next) {
+		const professionalPayload = req.body;
+		try {
+			const createdProfessional =
+				await professionalsService.createProfessional(professionalPayload);
+			res.status(201).json({
+				status: 'created',
+				response: createdProfessional,
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
 
-	// static async updateOne(req, res, next) {
-	// 	const { userId } = req.params;
-	// 	const userPayload = req.body;
-	// 	try {
-	// 		const updatedUser = await usersService.updateUser(userId, userPayload);
-	// 		res.status(200).json({
-	// 			status: 'success',
-	// 			response: updatedUser,
-	// 		});
-	// 	} catch (error) {
-	// 		next(error);
-	// 	}
-	// }
+	static async updateOne(req, res, next) {
+		const { professionalId } = req.params;
+		const profesionalPayload = req.body;
+		try {
+			const updatedProfessional = await professionalsService.updateProfessional(
+				professionalId,
+				profesionalPayload
+			);
+			res.status(200).json({
+				status: 'success',
+				response: updatedProfessional,
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
 
-	// static async remove(req, res, next) {
-	// 	const { userId } = req.params;
-	// 	try {
-	// 		const deletedUser = await usersService.deleteUser(userId);
-	// 		res.status(200).json({
-	// 			status: 'success',
-	// 			response: deletedUser,
-	// 		});
-	// 	} catch (error) {
-	// 		next(error);
-	// 	}
-	// }
+	static async remove(req, res, next) {
+		const { professionalId, service } = req.params;
+		try {
+			const deletedProfessional = await professionalsService.deleteProfessional(
+				professionalId,
+				service
+			);
+			res.status(200).json({
+				status: 'success',
+				response: deletedProfessional,
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
 }
 
 export default ProfessionalsController;

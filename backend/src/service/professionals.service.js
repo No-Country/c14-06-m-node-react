@@ -93,43 +93,112 @@ class ProfessionalsService {
 		return professional;
 	}
 
-	// async createUser(userPayload) {
-	// 	const { usersCollection, connectedClient } = await getUsersCollection();
-	// 	const createdUser = await usersCollection.insertOne(userPayload);
-	// 	await connectedClient.close();
-	// 	return createdUser;
-	// }
+	async createProfessional(profesionalPayload) {
+		const { service, description, userId, certified } = profesionalPayload;
+		if (!service || !description || !userId || certified === undefined) {
+			//Evaluamos que estén todos los campos requeridos
+			const customError = new Error('Campos incompletos');
+			customError.status = HTTP_STATUS.BAD_REQUEST;
+			throw customError;
+		}
+		const { db, connectedClient } = await getProfessionalsCollection();
+		const professionalsCollection = db.collection(service);
+		const usersCollection = db.collection('Users');
+		const objectId = new ObjectId(userId);
+		const registeredUser = await usersCollection.findOne({ _id: objectId }); //Evaluamos que el usuario que se hace profesional ya exista en la base
+		if (!registeredUser) {
+			const customError = new Error('No se ha encontrado al usuario');
+			customError.status = HTTP_STATUS.NOT_FOUND;
+			throw customError;
+		}
+		const registeredProfessional = await professionalsCollection.findOne({
+			user: objectId,
+		}); //Evaluamos que el usuario no se haya registrado ya para este servicio
+		if (registeredProfessional) {
+			const customError = new Error(
+				'Este usuario ya se ha registrado para este servicio'
+			);
+			customError.status = HTTP_STATUS.BAD_REQUEST;
+			throw customError;
+		}
+		const newProfessional = {
+			//Creamos el nuevo objeto para el profesional
+			description,
+			user: objectId,
+			certified,
+			qualification: {
+				rankings: 0,
+				average: 0,
+			},
+		};
+		const createdUser =
+			await professionalsCollection.insertOne(newProfessional);
+		await connectedClient.close();
+		return createdUser;
+	}
 
-	// async updateUser(userId, userPayload) {
-	// 	const { usersCollection, connectedClient } = await getUsersCollection();
-	// 	const objectId = new ObjectId(userId);
-	// 	const user = await usersCollection.findOne({ _id: objectId });
-	// 	if (!user) {
-	// 		const customError = new Error('Usuario no encontrado');
-	// 		customError.status = HTTP_STATUS.NOT_FOUND;
-	// 		throw customError;
-	// 	}
-	// 	const userUpdated = await usersCollection.replaceOne(
-	// 		{ _id: objectId },
-	// 		userPayload
-	// 	);
-	// 	await connectedClient.close();
-	// 	return userUpdated;
-	// }
+	async updateProfessional(professionalId, professionalPayload) {
+		const { description, certified, qualification } = professionalPayload;
+		if (!professionalId || Object.keys(professionalPayload).length === 0) {
+			//Evaluamos que haya un id y que se mande algún dato
+			const customError = new Error('Datos incompletos');
+			customError.status = HTTP_STATUS.BAD_REQUEST;
+			throw customError;
+		}
+		const { db, connectedClient } = await getProfessionalsCollection();
+		const professionalsCollection = db.collection(professionalPayload.service);
+		const objectId = new ObjectId(professionalId);
+		const professional = await professionalsCollection.findOne({
+			_id: objectId,
+		});
+		if (!professional) {
+			//Evaluamos que exista el profesional a modificar
+			const customError = new Error('Profesional no encontrado');
+			customError.status = HTTP_STATUS.NOT_FOUND;
+			throw customError;
+		}
+		if (description) {
+			professional.description = description;
+		}
+		if (certified) {
+			professional.certified = certified;
+		}
+		if (qualification !== undefined) {
+			//Calculamos el promedio entre las calificaciones previas y la actual
+			let total =
+				professional.qualification.rankings *
+				professional.qualification.average;
+			total += qualification;
+			const newAmount = (professional.qualification.rankings += 1);
+			professional.qualification.average = Math.round(total / newAmount);
+			professional.qualification.rankings = newAmount;
+		}
+		const professionalUpdated = await professionalsCollection.replaceOne(
+			{ _id: objectId },
+			professional
+		);
+		await connectedClient.close();
+		return professionalUpdated;
+	}
 
-	// async deleteUser(userId) {
-	// 	const { usersCollection, connectedClient } = await getUsersCollection();
-	// 	const objectId = new ObjectId(userId);
-	// 	const user = await usersCollection.findOne({ _id: objectId });
-	// 	if (!user) {
-	// 		const customError = new Error('Usuario no encontrado');
-	// 		customError.status = HTTP_STATUS.NOT_FOUND;
-	// 		throw customError;
-	// 	}
-	// 	const deletedUser = await usersCollection.deleteOne({ _id: objectId });
-	// 	await connectedClient.close();
-	// 	return deletedUser;
-	// }
+	async deleteProfessional(professionalId, service) {
+		const { db, connectedClient } = await getProfessionalsCollection();
+		const professionalsCollection = db.collection(service);
+		const objectId = new ObjectId(professionalId);
+		const professional = await professionalsCollection.findOne({
+			_id: objectId,
+		});
+		if (!professional) {
+			const customError = new Error('Profesional no encontrado');
+			customError.status = HTTP_STATUS.NOT_FOUND;
+			throw customError;
+		}
+		const deletedProfessional = await professionalsCollection.deleteOne({
+			_id: objectId,
+		});
+		await connectedClient.close();
+		return deletedProfessional;
+	}
 }
 
 export default ProfessionalsService;

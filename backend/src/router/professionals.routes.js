@@ -11,23 +11,23 @@ router.get(
 	ProfessionalsController.getById
 );
 
-// router.post(
-// 	'/',
-// 	validateDto(bodyValidator, 'body'),
-// 	UsersController.addOne
-// );
+router.post(
+	'/',
+	// validateDto(bodyValidator, 'body'),
+	ProfessionalsController.addOne
+);
 
-// router.put(
-// 	'/:userId',
-// 	validateDto(paramsValidator, 'params'),
-// 	validateDto(bodyValidator, 'body'),
-// 	UsersController.updateOne
-// );
+router.put(
+	'/:professionalId',
+	// validateDto(paramsValidator, 'params'),
+	// validateDto(bodyValidator, 'body'),
+	ProfessionalsController.updateOne
+);
 
-// router.delete(
-// 	'/:userId',
-// 	validateDto(paramsValidator, 'params'),
-// 	UsersController.remove
-// );
+router.delete(
+	'/category/:service/:professionalId',
+	// validateDto(paramsValidator, 'params'),
+	ProfessionalsController.remove
+);
 
 export default router;
