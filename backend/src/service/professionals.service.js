@@ -154,19 +154,24 @@ class ProfessionalsService {
 	// 	return userUpdated;
 	// }
 
-	// async deleteUser(userId) {
-	// 	const { usersCollection, connectedClient } = await getUsersCollection();
-	// 	const objectId = new ObjectId(userId);
-	// 	const user = await usersCollection.findOne({ _id: objectId });
-	// 	if (!user) {
-	// 		const customError = new Error('Usuario no encontrado');
-	// 		customError.status = HTTP_STATUS.NOT_FOUND;
-	// 		throw customError;
-	// 	}
-	// 	const deletedUser = await usersCollection.deleteOne({ _id: objectId });
-	// 	await connectedClient.close();
-	// 	return deletedUser;
-	// }
+	async deleteProfessional(professionalId, service) {
+		const { db, connectedClient } = await getProfessionalsCollection();
+		const professionalsCollection = db.collection(service);
+		const objectId = new ObjectId(professionalId);
+		const professional = await professionalsCollection.findOne({
+			_id: objectId,
+		});
+		if (!professional) {
+			const customError = new Error('Profesional no encontrado');
+			customError.status = HTTP_STATUS.NOT_FOUND;
+			throw customError;
+		}
+		const deletedProfessional = await professionalsCollection.deleteOne({
+			_id: objectId,
+		});
+		await connectedClient.close();
+		return deletedProfessional;
+	}
 }
 
 export default ProfessionalsService;

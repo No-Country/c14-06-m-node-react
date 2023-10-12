@@ -24,10 +24,10 @@ router.post(
 // 	UsersController.updateOne
 // );
 
-// router.delete(
-// 	'/:userId',
-// 	validateDto(paramsValidator, 'params'),
-// 	UsersController.remove
-// );
+router.delete(
+	'/category/:service/:professionalId',
+	// validateDto(paramsValidator, 'params'),
+	ProfessionalsController.remove
+);
 
 export default router;

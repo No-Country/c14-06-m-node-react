@@ -61,18 +61,21 @@ class ProfessionalsController {
 	// 	}
 	// }
 
-	// static async remove(req, res, next) {
-	// 	const { userId } = req.params;
-	// 	try {
-	// 		const deletedUser = await usersService.deleteUser(userId);
-	// 		res.status(200).json({
-	// 			status: 'success',
-	// 			response: deletedUser,
-	// 		});
-	// 	} catch (error) {
-	// 		next(error);
-	// 	}
-	// }
+	static async remove(req, res, next) {
+		const { professionalId, service } = req.params;
+		try {
+			const deletedUser = await professionalsService.deleteProfessional(
+				professionalId,
+				service
+			);
+			res.status(200).json({
+				status: 'success',
+				response: deletedUser,
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
 }
 
 export default ProfessionalsController;
