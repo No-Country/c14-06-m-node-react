@@ -36,41 +36,44 @@ class ProfessionalsController {
 	static async addOne(req, res, next) {
 		const professionalPayload = req.body;
 		try {
-			const createUser =
+			const createdProfessional =
 				await professionalsService.createProfessional(professionalPayload);
 			res.status(201).json({
 				status: 'created',
-				response: createUser,
+				response: createdProfessional,
 			});
 		} catch (error) {
 			next(error);
 		}
 	}
 
-	// static async updateOne(req, res, next) {
-	// 	const { userId } = req.params;
-	// 	const userPayload = req.body;
-	// 	try {
-	// 		const updatedUser = await usersService.updateUser(userId, userPayload);
-	// 		res.status(200).json({
-	// 			status: 'success',
-	// 			response: updatedUser,
-	// 		});
-	// 	} catch (error) {
-	// 		next(error);
-	// 	}
-	// }
+	static async updateOne(req, res, next) {
+		const { professionalId } = req.params;
+		const profesionalPayload = req.body;
+		try {
+			const updatedProfessional = await professionalsService.updateProfessional(
+				professionalId,
+				profesionalPayload
+			);
+			res.status(200).json({
+				status: 'success',
+				response: updatedProfessional,
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
 
 	static async remove(req, res, next) {
 		const { professionalId, service } = req.params;
 		try {
-			const deletedUser = await professionalsService.deleteProfessional(
+			const deletedProfessional = await professionalsService.deleteProfessional(
 				professionalId,
 				service
 			);
 			res.status(200).json({
 				status: 'success',
-				response: deletedUser,
+				response: deletedProfessional,
 			});
 		} catch (error) {
 			next(error);

@@ -137,22 +137,49 @@ class ProfessionalsService {
 		return createdUser;
 	}
 
-	// async updateUser(userId, userPayload) {
-	// 	const { usersCollection, connectedClient } = await getUsersCollection();
-	// 	const objectId = new ObjectId(userId);
-	// 	const user = await usersCollection.findOne({ _id: objectId });
-	// 	if (!user) {
-	// 		const customError = new Error('Usuario no encontrado');
-	// 		customError.status = HTTP_STATUS.NOT_FOUND;
-	// 		throw customError;
-	// 	}
-	// 	const userUpdated = await usersCollection.replaceOne(
-	// 		{ _id: objectId },
-	// 		userPayload
-	// 	);
-	// 	await connectedClient.close();
-	// 	return userUpdated;
-	// }
+	async updateProfessional(professionalId, professionalPayload) {
+		const { description, certified, qualification } = professionalPayload;
+		if (!professionalId || Object.keys(professionalPayload).length === 0) {
+			//Evaluamos que haya un id y que se mande algún dato
+			const customError = new Error('Datos incompletos');
+			customError.status = HTTP_STATUS.BAD_REQUEST;
+			throw customError;
+		}
+		const { db, connectedClient } = await getProfessionalsCollection();
+		const professionalsCollection = db.collection(professionalPayload.service);
+		const objectId = new ObjectId(professionalId);
+		const professional = await professionalsCollection.findOne({
+			_id: objectId,
+		});
+		if (!professional) {
+			//Evaluamos que exista el profesional a modificar
+			const customError = new Error('Profesional no encontrado');
+			customError.status = HTTP_STATUS.NOT_FOUND;
+			throw customError;
+		}
+		if (description) {
+			professional.description = description;
+		}
+		if (certified) {
+			professional.certified = certified;
+		}
+		if (qualification !== undefined) {
+			//Calculamos el promedio entre las calificaciones previas y la actual
+			let total =
+				professional.qualification.rankings *
+				professional.qualification.average;
+			total += qualification;
+			const newAmount = (professional.qualification.rankings += 1);
+			professional.qualification.average = Math.round(total / newAmount);
+			professional.qualification.rankings = newAmount;
+		}
+		const professionalUpdated = await professionalsCollection.replaceOne(
+			{ _id: objectId },
+			professional
+		);
+		await connectedClient.close();
+		return professionalUpdated;
+	}
 
 	async deleteProfessional(professionalId, service) {
 		const { db, connectedClient } = await getProfessionalsCollection();

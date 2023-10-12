@@ -17,12 +17,12 @@ router.post(
 	ProfessionalsController.addOne
 );
 
-// router.put(
-// 	'/:userId',
-// 	validateDto(paramsValidator, 'params'),
-// 	validateDto(bodyValidator, 'body'),
-// 	UsersController.updateOne
-// );
+router.put(
+	'/:professionalId',
+	// validateDto(paramsValidator, 'params'),
+	// validateDto(bodyValidator, 'body'),
+	ProfessionalsController.updateOne
+);
 
 router.delete(
 	'/category/:service/:professionalId',
