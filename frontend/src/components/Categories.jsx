@@ -19,6 +19,7 @@ const CategoriesContainer = styled.div`
 	flex-direction: column;
 `;
 const CategoriesListContainer = styled.div`
+	padding: 3rem 5rem;
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 	gap: 50px;
