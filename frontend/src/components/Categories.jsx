@@ -21,20 +21,29 @@ const CategoriesContainer = styled.div`
 const CategoriesListContainer = styled.div`
 	padding: 3rem 5rem;
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-	gap: 50px;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: 60px;
 `;
 
-const Title = styled.div`
+const PreTitle = styled.div`
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	padding-top: 3rem;
+	color: rgb(0, 0, 0, 0.8);
+	gap: 2rem;
+`;
+const TitleList = styled.div`
 	font-size: 1.2rem;
-	padding: 10px 0;
+	padding: 3rem 0 0 2.5rem;
 	position: relative;
+
 	&::before {
 		position: absolute;
-		left: -8px;
-		top: 14px;
+		left: 22px;
+		top: 48px;
 		width: 3px;
-		height: 1rem;
+		height: 1.4rem;
 		vertical-align: center;
 		color: #0e76a8;
 		background-color: #0e76a8;
@@ -57,6 +66,7 @@ const Card = styled.div`
 	&:hover {
 		box-shadow: rgba(0, 0, 0, 0.12) 0px 5px 9px 4px;
 	}
+	min-height: 180px;
 `;
 const Icon = styled.img`
 	width: 4rem;
@@ -120,7 +130,12 @@ const CategoriesList = [
 const Categories = () => {
 	return (
 		<CategoriesContainer>
-			<Title>Todos los servicios</Title>
+			<PreTitle>
+				<h1>¿Qué necesitas?</h1>
+				Contratá el servicio que estás buscando
+			</PreTitle>
+
+			<TitleList>Todos los servicios</TitleList>
 			<CategoriesListContainer>
 				{CategoriesList.map((category) => (
 					<Link

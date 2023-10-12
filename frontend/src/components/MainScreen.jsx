@@ -7,7 +7,7 @@ const MainScreen = styled.div`
 	height: calc(100vh - var(--navbar-height));
 	display: grid;
 	grid-template-areas: 'left right';
-	margin: 0 auto;
+	margin: 0 auto 2rem auto;
 	gap: 50px;
 	align-items: center;
 	@media (max-width: 920px) {
