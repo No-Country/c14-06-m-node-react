@@ -11,11 +11,11 @@ router.get(
 	ProfessionalsController.getById
 );
 
-// router.post(
-// 	'/',
-// 	validateDto(bodyValidator, 'body'),
-// 	UsersController.addOne
-// );
+router.post(
+	'/',
+	// validateDto(bodyValidator, 'body'),
+	ProfessionalsController.addOne
+);
 
 // router.put(
 // 	'/:userId',

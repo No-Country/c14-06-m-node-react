@@ -33,18 +33,19 @@ class ProfessionalsController {
 		}
 	}
 
-	// static async addOne(req, res, next) {
-	// 	const userPayload = req.body;
-	// 	try {
-	// 		const createUser = await usersService.createUser(userPayload);
-	// 		res.status(201).json({
-	// 			status: 'created',
-	// 			response: createUser,
-	// 		});
-	// 	} catch (error) {
-	// 		next(error);
-	// 	}
-	// }
+	static async addOne(req, res, next) {
+		const professionalPayload = req.body;
+		try {
+			const createUser =
+				await professionalsService.createProfessional(professionalPayload);
+			res.status(201).json({
+				status: 'created',
+				response: createUser,
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
 
 	// static async updateOne(req, res, next) {
 	// 	const { userId } = req.params;

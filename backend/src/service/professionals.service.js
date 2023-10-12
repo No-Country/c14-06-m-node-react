@@ -93,12 +93,49 @@ class ProfessionalsService {
 		return professional;
 	}
 
-	// async createUser(userPayload) {
-	// 	const { usersCollection, connectedClient } = await getUsersCollection();
-	// 	const createdUser = await usersCollection.insertOne(userPayload);
-	// 	await connectedClient.close();
-	// 	return createdUser;
-	// }
+	async createProfessional(profesionalPayload) {
+		const { service, description, userId, certified } = profesionalPayload;
+		if (!service || !description || !userId || certified === undefined) {
+			//Evaluamos que estén todos los campos requeridos
+			const customError = new Error('Campos incompletos');
+			customError.status = HTTP_STATUS.BAD_REQUEST;
+			throw customError;
+		}
+		const { db, connectedClient } = await getProfessionalsCollection();
+		const professionalsCollection = db.collection(service);
+		const usersCollection = db.collection('Users');
+		const objectId = new ObjectId(userId);
+		const registeredUser = await usersCollection.findOne({ _id: objectId }); //Evaluamos que el usuario que se hace profesional ya exista en la base
+		if (!registeredUser) {
+			const customError = new Error('No se ha encontrado al usuario');
+			customError.status = HTTP_STATUS.NOT_FOUND;
+			throw customError;
+		}
+		const registeredProfessional = await professionalsCollection.findOne({
+			user: objectId,
+		}); //Evaluamos que el usuario no se haya registrado ya para este servicio
+		if (registeredProfessional) {
+			const customError = new Error(
+				'Este usuario ya se ha registrado para este servicio'
+			);
+			customError.status = HTTP_STATUS.BAD_REQUEST;
+			throw customError;
+		}
+		const newProfessional = {
+			//Creamos el nuevo objeto para el profesional
+			description,
+			user: objectId,
+			certified,
+			qualification: {
+				rankings: 0,
+				average: 0,
+			},
+		};
+		const createdUser =
+			await professionalsCollection.insertOne(newProfessional);
+		await connectedClient.close();
+		return createdUser;
+	}
 
 	// async updateUser(userId, userPayload) {
 	// 	const { usersCollection, connectedClient } = await getUsersCollection();
