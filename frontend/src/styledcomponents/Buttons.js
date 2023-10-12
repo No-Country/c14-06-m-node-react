@@ -16,7 +16,7 @@ export const ButtonWhite = styled.button`
 	border: none;
 `;
 export const ButtonBlue = styled.button`
-	background-color: #0e76a8;
+	background-color: var(--primary);
 	color: #ffffff;
 	border-radius: 4px;
 	padding: 0.5rem 0.5rem;

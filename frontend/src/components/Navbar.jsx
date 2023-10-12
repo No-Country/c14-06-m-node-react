@@ -1,30 +1,86 @@
-import { NavbarPrincipal, NavUl, Navli } from '../styledcomponents/NavbarStyle';
+import styled from 'styled-components';
 import { ButtonBlue } from '../styledcomponents/Buttons';
 import serviciosclub from '../assets/logo/ServiciosClubBlue.svg';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+
+export const NavbarPrincipal = styled.nav`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 3rem;
+	height: var(--navbar-height);
+	border-bottom: 1px solid #cdcdcd;
+	color: rgb(0, 0, 0, 0.6);
+	gap: 10px;
+`;
+
+export const Logo = styled.img`
+	max-width: 200px;
+	height: auto;
+`;
+
+export const NavUl = styled.ul`
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	display: flex;
+	gap: 1.5rem;
+	align-items: center;
+`;
+
+const StyledLink = styled(NavLink)`
+	&:hover {
+		color: var(--primary);
+	}
+`;
+
+const HideOnMobile = styled.div`
+	display: block;
+
+	@media (max-width: 920px) {
+		display: none;
+	}
+`;
+
+const HideOnXsMobile = styled.div`
+	display: block;
+
+	@media (max-width: 580px) {
+		display: none;
+	}
+`;
+
 const Navbar = () => {
 	return (
 		<NavbarPrincipal>
-			<Link to="/">
-				<img src={serviciosclub} className="logo" alt="" />
-			</Link>
+			<StyledLink to="/">
+				<Logo src={serviciosclub} alt="logo" />
+			</StyledLink>
 			<NavUl>
-				<Navli>
-					<Link to="/">Home</Link>
-				</Navli>
-				<Navli>
-					<ButtonBlue>Solo estoy viendo</ButtonBlue>
-				</Navli>
-				<Navli>
-					<Link to="/categorias">Explorar</Link>
-				</Navli>
+				<HideOnMobile>
+					<li>
+						<StyledLink to="/">Home</StyledLink>
+					</li>
+				</HideOnMobile>
+				<HideOnXsMobile>
+					<li>
+						<StyledLink to="/categorias">Servicios</StyledLink>
+					</li>
+				</HideOnXsMobile>
 			</NavUl>
 			<NavUl>
+				<HideOnMobile>
+					<li>
+						<ButtonBlue>Solo estoy viendo</ButtonBlue>
+					</li>
+				</HideOnMobile>
+				<HideOnMobile>
+					<li>
+						<StyledLink to="/crear-cuenta">Registrarse</StyledLink>
+					</li>
+				</HideOnMobile>
 				<li>
-					<Link to="/crear-cuenta">Registrarse</Link>
-				</li>
-				<li>
-					<Link to="/iniciar-sesion">Iniciar Sesion</Link>
+					<StyledLink to="/iniciar-sesion">Iniciar Sesion</StyledLink>
 				</li>
 			</NavUl>
 		</NavbarPrincipal>

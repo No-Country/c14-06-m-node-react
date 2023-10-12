@@ -5,6 +5,12 @@ import App from './App.jsx';
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
+  
+  :root {
+    --primary: #0E76A8;
+    --navbar-height: 70px;
+  }
+  
   /* Global Styles */
   * {
     margin: 0;
@@ -12,9 +18,8 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
-    body {
+  body {
     font-family: 'Sora', sans-serif;
-  
   }
 
 
