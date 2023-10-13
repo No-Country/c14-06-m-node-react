@@ -13,7 +13,11 @@ router.get(
 	UsersController.getById
 );
 
-router.post('/', validateDto(bodyValidator, 'body'), UsersController.addOne);
+router.post(
+	'/',
+	// validateDto(bodyValidator, 'body'),
+	UsersController.addOne
+);
 
 router.put(
 	'/:userId',

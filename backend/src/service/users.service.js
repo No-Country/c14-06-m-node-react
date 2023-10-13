@@ -6,7 +6,7 @@ import { ObjectId } from 'mongodb';
 const getUsersCollection = async () => {
 	const connectedClient = await getClient();
 	const db = connectedClient.db('ServiciosClub');
-	const usersCollection = db.collection('Users');
+	const usersCollection = db.collection('users');
 	return {
 		usersCollection,
 		connectedClient,
