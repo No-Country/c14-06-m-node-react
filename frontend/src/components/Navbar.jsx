@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { ButtonBlue } from '../styledcomponents/Buttons';
 import serviciosclub from '../assets/logo/ServiciosClubBlue.svg';
 import { NavLink } from 'react-router-dom';
+import { Link } from 'react-scroll';
 
 export const NavbarPrincipal = styled.nav`
 	display: flex;
@@ -64,7 +65,9 @@ const Navbar = () => {
 				</HideOnMobile>
 				<HideOnXsMobile>
 					<li>
-						<StyledLink to="/categorias">Servicios</StyledLink>
+						<Link to="categories" smooth={true} duration={500} offset={20}>
+							<StyledLink>Servicios</StyledLink>
+						</Link>
 					</li>
 				</HideOnXsMobile>
 			</NavUl>

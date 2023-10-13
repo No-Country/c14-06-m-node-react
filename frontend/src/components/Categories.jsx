@@ -129,7 +129,7 @@ const CategoriesList = [
 
 const Categories = () => {
 	return (
-		<CategoriesContainer>
+		<CategoriesContainer id="categories">
 			<PreTitle>
 				<h1>¿Qué necesitas?</h1>
 				Contratá el servicio que estás buscando
