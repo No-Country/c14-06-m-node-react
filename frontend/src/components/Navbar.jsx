@@ -118,7 +118,9 @@ const Navbar = () => {
 			<NavUl>
 				<HideOnMobile>
 					<Li>
-						<StyledLink to="/ofrecer-servicio">Ofrecer un servicio</StyledLink>
+						<Link to="/crear-cuenta">
+							<ButtonBlue>Registrarse</ButtonBlue>
+						</Link>
 					</Li>
 				</HideOnMobile>
 				<Li>
@@ -126,9 +128,7 @@ const Navbar = () => {
 				</Li>
 				<HideOnMobile>
 					<Li>
-						<Link to="/crear-cuenta">
-							<ButtonBlue>Registrarse</ButtonBlue>
-						</Link>
+						<StyledLink to="/ofrecer-servicio">Ofrecer un servicio</StyledLink>
 					</Li>
 				</HideOnMobile>
 			</NavUl>
