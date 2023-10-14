@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import Categories from './components/Categories';
 import ProfesionalsList from './components/ProfesionalsList';
 import ComoFunciona from './pages/ComoFunciona';
 import Home from './pages/Home';
 import CreateAccount from './pages/CreateAccount';
+import OfrecerServicio from './pages/OfrecerServicio';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SignIn from './pages/SignIn';
@@ -27,7 +27,6 @@ const App = () => {
 			<Navbar />
 			<ScrollToTop>
 				<Routes>
-					<Route path="/categorias" element={<Categories />} />
 					<Route
 						path="/profesionalsList/:categoryTitle"
 						element={<ProfesionalsList />}
@@ -36,6 +35,7 @@ const App = () => {
 					<Route path="/como-funciona" element={<ComoFunciona />} />
 					<Route path="/crear-cuenta" element={<CreateAccount />} />
 					<Route path="/iniciar-sesion" element={<SignIn />} />
+					<Route path="/ofrecer-servicio" element={<OfrecerServicio />} />
 				</Routes>
 			</ScrollToTop>
 			<Footer />
