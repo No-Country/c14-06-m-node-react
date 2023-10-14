@@ -19,6 +19,7 @@ export const ButtonBlue = styled.button`
 	background-color: var(--primary);
 	color: #ffffff;
 	border-radius: 4px;
-	padding: 0.5rem 0.5rem;
+	padding: 0.7rem 1rem;
 	border: none;
+	cursor: pointer;
 `;
