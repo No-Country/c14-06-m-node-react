@@ -79,14 +79,14 @@ const ArrowIcon = styled(FontAwesomeIcon)`
 const HideOnMobile = styled.div`
 	display: block;
 	height: 100%;
-	@media (max-width: 920px) {
+	@media (max-width: 940px) {
 		display: none;
 	}
 `;
 
 const HideOnXsMobile = styled.div`
 	display: block;
-	@media (max-width: 580px) {
+	@media (max-width: 600px) {
 		display: none;
 	}
 `;
@@ -102,6 +102,11 @@ const Navbar = () => {
 				</TextLogo>
 			</Link>
 			<NavUl>
+				<HideOnMobile>
+					<Li>
+						<StyledLink to="/">Home</StyledLink>
+					</Li>
+				</HideOnMobile>
 				<HideOnXsMobile>
 					<Li>
 						<HashLink smooth to="/#categories">
@@ -109,6 +114,8 @@ const Navbar = () => {
 						</HashLink>
 					</Li>
 				</HideOnXsMobile>
+			</NavUl>
+			<NavUl>
 				<HideOnMobile>
 					<Li>
 						<StyledLink to="/ofrecer-servicio">Ofrecer un servicio</StyledLink>
