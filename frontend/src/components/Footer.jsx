@@ -1,96 +1,162 @@
 import styled from 'styled-components';
-import serviciosClubBlue from '../assets/logo/ServiciosClubBlue.svg';
+import logo from '../assets/logo/logo.png';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	faFacebook,
-	faInstagram,
-	faLinkedin,
-} from '@fortawesome/free-brands-svg-icons';
-const DivLogo = styled.div`
-	display: flex;
-`;
+import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+
 const StyledFooter = styled.footer`
-	margin-top: auto;
-	background-color: #d9d9d9b2;
+	padding: 2rem 0 0.5rem 0;
 	color: #00000080;
-	display: flex;
+	display: grid;
+	grid-template-areas:
+		'logo about support socialmedia'
+		'copyright copyright copyright copyright';
 	gap: 2rem;
-	justify-content: space-between;
-	padding: 1rem 3rem;
 	text-align: justify;
+
+	@media (max-width: 900px) {
+		grid-template-areas:
+			'logo'
+			'socialmedia'
+			'about'
+			'support'
+			'copyright';
+		text-align: center;
+	}
 `;
 
-const StyledH2 = styled.h2`
+const DivLogo = styled.div`
+	grid-area: logo;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	img {
+		width: 50px;
+		height: 50px;
+	}
+	a {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+`;
+
+const TextLogo = styled.div`
+	color: rgb(0, 0, 0, 0.8);
+	font-size: 1.5rem;
+	font-weight: bolder;
+	padding-left: 1rem;
+	padding-top: 4px;
+`;
+
+const BlueText = styled.span`
+	color: var(--primary);
+`;
+
+const About = styled.div`
+	grid-area: about;
+	display: flex;
+	flex-direction: column;
+`;
+
+const Support = styled.div`
+	grid-area: support;
+	display: flex;
+	flex-direction: column;
+`;
+const SocialMedia = styled.div`
+	grid-area: socialmedia;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+`;
+
+const SectionTitle = styled.span`
 	color: #0e76a8;
 	font-weight: 700;
-	font-size: 1.5em;
+	font-size: 1.1rem;
 `;
 
 const StyledUl = styled.ul`
 	color: #00000080;
 	list-style: none;
-	padding: 2rem 0;
-`;
+	padding: 0.4rem 0;
 
-// const DivIcons = styled.div``;
+	li {
+		padding-top: 8px;
+	}
+`;
 
 const IconsUl = styled.ul`
 	display: flex;
-	list-style: none;
-	gap: 2rem;
-	width: 100%;
-	text-align: center;
-	color: #0e76a8;
+	gap: 1rem;
+	color: var(--primary);
+	justify-content: center;
+	align-items: center;
 `;
 
+const StyledIcon = styled(FontAwesomeIcon)`
+	width: 2rem;
+	height: auto;
+`;
+
+const Copyright = styled.div`
+	grid-area: copyright;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 0.8rem;
+`;
 const Footer = () => {
 	return (
 		<StyledFooter>
 			<DivLogo>
-				<img src={serviciosClubBlue} alt="" />
+				<Link to="/">
+					<img src={logo} alt="" />
+					<TextLogo>
+						<span>Servicios</span>
+						<BlueText>Club</BlueText>
+					</TextLogo>
+				</Link>
 			</DivLogo>
-			<div>
-				<StyledH2>Sobre Nosotros</StyledH2>
+			<About>
+				<SectionTitle>Sobre Nosotros</SectionTitle>
 				<StyledUl>
 					<li>
-						<Link>Contacto</Link>
+						<Link to="/sobre-nosotros">Nuestro equipo</Link>
 					</li>
 					<li>
-						<Link>Nuestro equipo</Link>
-					</li>
-					<li>
-						<Link>Termino y condiciones</Link>
+						<Link to="/contacto">Contacto</Link>
 					</li>
 				</StyledUl>
-			</div>
-			<div>
-				<StyledH2>Soporte</StyledH2>
+			</About>
+			<Support>
+				<SectionTitle>Soporte</SectionTitle>
 				<StyledUl>
 					<li>
-						<Link>Ayuda</Link>
+						<Link to="/como-funciona">¿Cómo funciona?</Link>
+					</li>
+					<li>
+						<Link to="/ayuda">Ayuda</Link>
+					</li>
+					<li>
+						<Link to="/terminos-y-condiciones">Termino y condiciones</Link>
 					</li>
 				</StyledUl>
-			</div>
-			<div>
+			</Support>
+			<SocialMedia>
 				<IconsUl>
-					<li>
-						<FontAwesomeIcon icon={faFacebook} />
-					</li>
-					<li>
-						<FontAwesomeIcon icon={faInstagram} />
-					</li>
-					<li>
-						<FontAwesomeIcon icon={faLinkedin} />
-					</li>
+					<a href="https://www.facebook.com/servici0sclub">
+						<StyledIcon icon={faFacebook} />
+					</a>
+					<a href="https://www.instagram.com/servicios.club">
+						<StyledIcon icon={faInstagram} />
+					</a>
 				</IconsUl>
-
-				<StyledUl>
-					<li>
-						<Link>Descarga La App</Link>
-					</li>
-				</StyledUl>
-			</div>
+			</SocialMedia>
+			<Copyright>Copyright © 2023 ServiciosClub</Copyright>
 		</StyledFooter>
 	);
 };

@@ -44,9 +44,9 @@ const App = () => {
 						<Route path="/crear-cuenta" element={<CreateAccount />} />
 						<Route path="/iniciar-sesion" element={<SignIn />} />
 					</Routes>
+					<Footer />
 				</Container>
 			</ScrollToTop>
-			<Footer />
 		</>
 	);
 };
