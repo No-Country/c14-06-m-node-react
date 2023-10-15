@@ -9,6 +9,7 @@ import OfrecerServicio from './pages/OfrecerServicio';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SignIn from './pages/SignIn';
+import styled from 'styled-components';
 
 const ScrollToTop = ({ children }) => {
 	const location = useLocation();
@@ -21,22 +22,29 @@ const ScrollToTop = ({ children }) => {
 ScrollToTop.propTypes = {
 	children: PropTypes.node.isRequired,
 };
+
+const Container = styled.div`
+	max-width: 1200px;
+	margin: 0 auto;
+`;
 const App = () => {
 	return (
 		<>
 			<Navbar />
 			<ScrollToTop>
-				<Routes>
-					<Route
-						path="/profesionalsList/:categoryTitle"
-						element={<ProfesionalsList />}
-					/>
-					<Route path="/" element={<Home />} />
-					<Route path="/como-funciona" element={<ComoFunciona />} />
-					<Route path="/crear-cuenta" element={<CreateAccount />} />
-					<Route path="/iniciar-sesion" element={<SignIn />} />
-					<Route path="/ofrecer-servicio" element={<OfrecerServicio />} />
-				</Routes>
+				<Container>
+					<Routes>
+						<Route path="/categorias" element={<Categories />} />
+						<Route
+							path="/profesionalsList/:categoryTitle"
+							element={<ProfesionalsList />}
+						/>
+						<Route path="/" element={<Home />} />
+						<Route path="/como-funciona" element={<ComoFunciona />} />
+						<Route path="/crear-cuenta" element={<CreateAccount />} />
+						<Route path="/iniciar-sesion" element={<SignIn />} />
+					</Routes>
+				</Container>
 			</ScrollToTop>
 			<Footer />
 		</>

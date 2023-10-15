@@ -7,12 +7,11 @@ const MainScreen = styled.div`
 	height: calc(100vh - var(--navbar-height));
 	display: grid;
 	grid-template-areas: 'left right';
-	margin: 0 auto 2rem auto;
-	gap: 50px;
 	align-items: center;
 	@media (max-width: 920px) {
 		grid-template-areas: 'left';
 	}
+	gap: 3rem;
 `;
 
 const ContainerLeft = styled.div`
@@ -23,6 +22,7 @@ const ContainerLeft = styled.div`
 	padding: 1rem;
 	gap: 0.2rem;
 	text-align: center;
+	height: 100%;
 `;
 
 const ContainerSearch = styled.div`
@@ -32,14 +32,15 @@ const ContainerSearch = styled.div`
 	border-radius: 23px;
 	border: 1px solid black;
 	padding: 10px;
-	width: 100%;
+	background-color: white;
 `;
 
-const StyledH1 = styled.h1`
+const StyledSlogan = styled.span`
 	font-weight: 700;
-	font-size: 60px;
+	font-size: 2.6rem;
 	text-align: center;
-	padding-bottom: 5%;
+	padding-bottom: 4rem;
+	color: rgb(0, 0, 0, 0.8);
 `;
 
 const StyledUl = styled.ul`
@@ -58,7 +59,6 @@ const Active = styled.li`
 `;
 
 const StyledInput = styled.input`
-	float: left;
 	width: 100%;
 	height: 100%;
 	font-size: 15px;
@@ -69,6 +69,9 @@ const StyledInput = styled.input`
 	&:active {
 		border: none;
 	}
+	&:focus {
+		border: 2px solid #0e76a8;
+	}
 `;
 
 const StyledP = styled.p`
@@ -78,22 +81,27 @@ const StyledP = styled.p`
 
 const ContainerRight = styled.div`
 	grid-area: right;
-	display: none;
-	@media (min-width: 921px) {
-		display: block;
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+
+	@media (max-width: 921px) {
+		display: none;
 	}
 `;
 
 const StyledImg = styled.img`
 	height: auto;
-	max-width: 95%;
+	max-width: 100%;
 `;
 
 const Home = () => {
 	return (
 		<MainScreen>
 			<ContainerLeft>
-				<StyledH1>Todos los servicios en un solo lugar.</StyledH1>
+				<StyledSlogan>Todos los servicios en un solo lugar.</StyledSlogan>
 				<StyledUl>
 					<Active>Contratar</Active>
 					<li>Ofrecer un servicio</li>

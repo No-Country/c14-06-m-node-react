@@ -22,19 +22,6 @@ const GlobalStyles = createGlobalStyle`
     font-family: 'Sora', sans-serif;
   }
 
-
-  /* AppContainer */
-
-  //Lo deje comentado hasta trabajar en el Responsive
-  #root {
-    /* max-width: 1200px; */
-    margin: 0 auto;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-
-  }
-
   a {
   text-decoration: none; 
   color: inherit;
