@@ -1,35 +1,52 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import meta from '../assets/images/meta.svg';
+import google from '../assets/images/google.svg';
 
 const DivContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 2rem 20rem;
-	color: #000000;
-	font-size: 20px;
+	justify-content: center;
+	text-align: center;
+	padding: 2rem;
+	gap: 0.8rem;
+	a {
+		color: var(--primary);
+	}
+	span {
+		padding: 0.4rem;
+	}
 `;
 
-const StyledH1 = styled.h1`
-	padding: 2rem;
+const StyledTitle = styled.span`
+	padding-bottom: 1rem;
+	font-size: 1.8rem;
+	font-weight: bold;
 `;
 
 const StyledSpan = styled.span`
-	color: #0e76a8;
+	color: var(--primary);
 `;
 
 const StyledForm = styled.form`
 	display: flex;
 	flex-direction: column;
-	width: 60vh;
-	padding: 2rem;
+	padding: 1.8rem;
 	border: 1px solid black;
 	border-radius: 10px;
+	max-width: 540px;
+	margin: 0 auto;
+	gap: 0.2rem;
+	text-align: start;
 `;
 
-const NameDiv = styled.div`
+const HorizontalDiv = styled.div`
 	display: flex;
 	justify-content: space-between;
-	gap: 5%;
+	align-items: center;
+	font-size: 0.9rem;
+	gap: 1rem;
 `;
 const LabelDiv = styled.div`
 	display: flex;
@@ -42,39 +59,89 @@ const StyledInput = styled.input`
 	height: 2.5rem;
 `;
 
-const DivPassRequirement = styled.div``;
-
-const StyledUl = styled.ul`
-	margin: 5%;
-`;
 const DivButton = styled.div`
-	padding: 2rem 0;
+	padding: 1.2rem 0;
 `;
 const ButtonForm = styled.button`
 	color: #ffffff;
-	background-color: #0e76a8;
+	background-color: var(--primary);
 	width: 100%;
 	height: 3rem;
 	font-weight: 600;
-	font-size: 14px;
+	font-size: 1rem;
+	cursor: pointer;
+	&:active {
+		background-color: #015ea5;
+	}
 `;
+
+const ButtonSM = styled.button`
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	padding: 1rem;
+	margin-top: 0.2rem;
+	width: 100%;
+	flex-wrap: nowrap;
+	background-color: white;
+	border: 1px solid var(--primary);
+	height: 2rem;
+	font-weight: 600;
+	font-size: 1rem;
+	cursor: pointer;
+
+	&:hover {
+		color: var(--primary);
+	}
+`;
+
+const DivInfoContraseña = styled.div`
+	display: flex;
+	flex-direction: column;
+
+	color: rgb(0, 0, 0, 0.5);
+
+	ul {
+		padding-left: 2.4rem;
+	}
+`;
+
+const TextTerms = styled.span`
+	margin-top: 8px;
+`;
+const Divider = styled.div`
+	width: 100%;
+	border-top: 1px solid #000;
+	margin: 10px 0;
+`;
+const DivSecundario = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 0.8rem;
+	gap: 0.4rem;
+`;
+
 const CreateAccount = () => {
 	return (
 		<DivContainer>
-			<StyledH1>
-				Crea tu <StyledSpan>cuenta</StyledSpan>
-			</StyledH1>
+			<StyledTitle>
+				Crea tu<StyledSpan>Cuenta</StyledSpan>
+			</StyledTitle>
 			<StyledForm action="" method="">
-				<NameDiv>
+				<HorizontalDiv>
 					<LabelDiv>
 						<label htmlFor="">Nombre</label>
-						<StyledInput type="text" name="" id="" placeholder="" />
+						<StyledInput type="text" name="" id="" />
 					</LabelDiv>
 					<LabelDiv>
 						<label htmlFor="">Apellido</label>
-						<StyledInput type="text" name="" id="" placeholder="" />
+						<StyledInput type="text" name="" id="" />
 					</LabelDiv>
-				</NameDiv>
+				</HorizontalDiv>
 				<LabelDiv>
 					<label htmlFor="">Email</label>
 					<StyledInput type="email" name="" id="" />
@@ -83,29 +150,40 @@ const CreateAccount = () => {
 					<label htmlFor="">Contraseña</label>
 					<StyledInput type="password" name="" id="" />
 				</LabelDiv>
-				<DivPassRequirement>
-					<p>Su contraseña debe:</p>
-					<StyledUl>
-						<li>tener entre 8 y 71 caracteres</li>
-
-						<li>no contenga su nombre o correo electrónico</li>
-
-						<li>
-							no ser de uso común, fácil de adivinar o contener cualquier
-							variación de la palabra “ServiciosClub”
-						</li>
-					</StyledUl>
-				</DivPassRequirement>
-				<div>
-					<p>
-						Al hacer clic en Crear cuenta, acepta las Condiciones de uso y la
-						Política de privacidad.
-					</p>
-				</div>
+				<DivInfoContraseña>
+					<span>Su contraseña debe:</span>
+					<ul>
+						<li>tener entre 6 y 12 caracteres</li>
+						<li>solo contener letras y/o números</li>
+					</ul>
+				</DivInfoContraseña>
+				<TextTerms>
+					Al hacer clic en Crear cuenta, acepta las Condiciones de uso y la
+					Política de privacidad.
+				</TextTerms>
 				<DivButton>
-					<ButtonForm type="">Crear cuenta</ButtonForm>
+					<ButtonForm type="">Crear Cuenta</ButtonForm>
 				</DivButton>
+				<Divider />
+				<DivSecundario>
+					<span>
+						Al hacer clic en Regístrate con Facebook o Regístrate con Google,
+						aceptas las Condiciones de uso y la Política de privacidad.
+					</span>
+					<ButtonSM>
+						<img src={meta} alt="meta icon" />
+						Iniciar sesión con Meta
+					</ButtonSM>
+					<ButtonSM>
+						<img src={google} alt="google icon" />
+						Iniciar sesión con Google
+					</ButtonSM>
+				</DivSecundario>
 			</StyledForm>
+			<span>
+				¿Ya tiene una cuenta? Clickea aquí para&nbsp;
+				<Link to="/iniciar-sesion">iniciar sesión.</Link>
+			</span>
 		</DivContainer>
 	);
 };
