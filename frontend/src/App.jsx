@@ -34,7 +34,7 @@ const App = () => {
 			<ScrollToTop>
 				<Container>
 					<Routes>
-						<Route path="/categorias" element={<Categories />} />
+						<Route path="/ofrecer-servicio" element={<OfrecerServicio />} />
 						<Route
 							path="/profesionalsList/:categoryTitle"
 							element={<ProfesionalsList />}
