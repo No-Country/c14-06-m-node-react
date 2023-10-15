@@ -18,6 +18,7 @@ initializePassport();
 app.use(passport.initialize());
 app.use(
 	session({
+		name: 'user-session',
 		secret: 'sessionpassword4536',
 		resave: false,
 		saveUninitialized: false,

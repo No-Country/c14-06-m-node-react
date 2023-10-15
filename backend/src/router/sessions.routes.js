@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import passport from 'passport';
+import SessionsController from '../controllers/sessions.controller.js';
 
 const router = Router();
 
@@ -21,12 +22,7 @@ router.get('/failregister', (req, res, next) => {
 router.post(
 	'/login',
 	passport.authenticate('login', { failureRedirect: 'faillogin' }),
-	async (req, res) => {
-		res.status(201).json({
-			status: 'created',
-			response: 'Inicio de sesión exitoso',
-		});
-	}
+	SessionsController.login
 );
 
 router.get('/faillogin', (req, res, next) => {
