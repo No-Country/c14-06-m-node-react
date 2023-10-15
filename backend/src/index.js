@@ -2,6 +2,10 @@ import express from 'express';
 import apiRouter from './router/app.router.js';
 import cors from 'cors';
 import corsOptions from './utils/cors-options.js';
+import passport from 'passport';
+import initializePassport from './config/passport.config.js';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
 
 const app = express();
 
@@ -9,6 +13,17 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
+app.use(cookieParser());
+initializePassport();
+app.use(passport.initialize());
+app.use(
+	session({
+		secret: 'sessionpassword4536',
+		resave: false,
+		saveUninitialized: false,
+	})
+);
+app.use(passport.session());
 
 //Router
 app.use('/api', apiRouter);
