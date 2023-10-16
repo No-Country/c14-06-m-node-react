@@ -6,14 +6,14 @@ class SessionsController {
 		try {
 			if (!user) {
 				next({
-					status: 'bad request',
-					message: 'no se encuentran las credenciales del usuario',
+					status: 'Bad request',
+					message: 'No se encuentran las credenciales del usuario',
 				});
 			}
 			const access_token = generateToken(user);
 			res.status(201).json({
 				status: 'created',
-				response: 'Inicio de sesión exitoso',
+				response: 'Inicio de sesion exitoso',
 				token: 'Bearer ' + access_token,
 			});
 		} catch (error) {
