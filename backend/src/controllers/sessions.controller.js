@@ -13,7 +13,7 @@ class SessionsController {
 			const access_token = generateToken(user);
 			res.status(201).json({
 				status: 'created',
-				response: 'Inicio de sesión exitoso',
+				response: 'Inicio de sesion exitoso',
 				token: 'Bearer ' + access_token,
 			});
 		} catch (error) {
