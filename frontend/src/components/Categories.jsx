@@ -19,38 +19,19 @@ const CategoriesContainer = styled.div`
 	flex-direction: column;
 `;
 const CategoriesListContainer = styled.div`
-	padding: 3rem 5rem;
+	padding: 0.4rem 1rem 4rem 1rem;
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-	gap: 60px;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: 1rem;
 `;
 
 const PreTitle = styled.div`
 	display: flex;
 	flex-direction: column;
 	text-align: center;
-	padding-top: 3rem;
+	padding-top: 2.5rem;
 	color: rgb(0, 0, 0, 0.8);
-	gap: 2rem;
-`;
-const TitleList = styled.div`
-	font-size: 1.2rem;
-	padding: 3rem 0 0 2.5rem;
-	position: relative;
-
-	&::before {
-		position: absolute;
-		left: 22px;
-		top: 48px;
-		width: 3px;
-		height: 1.4rem;
-		vertical-align: center;
-		color: #0e76a8;
-		background-color: #0e76a8;
-		border-radius: 12px;
-		content: '';
-		text-align: center;
-	}
+	gap: 1.2rem;
 `;
 
 const Card = styled.div`
@@ -129,13 +110,11 @@ const CategoriesList = [
 
 const Categories = () => {
 	return (
-		<CategoriesContainer id="#categories">
+		<CategoriesContainer id="categories">
 			<PreTitle>
 				<h1>¿Qué necesitas?</h1>
 				Contratá el servicio que estás buscando
 			</PreTitle>
-
-			<TitleList>Todos los servicios</TitleList>
 			<CategoriesListContainer>
 				{CategoriesList.map((category) => (
 					<Link
