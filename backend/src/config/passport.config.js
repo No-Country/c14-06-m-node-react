@@ -4,6 +4,7 @@ import jwt from 'passport-jwt';
 import UsersService from '../service/users.service.js';
 import { createHash, evaluatePassword } from '../utils/bcrypt.js';
 import envs from './env.config.js';
+import HTTP_STATUS from '../utils/http-constants.js';
 
 const usersService = new UsersService();
 const ExtractJWT = jwt.ExtractJwt;
@@ -17,10 +18,13 @@ const initializePassport = () => {
 			{ passReqToCallback: true, usernameField: 'email' },
 			async (req, user, password, done) => {
 				try {
-					const registeredUser = await usersService.getUserByEmail(user.email);
+					const registeredUser = await usersService.getUserByEmail(user);
 					if (registeredUser) {
 						console.log('Email ya registrado');
-						return done(null, false);
+						return done({
+							status: HTTP_STATUS.BAD_REQUEST,
+							message: 'Email ya registrado',
+						});
 					}
 					const hashedPass = await createHash(password);
 					const newUser = {
