@@ -29,4 +29,10 @@ router.get('/faillogin', (req, res, next) => {
 	next({ status: 401, message: 'Error de inicio de sesión' });
 });
 
+router.get(
+	'/current',
+	passport.authenticate('jwt', { session: false }),
+	SessionsController.currentSession
+);
+
 export default router;

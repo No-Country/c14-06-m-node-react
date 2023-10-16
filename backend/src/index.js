@@ -6,6 +6,7 @@ import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
+import envs from './config/env.config.js';
 
 const app = express();
 
@@ -18,8 +19,8 @@ initializePassport();
 app.use(passport.initialize());
 app.use(
 	session({
-		name: 'user-session',
-		secret: 'sessionpassword4536',
+		name: envs.SESSION_KEY,
+		secret: envs.SECRET_KEY,
 		resave: false,
 		saveUninitialized: false,
 	})

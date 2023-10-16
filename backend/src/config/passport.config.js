@@ -1,10 +1,15 @@
 import passport from 'passport';
 import local from 'passport-local';
+import jwt from 'passport-jwt';
 import UsersService from '../service/users.service.js';
 import { createHash, evaluatePassword } from '../utils/bcrypt.js';
+import envs from './env.config.js';
 
 const usersService = new UsersService();
+const ExtractJWT = jwt.ExtractJwt;
 const LocalStrategy = local.Strategy;
+const JWTStrategy = jwt.Strategy;
+
 const initializePassport = () => {
 	passport.use(
 		'register',
@@ -45,9 +50,29 @@ const initializePassport = () => {
 					if (!passControl) {
 						return done(null, false, 'wrong user or password');
 					}
-					return done(null, registeredUser);
+					//Evitamos pasar los datos sensibles al token
+					const finalUser = { ...registeredUser };
+					delete finalUser.password;
+					return done(null, finalUser);
 				} catch (error) {
 					return done(error);
+				}
+			}
+		)
+	);
+
+	passport.use(
+		'jwt',
+		new JWTStrategy(
+			{
+				jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+				secretOrKey: envs.SECRET_KEY,
+			},
+			async (jwt_payload, done) => {
+				try {
+					return done(null, jwt_payload);
+				} catch (error) {
+					return done(error, false);
 				}
 			}
 		)
@@ -58,9 +83,9 @@ passport.serializeUser((user, done) => {
 	done(null, user);
 });
 
-passport.deserializeUser(async (id, done) => {
-	const user = await usersService.getUserById(id);
-	done(null, user);
+passport.deserializeUser(async (user, done) => {
+	const registeredUser = await usersService.getUserByEmail(user.email);
+	done(null, registeredUser);
 });
 
 export default initializePassport;
