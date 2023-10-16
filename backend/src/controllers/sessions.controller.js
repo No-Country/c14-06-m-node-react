@@ -7,7 +7,7 @@ class SessionsController {
 			if (!user) {
 				next({
 					status: 'bad request',
-					message: 'no se encuentran las credenciales del usuario',
+					message: 'No se encuentran las credenciales del usuario',
 				});
 			}
 			const access_token = generateToken(user);
