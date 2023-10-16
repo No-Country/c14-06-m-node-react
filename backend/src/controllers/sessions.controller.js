@@ -6,7 +6,7 @@ class SessionsController {
 		try {
 			if (!user) {
 				next({
-					status: 'bad request',
+					status: 'Bad request',
 					message: 'No se encuentran las credenciales del usuario',
 				});
 			}
