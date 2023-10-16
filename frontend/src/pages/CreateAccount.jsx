@@ -2,6 +2,35 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import meta from '../assets/images/meta.svg';
 import google from '../assets/images/google.svg';
+import { useForm } from 'react-hook-form';
+import Select from 'react-select';
+
+//LISTA DE PROVINCIAS ARGENTINAS//
+const provincias = [
+	{ label: 'Buenos Aires', value: 'Buenos Aires' },
+	{ label: 'Catamarca', value: 'Catamarca' },
+	{ label: 'Chaco', value: 'Chaco' },
+	{ label: 'Chubut', value: 'Chubut' },
+	{ label: 'Córdoba', value: 'Córdoba' },
+	{ label: 'Corrientes', value: 'Corrientes' },
+	{ label: 'Entre Ríos', value: 'Entre Ríos' },
+	{ label: 'Formosa', value: 'Formosa' },
+	{ label: 'Jujuy', value: 'Jujuy' },
+	{ label: 'La Pampa', value: 'La Pampa' },
+	{ label: 'La Rioja', value: 'La Rioja' },
+	{ label: 'Mendoza', value: 'Mendoza' },
+	{ label: 'Misiones', value: 'Misiones' },
+	{ label: 'Neuquén', value: 'Neuquén' },
+	{ label: 'Río Negro', value: 'Río Negro' },
+	{ label: 'Salta', value: 'Salta' },
+	{ label: 'San Juan', value: 'San Juan' },
+	{ label: 'San Luis', value: 'San Luis' },
+	{ label: 'Santa Cruz', value: 'Santa Cruz' },
+	{ label: 'Santa Fe', value: 'Santa Fe' },
+	{ label: 'Santiago del Estero', value: 'Santiago del Estero' },
+	{ label: 'Tierra del Fuego', value: 'Tierra del Fuego' },
+	{ label: 'Tucumán', value: 'Tucumán' },
+];
 
 const DivContainer = styled.div`
 	display: flex;
@@ -41,13 +70,13 @@ const StyledForm = styled.form`
 	text-align: start;
 `;
 
-const HorizontalDiv = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	font-size: 0.9rem;
-	gap: 1rem;
-`;
+// const HorizontalDiv = styled.div`
+// 	display: flex;
+// 	justify-content: space-between;
+// 	align-items: center;
+// 	font-size: 0.9rem;
+// 	gap: 1rem;
+// `;
 const LabelDiv = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -57,6 +86,12 @@ const LabelDiv = styled.div`
 
 const StyledInput = styled.input`
 	height: 2.5rem;
+`;
+
+const StyledSpanErrores = styled.span`
+	color: red;
+	display: block;
+	font-size: medium;
 `;
 
 const DivButton = styled.div`
@@ -126,29 +161,155 @@ const DivSecundario = styled.div`
 `;
 
 const CreateAccount = () => {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		watch,
+	} = useForm();
+
+	const onSubmit = handleSubmit((data) => {
+		data.role = 'user';
+		data.profileImg = '';
+		console.log(data);
+		alert('usuario creado con exito\n' + JSON.stringify(data));
+	});
 	return (
 		<DivContainer>
 			<StyledTitle>
 				Crea tu<StyledSpan>Cuenta</StyledSpan>
 			</StyledTitle>
-			<StyledForm action="" method="">
-				<HorizontalDiv>
-					<LabelDiv>
-						<label htmlFor="">Nombre</label>
-						<StyledInput type="text" name="" id="" />
-					</LabelDiv>
-					<LabelDiv>
-						<label htmlFor="">Apellido</label>
-						<StyledInput type="text" name="" id="" />
-					</LabelDiv>
-				</HorizontalDiv>
+			<StyledForm onSubmit={onSubmit}>
+				{/* <HorizontalDiv> */}
+				<LabelDiv>
+					<label htmlFor="name">Nombre</label>
+					<StyledInput
+						type="text"
+						name=""
+						id=""
+						{...register('name', {
+							required: { value: true, message: 'Nombre es requerido' },
+							minLength: {
+								value: 2,
+								message: 'Nombre debe tener al menos 2 caracteres',
+							},
+							maxLength: {
+								value: 20,
+								message: 'Nombre no puede tener mas de 20 caracteres',
+							},
+						})}
+					/>
+					{errors.name && (
+						<StyledSpanErrores>{errors.name.message}</StyledSpanErrores>
+					)}
+				</LabelDiv>
+
+				{/* //INPUT APELLIDO USUARIO */}
+				<LabelDiv>
+					<label htmlFor="">Apellido</label>
+					<StyledInput
+						type="text"
+						name=""
+						id=""
+						{...register('surname', {
+							required: { value: true, message: 'Apellido es requerido' },
+							minLength: {
+								value: 2,
+								message: 'Apellido debe tener al menos 2 caracteres',
+							},
+							maxLength: {
+								value: 20,
+								message: 'Apellido no puede tener mas de 20 caracteres',
+							},
+						})}
+					/>
+					{errors.surname && (
+						<StyledSpanErrores>{errors.surname.message}</StyledSpanErrores>
+					)}
+				</LabelDiv>
+				{/* </HorizontalDiv> */}
+
+				{/* //INPUT EMAIL USUARIO */}
 				<LabelDiv>
 					<label htmlFor="">Email</label>
-					<StyledInput type="email" name="" id="" />
+					<StyledInput
+						type="email"
+						name=""
+						id=""
+						{...register('email', {
+							required: { value: true, message: 'Correo es requerido' },
+							pattern: {
+								value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+								message: 'Correo no válido',
+							},
+						})}
+					/>
+					{errors.email && (
+						<StyledSpanErrores>{errors.email.message}</StyledSpanErrores>
+					)}
+				</LabelDiv>
+				<LabelDiv>
+					<label htmlFor="">Telefono</label>
+					<StyledInput
+						type="number"
+						name=""
+						id=""
+						{...register('phone', { required: true })}
+					/>
+					{errors.phone && (
+						<StyledSpanErrores>Telefono es requerido</StyledSpanErrores>
+					)}
+				</LabelDiv>
+
+				<LabelDiv>
+					<label htmlFor="">Ubicacion</label>
+					<Select {...register('location')} options={provincias} />
 				</LabelDiv>
 				<LabelDiv>
 					<label htmlFor="">Contraseña</label>
-					<StyledInput type="password" name="" id="" />
+					<StyledInput
+						type="password"
+						name=""
+						id=""
+						{...register('password', {
+							required: {
+								value: true,
+								message: 'Contraseña es requerida',
+							},
+							minLength: {
+								value: 6,
+								message: 'Contraseña debe tener al menos 6 caracteres',
+							},
+							maxLength: {
+								value: 12,
+								message: 'Contraseña no debe tener mas de 12 caracteres',
+							},
+						})}
+					/>
+					{errors.password && (
+						<StyledSpanErrores>{errors.password.message}</StyledSpanErrores>
+					)}
+				</LabelDiv>
+				<LabelDiv>
+					<label htmlFor="confirmPassword">Confirmar Contraseña</label>
+					<StyledInput
+						type="password"
+						name=""
+						id=""
+						{...register('confirmPassword', {
+							required: {
+								value: true,
+								message: 'Debe confirmar su contraseña',
+							},
+							validate: (value) =>
+								value === watch('password') || 'Las contraseñas no coinciden',
+						})}
+					/>
+					{errors.confirmPassword && (
+						<StyledSpanErrores>
+							{errors.confirmPassword.message}
+						</StyledSpanErrores>
+					)}
 				</LabelDiv>
 				<DivInfoContraseña>
 					<span>Su contraseña debe:</span>
