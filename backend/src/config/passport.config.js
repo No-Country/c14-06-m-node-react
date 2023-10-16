@@ -16,11 +16,10 @@ const initializePassport = () => {
 		'register',
 		new LocalStrategy(
 			{ passReqToCallback: true, usernameField: 'email' },
-			async (req, user, password, done) => {
+			async (req, email, password, done) => {
 				try {
-					const registeredUser = await usersService.getUserByEmail(user);
+					const registeredUser = await usersService.getUserByEmail(email);
 					if (registeredUser) {
-						console.log('Email ya registrado');
 						return done({
 							status: HTTP_STATUS.BAD_REQUEST,
 							message: 'Email ya registrado',
