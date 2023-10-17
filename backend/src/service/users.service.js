@@ -57,7 +57,6 @@ class UsersService {
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
-		console.log(userPayload);
 		const filter = { _id: objectId };
 		const updateDocument = {
 			$set: userPayload,

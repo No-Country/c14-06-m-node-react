@@ -4,21 +4,9 @@ const servicesService = new ServicesService();
 
 class ServicesController {
 	static async getAll(req, res, next) {
+		const filters = req.query;
 		try {
-			const services = await servicesService.getServices();
-			res.status(200).json({
-				status: 'success',
-				response: services,
-			});
-		} catch (error) {
-			next(error);
-		}
-	}
-
-	static async getByCategory(req, res, next) {
-		const { category } = req.params;
-		try {
-			const services = await servicesService.getServicesByCategory(category);
+			const services = await servicesService.getServices(filters);
 			res.status(200).json({
 				status: 'success',
 				response: services,
