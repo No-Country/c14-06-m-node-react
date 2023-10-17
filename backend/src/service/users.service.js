@@ -14,9 +14,9 @@ const getUsersCollection = async () => {
 };
 
 class UsersService {
-	async getUsers() {
+	async getUsers(filters) {
 		const { usersCollection, connectedClient } = await getUsersCollection();
-		const users = await usersCollection.find({}).toArray();
+		const users = await usersCollection.find(filters).toArray();
 		await connectedClient.close();
 		return users;
 	}
@@ -57,10 +57,12 @@ class UsersService {
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
-		const userUpdated = await usersCollection.replaceOne(
-			{ _id: objectId },
-			userPayload
-		);
+		console.log(userPayload);
+		const filter = { _id: objectId };
+		const updateDocument = {
+			$set: userPayload,
+		};
+		const userUpdated = await usersCollection.updateOne(filter, updateDocument);
 		await connectedClient.close();
 		return userUpdated;
 	}
