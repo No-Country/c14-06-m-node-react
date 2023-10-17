@@ -5,8 +5,6 @@ const router = Router();
 
 router.get('/', ServicesController.getAll);
 
-router.get('/category/:category', ServicesController.getByCategory);
-
 router.get('/:serviceId', ServicesController.getById);
 
 router.post('/', ServicesController.addOne);

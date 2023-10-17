@@ -15,84 +15,42 @@ const getServicesCollection = async () => {
 };
 
 class ServicesService {
-	async getServices() {
+	async getServices(filters) {
 		const { servicesCollection, connectedClient } =
 			await getServicesCollection();
-		const services = await servicesCollection
-			.aggregate([
-				{
-					$lookup: {
-						from: 'users', // Nombre de la colección de usuarios
-						localField: 'userRef', // Campo en la colección de plomeros que hace referencia al ID del usuario
-						foreignField: '_id', // Campo en la colección de usuarios que se utiliza para la relación
-						as: 'user_info', // Nombre del nuevo campo que contendrá la información del usuario
-					},
+		const aggregation = [
+			{
+				$lookup: {
+					from: 'users',
+					localField: 'userRef',
+					foreignField: '_id',
+					as: 'user_info',
 				},
-				{
-					$unwind: '$user_info',
+			},
+			{
+				$unwind: '$user_info',
+			},
+			{
+				$project: {
+					_id: 1,
+					qualification: 1,
+					certified: 1,
+					description: 1,
+					category: 1,
+					serviceImg: 1,
+					serviceLocation: 1,
+					active: 1,
+					user: '$user_info',
 				},
-				{
-					$project: {
-						_id: 1,
-						qualification: 1, // Otros campos de la colección de plomeros que desees incluir
-						certified: 1,
-						description: 1,
-						category: 1,
-						serviceImg: 1,
-						serviceLocation: 1,
-						active: 1,
-						user: '$user_info', // Campo que contiene la información completa del usuario
-					},
-				},
-			])
-			.toArray();
-		if (services.length === 0) {
-			const customError = new Error(
-				'Ningún servicio cumple el criterio de búsqueda'
-			);
-			customError.status = HTTP_STATUS.NOT_FOUND;
-			throw customError;
+			},
+		];
+		// Si hay algún filtro de búsqueda, se agrega al aggregation en el campo $match
+		if (Object.keys(filters).length !== 0) {
+			aggregation.unshift({
+				$match: filters,
+			});
 		}
-		await connectedClient.close();
-		return services;
-	}
-
-	async getServicesByCategory(category) {
-		const { servicesCollection, connectedClient } =
-			await getServicesCollection();
-		const services = await servicesCollection
-			.aggregate([
-				{
-					$match: {
-						category: category,
-					},
-				},
-				{
-					$lookup: {
-						from: 'users', // Nombre de la colección de usuarios
-						localField: 'userRef', // Campo en la colección de plomeros que hace referencia al ID del usuario
-						foreignField: '_id', // Campo en la colección de usuarios que se utiliza para la relación
-						as: 'user_info', // Nombre del nuevo campo que contendrá la información del usuario
-					},
-				},
-				{
-					$unwind: '$user_info',
-				},
-				{
-					$project: {
-						_id: 1,
-						qualification: 1, // Otros campos de la colección de plomeros que desees incluir
-						certified: 1,
-						description: 1,
-						category: 1,
-						serviceImg: 1,
-						serviceLocation: 1,
-						active: 1,
-						user: '$user_info', // Campo que contiene la información completa del usuario
-					},
-				},
-			])
-			.toArray();
+		const services = await servicesCollection.aggregate(aggregation).toArray();
 		if (services.length === 0) {
 			const customError = new Error(
 				'Ningún servicio cumple el criterio de búsqueda'
@@ -117,10 +75,10 @@ class ServicesService {
 				},
 				{
 					$lookup: {
-						from: 'users', // Nombre de la colección de usuarios
-						localField: 'userRef', // Campo en la colección de plomeros que hace referencia al ID del usuario
-						foreignField: '_id', // Campo en la colección de usuarios que se utiliza para la relación
-						as: 'user_info', // Nombre del nuevo campo que contendrá la información del usuario
+						from: 'users',
+						localField: 'userRef',
+						foreignField: '_id',
+						as: 'user_info',
 					},
 				},
 				{
@@ -129,13 +87,13 @@ class ServicesService {
 				{
 					$project: {
 						_id: 1,
-						qualification: 1, // Otros campos de la colección de plomeros que desees incluir
+						qualification: 1,
 						certified: 1,
 						description: 1,
 						category: 1,
 						serviceImg: 1,
 						serviceLocation: 1,
-						user: '$user_info', // Campo que contiene la información completa del usuario
+						user: '$user_info',
 					},
 				},
 			])
@@ -167,7 +125,6 @@ class ServicesService {
 			certified === undefined ||
 			!serviceLocation
 		) {
-			//Evaluamos que estén todos los campos requeridos
 			const customError = new Error('Campos obligatorios incompletos');
 			customError.status = HTTP_STATUS.BAD_REQUEST;
 			throw customError;
@@ -178,6 +135,13 @@ class ServicesService {
 			const customError = new Error('No se ha encontrado al usuario');
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
+		}
+		if (registeredUser.role === 'user') {
+			//En caso de que el usuario tenga role user se lo cambiamos a pro
+			await usersCollection.updateOne(
+				{ _id: objectId },
+				{ $set: { role: 'pro' } }
+			);
 		}
 		const registeredService = await servicesCollection.findOne({
 			userRef: objectId,
