@@ -4,8 +4,9 @@ const usersService = new UsersService();
 
 class UsersController {
 	static async getAll(req, res, next) {
+		const filters = req.query;
 		try {
-			const users = await usersService.getUsers();
+			const users = await usersService.getUsers(filters);
 			res.status(200).json({
 				status: 'success',
 				response: users,
