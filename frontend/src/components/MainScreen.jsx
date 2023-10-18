@@ -5,6 +5,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';*/
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import { ButtonBlue } from '../styledcomponents/Buttons';
+import { useState } from 'react';
 
 const MainScreen = styled.div`
 	height: calc(100vh - var(--navbar-height));
@@ -113,11 +114,13 @@ const StyledLink = styled(Link)`
 `;
 
 const Select = styled.select`
-	flex: 1;
 	padding: 0.5rem;
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	width: 100%;
+	appearance: auto;
+	max-height: 100px;
+	overflow-y: auto;
 `;
 
 const Buscar = styled.div`
@@ -134,18 +137,21 @@ const Buscar = styled.div`
 
 const Home = () => {
 	const professions = [
-		'Pintores',
-		'Plomeros',
-		'Electricistas',
-		'Albañiles',
-		'Carpinteros',
-		'Fleteros',
-		'Cerrajeros',
-		'Jardineros',
-		'Gasistas',
-		'Fumigadores',
-		'Técnicos en Aire Acondicionado',
-		'Técnicos en Electrodomesticos',
+		{ label: 'Albañiles', value: 'bricklayer' },
+		{ label: 'Carpinteros', value: 'carpenter' },
+		{ label: 'Cerrajeros', value: 'locksmith' },
+		{ label: 'Electricistas', value: 'electrician' },
+		{ label: 'Fleteros', value: 'freight' },
+		{ label: 'Fumigadores', value: 'fumigator' },
+		{ label: 'Gasistas', value: 'gas-fitter' },
+		{ label: 'Jardineros', value: 'gardener' },
+		{ label: 'Pintores', value: 'painter' },
+		{ label: 'Plomeros', value: 'plumber' },
+		{
+			label: 'Técnicos en Aire Acondicionado',
+			value: 'air-conditioner',
+		},
+		{ label: 'Técnicos en Electrodomesticos', value: 'appliance' },
 	];
 
 	const provincias = [
@@ -174,6 +180,34 @@ const Home = () => {
 		{ label: 'Tucumán', value: 'Tucumán' },
 	];
 
+	const [selectedProfession, setSelectedProfession] = useState('');
+	const [selectedProvince, setSelectedProvince] = useState('');
+
+	const handleProfessionChange = (event) => {
+		setSelectedProfession(event.target.value);
+	};
+
+	const handleProvinceChange = (event) => {
+		setSelectedProvince(event.target.value);
+	};
+
+	const generateUrl = () => {
+		let url = '/professionalsList';
+
+		if (selectedProfession) {
+			url += `/${selectedProfession}`;
+		}
+
+		if (selectedProvince) {
+			if (selectedProfession) {
+				url += '/';
+			}
+			url += selectedProvince;
+		}
+
+		return url;
+	};
+
 	return (
 		<MainScreen>
 			<ContainerLeft>
@@ -194,6 +228,8 @@ const Home = () => {
 				<Buscar>
 					<Select
 						id="profession"
+						value={selectedProfession}
+						onChange={handleProfessionChange}
 						defaultValue=""
 						placeholder="Selecciona una categoría"
 					>
@@ -201,8 +237,8 @@ const Home = () => {
 							Selecciona una categoría
 						</option>
 						{professions.map((profession) => (
-							<option key={profession} value={profession}>
-								{profession}
+							<option key={profession.value} value={profession.value}>
+								{profession.label}
 							</option>
 						))}
 					</Select>
@@ -210,6 +246,8 @@ const Home = () => {
 						id="province"
 						defaultValue=""
 						placeholder="Selecciona una provincia"
+						value={selectedProvince}
+						onChange={handleProvinceChange}
 					>
 						<option value="" disabled>
 							Selecciona una provincia
@@ -220,7 +258,9 @@ const Home = () => {
 							</option>
 						))}
 					</Select>
-					<ButtonBlue>Buscar</ButtonBlue>
+					<Link to={generateUrl()}>
+						<ButtonBlue>Buscar</ButtonBlue>
+					</Link>
 				</Buscar>
 				<StyledP>
 					Encuentra un
