@@ -1,10 +1,12 @@
 import ajvInstance from './ajv-instance.js';
 
-const userSchema = {
+export const userSchema = {
 	id: {
 		$id: 'userId',
 		description: 'ID del usuario',
 		type: 'string',
+		format: 'ObjectId',
+		errorMessage: 'ID inválido',
 	},
 
 	name: {
@@ -56,17 +58,61 @@ const userSchema = {
 			minLength: 'Por favor, ingrese una contraseña con al menos 8 caracteres',
 		},
 	},
+
+	phone: {
+		$id: 'userPhone',
+		type: 'string',
+		// pattern: '^((\\+\\d{1,3}(\\s)?)?\\d{6,14})$',
+		pattern: '^\\+\\d{1,3} \\d{8,10}$',
+		errorMessage:
+			'Por favor, ingrese un número de teléfono válido (código de país y número). Ejemplos: +54 1149453047, +1 6502530000',
+	},
+
+	profileImg: {
+		$id: 'userImage',
+		description: 'URL de imágen del usuario',
+		type: 'string',
+		format: 'uri',
+		pattern: '^https://[a-zA-Z0-9\\.\\-\\/=_]+$',
+		maxLength: 150,
+		errorMessage: 'Url de imágen inválida',
+	},
+
+	location: {
+		$id: 'userLocation',
+		type: 'string',
+		minLength: 4,
+		errorMessage: 'Por favor, ingrese su ubicación',
+	},
+
+	role: {
+		$id: 'userRole',
+		type: 'string',
+		enum: ['user', 'pro'],
+		errorMessage: 'Rol inválido. Por favor ingrese "user" o "pro"',
+	},
 };
 
-const bodySchema = {
+const createUserBodySchema = {
 	type: 'object',
-	required: ['name', 'surname', 'email', 'password'],
+	required: [
+		'name',
+		'surname',
+		'email',
+		'password',
+		'phone',
+		'location',
+		'role',
+	],
 	errorMessage: {
 		required: {
 			name: 'Por favor, ingrese su nombre',
 			surname: 'Por favor, ingrese su apellido',
 			email: 'Por favor, ingrese su email',
 			password: 'Por favor, ingrese su contraseña',
+			phone: 'Por favor, ingrese su teléfono',
+			location: 'Por favor, ingrese su ubicación',
+			role: 'Por favor, ingrese su rol',
 		},
 	},
 	properties: {
@@ -74,6 +120,23 @@ const bodySchema = {
 		surname: userSchema.surname,
 		email: userSchema.email,
 		password: userSchema.password,
+		phone: userSchema.phone,
+		location: userSchema.location,
+		role: userSchema.role,
+	},
+	additionalProperties: false,
+};
+
+const updateUserBodySchema = {
+	type: 'object',
+	properties: {
+		name: userSchema.name,
+		surname: userSchema.surname,
+		email: userSchema.email,
+		password: userSchema.password,
+		phone: userSchema.phone,
+		location: userSchema.location,
+		role: userSchema.role,
 	},
 	additionalProperties: false,
 };
@@ -92,5 +155,9 @@ const paramsSchema = {
 	additionalProperties: false,
 };
 
-export const bodyValidator = ajvInstance.compile(bodySchema);
+export const createUserBodyValidator =
+	ajvInstance.compile(createUserBodySchema);
+export const updateUserBodyValidator =
+	ajvInstance.compile(updateUserBodySchema);
+
 export const paramsValidator = ajvInstance.compile(paramsSchema);

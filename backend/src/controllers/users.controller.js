@@ -1,4 +1,6 @@
 import UsersService from '../service/users.service.js';
+import HTTP_STATUS from '../utils/http-constants.js';
+import { validatePhoneNumber } from '../utils/validate-phone.js';
 
 const usersService = new UsersService();
 
@@ -32,6 +34,8 @@ class UsersController {
 	static async addOne(req, res, next) {
 		const userPayload = req.body;
 		try {
+			validateUserPhone(userPayload);
+
 			const createUser = await usersService.createUser(userPayload);
 			res.status(201).json({
 				status: 'created',
@@ -46,6 +50,8 @@ class UsersController {
 		const { userId } = req.params;
 		const userPayload = req.body;
 		try {
+			if (userPayload.phone !== undefined) validateUserPhone(userPayload);
+
 			const updatedUser = await usersService.updateUser(userId, userPayload);
 			res.status(200).json({
 				status: 'success',
@@ -69,5 +75,16 @@ class UsersController {
 		}
 	}
 }
+
+const validateUserPhone = (user) => {
+	const { countryName, validPhone } = validatePhoneNumber(user.phone);
+	if (!validPhone) {
+		const customError = new Error(
+			`Número de teléfono de ${countryName} inválido`
+		);
+		customError.status = HTTP_STATUS.BAD_REQUEST;
+		throw customError;
+	}
+};
 
 export default UsersController;
