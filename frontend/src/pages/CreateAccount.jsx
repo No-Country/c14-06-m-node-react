@@ -154,15 +154,18 @@ const CreateAccount = () => {
 						name=""
 						id="phone"
 						{...register('phone', {
-							required: { value: true, message: 'Telefono es requerido' },
+							required: {
+								value: true,
+								message: 'Telefono es requerido',
+							},
 							pattern: {
-								value: /[0-9]/,
+								value: /^\d{10}$/,
 								message: 'Telefono invalido',
 							},
 						})}
 					/>
 					{errors.phone && (
-						<StyledSpanErrores>Telefono es requerido</StyledSpanErrores>
+						<StyledSpanErrores>{errors.phone.message}</StyledSpanErrores>
 					)}
 				</LabelDiv>
 
