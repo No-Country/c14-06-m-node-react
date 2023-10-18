@@ -72,9 +72,9 @@ export const userSchema = {
 		$id: 'userImage',
 		description: 'URL de imágen del usuario',
 		type: 'string',
-		format: 'uri',
-		pattern: '^https://[a-zA-Z0-9\\.\\-\\/=_]+$',
-		maxLength: 150,
+		// format: 'uri',
+		// pattern: '^https://[a-zA-Z0-9\\.\\-\\/=_]+$',
+		maxLength: 500,
 		errorMessage: 'Url de imágen inválida',
 	},
 
@@ -123,6 +123,7 @@ const createUserBodySchema = {
 		phone: userSchema.phone,
 		location: userSchema.location,
 		role: userSchema.role,
+		profileImg: userSchema.profileImg,
 	},
 	additionalProperties: false,
 };
@@ -137,6 +138,7 @@ const updateUserBodySchema = {
 		phone: userSchema.phone,
 		location: userSchema.location,
 		role: userSchema.role,
+		profileImg: userSchema.profileImg,
 	},
 	additionalProperties: false,
 };
