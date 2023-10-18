@@ -25,11 +25,11 @@ const Form = styled.form`
 	width: 80%;
 `;
 
-const Row = styled.div`
+/*const Row = styled.div`
 	display: flex;
 	width: 100%;
 	gap: 1rem;
-`;
+`;*/
 
 const Column = styled.div`
 	display: flex;
@@ -42,11 +42,13 @@ const Label = styled.label`
 `;
 
 const TextArea = styled.textarea`
-	width: 100%;
 	padding: 0.5rem;
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	height: 100px;
+	resize: none;
+	width: 100%;
+	height: 10rem;
 `;
 
 const Select = styled.select`
@@ -108,26 +110,25 @@ const OfrecerServicio = () => {
 				Quiero ofrecer un <BlueText>servicio.</BlueText>
 			</Title>
 			<Form>
-				<Row>
-					<Column>
-						<Label htmlFor="description">Descripción</Label>
-						<TextArea
-							id="description"
-							placeholder="Ej: 7 años de experiencia en..."
-						></TextArea>
-					</Column>
-					<Column>
-						<Label htmlFor="profession">Categoría</Label>
-						<Select id="profession">
-							<option value="">Selecciona una categoría</option>
-							{professions.map((profession) => (
-								<option key={profession} value={profession}>
-									{profession}
-								</option>
-							))}
-						</Select>
-					</Column>
-				</Row>
+				<Column>
+					<Label htmlFor="profession">Categoría</Label>
+					<Select id="profession">
+						<option value="">Selecciona una categoría</option>
+						{professions.map((profession) => (
+							<option key={profession} value={profession}>
+								{profession}
+							</option>
+						))}
+					</Select>
+				</Column>
+				<Column>
+					<Label htmlFor="description">Descripción</Label>
+					<TextArea
+						id="description"
+						placeholder="Ej: 7 años de experiencia en..."
+					></TextArea>
+				</Column>
+
 				<Column>
 					<Label htmlFor="province">Localidad</Label>
 					<Select id="province">
