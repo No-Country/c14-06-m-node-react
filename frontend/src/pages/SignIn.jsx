@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import meta from '../assets/images/meta.svg';
-import google from '../assets/images/google.svg';
+/*import meta from '../assets/images/meta.svg';
+import google from '../assets/images/google.svg';*/
 
 const DivContainer = styled.div`
 	display: flex;
@@ -36,17 +36,18 @@ const StyledForm = styled.form`
 	border: 1px solid black;
 	border-radius: 10px;
 	max-width: 540px;
+	min-width: 400px;
 	margin: 0 auto;
 	gap: 0.2rem;
 	text-align: start;
 `;
 
-const HorizontalDiv = styled.div`
+/*const HorizontalDiv = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	font-size: 0.9rem;
-`;
+`;*/
 const LabelDiv = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -54,9 +55,9 @@ const LabelDiv = styled.div`
 	padding: 0.8rem 0;
 `;
 
-const Checkbox = styled.input`
+/*const Checkbox = styled.input`
 	margin: 0 6px;
-`;
+`;*/
 
 const StyledInput = styled.input`
 	height: 2.5rem;
@@ -78,7 +79,7 @@ const ButtonForm = styled.button`
 	}
 `;
 
-const ButtonSM = styled.button`
+/*const ButtonSM = styled.button`
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -113,7 +114,7 @@ const DivSecundario = styled.div`
 	font-size: 0.8rem;
 	gap: 0.4rem;
 `;
-
+*/
 const SignIn = () => {
 	return (
 		<DivContainer>
@@ -129,6 +130,7 @@ const SignIn = () => {
 					<label htmlFor="">Contraseña</label>
 					<StyledInput type="password" name="" id="" />
 				</LabelDiv>
+				{/**
 				<HorizontalDiv>
 					<div>
 						<Checkbox type="checkbox"></Checkbox>
@@ -138,9 +140,11 @@ const SignIn = () => {
 						<Link to="/recuperar-pass">¿Olvidaste tu contraseña?</Link>
 					</div>
 				</HorizontalDiv>
+				 */}
 				<DivButton>
 					<ButtonForm type="">Iniciar Sesión</ButtonForm>
 				</DivButton>
+				{/**
 				<Divider />
 				<DivSecundario>
 					<span>
@@ -156,9 +160,10 @@ const SignIn = () => {
 						Iniciar sesión con Google
 					</ButtonSM>
 				</DivSecundario>
+				 */}
 			</StyledForm>
 			<span>
-				¿No tiene una cuenta? Clickea aquí para&nbsp;
+				¿No tienes una cuenta? Clickea aquí para&nbsp;
 				<Link to="/crear-cuenta">registrarte.</Link>
 			</span>
 		</DivContainer>
