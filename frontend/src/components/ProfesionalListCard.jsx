@@ -8,7 +8,12 @@ const Card = styled.div`
 	margin: 10px auto;
 	border-radius: 8px;
 	overflow: hidden;
+	justify-content: center;
+	align-items: center;
 	width: 80%;
+	@media (max-width: 768px) {
+		flex-direction: column;
+	}
 `;
 
 const ImageContainer = styled.div`
@@ -18,6 +23,7 @@ const ImageContainer = styled.div`
 const Image = styled.img`
 	width: 190px;
 	height: 210px;
+	padding: 1em;
 `;
 
 const Content = styled.div`

@@ -237,8 +237,8 @@ const CreateAccount = () => {
 				<DivButton>
 					<ButtonForm type="">Crear Cuenta</ButtonForm>
 				</DivButton>
-				<Divider />
 				{/* <DivSecundario>
+				<Divider />
 					<span>
 						Al hacer clic en Regístrate con Facebook o Regístrate con Google,
 						aceptas las Condiciones de uso y la Política de privacidad.
@@ -254,7 +254,7 @@ const CreateAccount = () => {
 				</DivSecundario> */}
 			</StyledForm>
 			<span>
-				¿Ya tiene una cuenta? Clickea aquí para&nbsp;
+				¿Ya tienes una cuenta? Clickea aquí para&nbsp;
 				<Link to="/iniciar-sesion">iniciar sesión.</Link>
 			</span>
 		</DivContainer>
@@ -375,11 +375,11 @@ const DivInfoContraseña = styled.div`
 const TextTerms = styled.span`
 	margin-top: 8px;
 `;
-const Divider = styled.div`
+/*const Divider = styled.div`
 	width: 100%;
 	border-top: 1px solid #000;
 	margin: 10px 0;
-`;
+`;*/
 // const DivSecundario = styled.div`
 // 	display: flex;
 // 	flex-direction: column;
