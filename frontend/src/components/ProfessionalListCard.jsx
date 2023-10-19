@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import verificado from '../assets/images/verificado.png';
+import { Link } from 'react-router-dom';
 
 const Card = styled.div`
 	display: flex;
@@ -70,6 +71,12 @@ const VerificadoImage = styled.img`
 	height: 1rem;
 `;
 
+const StyledLink = styled(Link)`
+	color: var(--primary);
+`;
+
+const IsLoggedIn = localStorage.token ? true : false;
+
 const ProfessionalListCard = ({ name, imgUrl, info, telephone, location }) => {
 	return (
 		<Card>
@@ -90,7 +97,13 @@ const ProfessionalListCard = ({ name, imgUrl, info, telephone, location }) => {
 				<Valoracion>Valoración: ★★★★☆</Valoracion>
 			</Content>
 			<ContentRight>
-				<span>✆ {telephone}</span>
+				{IsLoggedIn ? (
+					<span>✆ {telephone}</span>
+				) : (
+					<span>
+						<StyledLink to="../iniciar-sesion">✆ Ver teléfono</StyledLink>
+					</span>
+				)}
 			</ContentRight>
 		</Card>
 	);
