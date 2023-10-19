@@ -121,6 +121,8 @@ const Select = styled.select`
 	appearance: auto;
 	max-height: 100px;
 	overflow-y: auto;
+	height: 50px;
+	font-size: 1.1rem;
 `;
 
 const Buscar = styled.div`

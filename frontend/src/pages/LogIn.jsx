@@ -179,10 +179,11 @@ const StyledForm = styled.form`
 	padding: 1.8rem;
 	border: 1px solid black;
 	border-radius: 10px;
-	max-width: 540px;
 	margin: 0 auto;
 	gap: 0.2rem;
 	text-align: start;
+	width: 100%;
+	max-width: 520px;
 `;
 
 const HorizontalDiv = styled.div`

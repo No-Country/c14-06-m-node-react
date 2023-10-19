@@ -55,6 +55,7 @@ const Icon = styled.img`
 	background-image: url(${(props) => (props.icon ? props.icon : noIcon)});
 	background-repeat: no-repeat;
 	background-size: 100%;
+	border-radius: 10px;
 `;
 
 const CategoriesList = [
