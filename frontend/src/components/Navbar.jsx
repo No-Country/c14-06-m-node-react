@@ -58,11 +58,18 @@ const Navbar = () => {
 						<StyledLink to="/iniciar-sesion">Iniciar Sesion</StyledLink>
 					</Li>
 				)}
-				<HideOnMobile>
-					<Li>
-						<StyledLink to="/ofrecer-servicio">Ofrecer un servicio</StyledLink>
-					</Li>
-				</HideOnMobile>
+
+				{IsLoggedIn ? (
+					<HideOnMobile>
+						<Li>
+							<StyledLink to="/ofrecer-servicio">
+								Ofrecer un servicio
+							</StyledLink>
+						</Li>
+					</HideOnMobile>
+				) : (
+					<Invisible />
+				)}
 			</NavUl>
 		</NavbarPrincipal>
 	);
