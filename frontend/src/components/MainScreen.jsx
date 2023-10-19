@@ -209,7 +209,7 @@ const Home = () => {
 
 		return url;
 	};
-
+	const IsLoggedIn = localStorage.token ? true : false;
 	return (
 		<MainScreen>
 			<ContainerLeft>
@@ -217,7 +217,13 @@ const Home = () => {
 				<StyledUl>
 					<Active>Contratar</Active>
 					<li>
-						<StyledLink to="/ofrecer-servicio">Ofrecer un servicio</StyledLink>
+						{IsLoggedIn ? (
+							<StyledLink to="/ofrecer-servicio">
+								Ofrecer un servicio
+							</StyledLink>
+						) : (
+							<StyledLink to="/iniciar-sesion">Ofrecer un servicio</StyledLink>
+						)}
 					</li>
 				</StyledUl>
 				{/** <ContainerSearch>
