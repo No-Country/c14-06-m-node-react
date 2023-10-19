@@ -24,6 +24,7 @@ const Image = styled.img`
 	width: 190px;
 	height: 210px;
 	padding: 1em;
+	object-fit: cover;
 `;
 
 const Content = styled.div`
@@ -61,7 +62,7 @@ const ContentRight = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 20px;
-	text-align: right;
+	text-align: center;
 `;
 
 const VerificadoImage = styled.img`
@@ -69,7 +70,7 @@ const VerificadoImage = styled.img`
 	height: 1rem;
 `;
 
-const ProfesionalListCard = ({ name, imgUrl, info, telephone }) => {
+const ProfessionalListCard = ({ name, imgUrl, info, telephone, location }) => {
 	return (
 		<Card>
 			<ImageContainer>
@@ -81,18 +82,26 @@ const ProfesionalListCard = ({ name, imgUrl, info, telephone }) => {
 					Profesional Certificado <VerificadoImage src={verificado} alt="" />
 				</SubTitle>
 				<Info>{info}</Info>
+				<span>
+					<i className="fa-solid fa-location-dot"></i>
+					&nbsp;
+					{location}
+				</span>
 				<Valoracion>Valoración: ★★★★☆</Valoracion>
 			</Content>
-			<ContentRight>✆ {telephone}</ContentRight>
+			<ContentRight>
+				<span>✆ {telephone}</span>
+			</ContentRight>
 		</Card>
 	);
 };
 
-ProfesionalListCard.propTypes = {
+ProfessionalListCard.propTypes = {
 	name: PropTypes.string.isRequired,
 	imgUrl: PropTypes.string.isRequired,
 	info: PropTypes.string.isRequired,
 	telephone: PropTypes.string.isRequired,
+	location: PropTypes.string.isRequired,
 };
 
-export default ProfesionalListCard;
+export default ProfessionalListCard;

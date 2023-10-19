@@ -264,9 +264,9 @@ const Home = () => {
 				</Buscar>
 				<StyledP>
 					Encuentra un
-					<Link to="/professionalsList/plumbers"> Plomero</Link>,
-					<Link to="/professionalsList/gardeners"> Jardinero</Link>,
-					<Link to="/professionalsList/gasmans"> Gasista</Link>, &nbsp;
+					<Link to="/professionalsList/plumber"> Plomero</Link>,
+					<Link to="/professionalsList/gardener"> Jardinero</Link>,
+					<Link to="/professionalsList/gas-fitter"> Gasista</Link>, &nbsp;
 					<HashLink smooth to="/#categories">
 						y más servicios...
 					</HashLink>
