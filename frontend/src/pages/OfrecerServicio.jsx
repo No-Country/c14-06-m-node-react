@@ -7,18 +7,54 @@ const url = 'https://serviceclub.onrender.com/api/services/';
 
 const OfrecerServicio = () => {
 	const professions = [
-		'Pintores',
-		'Plomeros',
-		'Electricistas',
-		'Albañiles',
-		'Carpinteros',
-		'Fleteros',
-		'Cerrajeros',
-		'Jardineros',
-		'Gasistas',
-		'Fumigadores',
-		'Técnicos en Aire Acondicionado',
-		'Técnicos en Electrodomesticos',
+		{
+			label: 'Pintores',
+			value: 'painter',
+		},
+		{
+			label: 'Plomeros',
+			value: 'plumber',
+		},
+		{
+			label: 'Electricistas',
+			value: 'electrician',
+		},
+		{
+			label: 'Albañiles',
+			value: 'bricklayer',
+		},
+		{
+			label: 'Carpinteros',
+			value: 'carpenter',
+		},
+		{
+			label: 'Fleteros',
+			value: 'freight',
+		},
+		{
+			label: 'Cerrajeros',
+			value: 'locksmith',
+		},
+		{
+			label: 'Jardineros',
+			value: 'gardener',
+		},
+		{
+			label: 'Gasistas',
+			value: 'gas-fitter',
+		},
+		{
+			label: 'Fumigadores',
+			value: 'fumigator',
+		},
+		{
+			label: 'Técnicos en Aire Acondicionado',
+			value: 'air-conditioner',
+		},
+		{
+			label: 'Técnicos en Electrodomesticos',
+			value: 'appliance',
+		},
 	];
 
 	const { register, handleSubmit } = useForm();
@@ -60,8 +96,8 @@ const OfrecerServicio = () => {
 					<Select id="category" {...register('category')}>
 						<option value="">Selecciona una categoría</option>
 						{professions.map((category) => (
-							<option key={category} value={category}>
-								{category}
+							<option key={category.value} value={category.value}>
+								{category.label}
 							</option>
 						))}
 					</Select>
