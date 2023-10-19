@@ -10,7 +10,7 @@ const IsLoggedIn = localStorage.token ? true : false;
 
 const loggedOut = () => {
 	localStorage.clear();
-	location.replace = '/';
+	location.replace('/');
 };
 
 const Navbar = () => {

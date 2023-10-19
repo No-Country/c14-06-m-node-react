@@ -8,7 +8,8 @@ import { useState } from 'react';
 import ModalSignInSuccess from '../components/ModalSignInSuccess';
 
 //LISTA DE PROVINCIAS ARGENTINAS//
-const provincias = [
+// eslint-disable-next-line react-refresh/only-export-components
+export const provincias = [
 	{ label: 'Buenos Aires', value: 'Buenos Aires' },
 	{ label: 'Catamarca', value: 'Catamarca' },
 	{ label: 'Chaco', value: 'Chaco' },

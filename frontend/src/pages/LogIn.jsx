@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 // import meta from '../assets/images/meta.svg';
 // import google from '../assets/images/google.svg';
 
-const endpoint = 'https://serviceclub.onrender.com/api/session/login';
+const url = 'https://serviceclub.onrender.com/api/session';
 
 const LogIn = () => {
 	const {
@@ -23,7 +23,7 @@ const LogIn = () => {
 			},
 		};
 
-		fetch(endpoint, payload)
+		fetch(`${url}/login`, payload)
 			.then((response) => {
 				if (response.status != 201) {
 					alert('Algunos de los datos es incorrecto');
@@ -31,13 +31,34 @@ const LogIn = () => {
 				return response.json();
 			})
 			.then((data) => {
-				console.log(data);
+				// console.log(data);
 
 				if (data.token) {
 					//Token en localStorage
-					localStorage.setItem('token', JSON.stringify(data.token));
+					console.log(data.token);
+					localStorage.setItem('token', data.token);
+
+					//OBTENER ID DE USUARIO AL INICIAR SESION
+
+					const tokenCurrentUser = localStorage.getItem('token');
+					const payloadCurrentUser = {
+						method: 'GET',
+						headers: {
+							Authorization: tokenCurrentUser,
+						},
+					};
+
+					fetch(`${url}/current`, payloadCurrentUser)
+						.then((response) => response.json())
+						.then((data) => {
+							console.log(data._id);
+							localStorage.setItem('id', data._id);
+						});
+
 					//redireccion
-					location.replace('/');
+					setTimeout(() => {
+						location.replace('/');
+					}, 3000);
 				}
 			});
 	});
