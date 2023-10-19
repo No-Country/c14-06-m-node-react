@@ -6,6 +6,72 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { HashLink } from 'react-router-hash-link';
 
+const IsLoggedIn = localStorage.token ? true : false;
+
+const loggedOut = () => {
+	localStorage.clear();
+	location.replace('/');
+};
+
+const Navbar = () => {
+	return (
+		<NavbarPrincipal>
+			<Link to="/">
+				<Logo src={logo} alt="logo" />
+				<TextLogo>
+					<span>Servicios</span>
+					<BlueText>Club</BlueText>
+				</TextLogo>
+			</Link>
+			<NavUl>
+				<HideOnMobile>
+					<Li>
+						<StyledLink to="/">Home</StyledLink>
+					</Li>
+				</HideOnMobile>
+				<HideOnXsMobile>
+					<Li>
+						<HashLink smooth to="/#categories">
+							Categorias <ArrowIcon icon={faChevronDown} />
+						</HashLink>
+					</Li>
+				</HideOnXsMobile>
+			</NavUl>
+			<NavUl>
+				{IsLoggedIn ? (
+					<Invisible />
+				) : (
+					<HideOnMobile>
+						<Li>
+							<Link to="/crear-cuenta">
+								<ButtonBlue>Registrarse</ButtonBlue>
+							</Link>
+						</Li>
+					</HideOnMobile>
+				)}
+				{IsLoggedIn ? (
+					<Link onClick={loggedOut}>
+						<ButtonBlue>Cerrar Sesión</ButtonBlue>
+					</Link>
+				) : (
+					<Li>
+						<StyledLink to="/iniciar-sesion">Iniciar Sesion</StyledLink>
+					</Li>
+				)}
+				<HideOnMobile>
+					<Li>
+						<StyledLink to="/ofrecer-servicio">Ofrecer un servicio</StyledLink>
+					</Li>
+				</HideOnMobile>
+			</NavUl>
+		</NavbarPrincipal>
+	);
+};
+
+const Invisible = styled.div`
+	display: none;
+	visibility: hidden;
+`;
 const NavbarPrincipal = styled.nav`
 	display: flex;
 	justify-content: space-between;
@@ -90,50 +156,4 @@ const HideOnXsMobile = styled.div`
 		display: none;
 	}
 `;
-
-const Navbar = () => {
-	return (
-		<NavbarPrincipal>
-			<Link to="/">
-				<Logo src={logo} alt="logo" />
-				<TextLogo>
-					<span>Servicios</span>
-					<BlueText>Club</BlueText>
-				</TextLogo>
-			</Link>
-			<NavUl>
-				<HideOnMobile>
-					<Li>
-						<StyledLink to="/">Home</StyledLink>
-					</Li>
-				</HideOnMobile>
-				<HideOnXsMobile>
-					<Li>
-						<HashLink smooth to="/#categories">
-							Categorias <ArrowIcon icon={faChevronDown} />
-						</HashLink>
-					</Li>
-				</HideOnXsMobile>
-			</NavUl>
-			<NavUl>
-				<HideOnMobile>
-					<Li>
-						<Link to="/crear-cuenta">
-							<ButtonBlue>Registrarse</ButtonBlue>
-						</Link>
-					</Li>
-				</HideOnMobile>
-				<Li>
-					<StyledLink to="/iniciar-sesion">Iniciar Sesion</StyledLink>
-				</Li>
-				<HideOnMobile>
-					<Li>
-						<StyledLink to="/ofrecer-servicio">Ofrecer un servicio</StyledLink>
-					</Li>
-				</HideOnMobile>
-			</NavUl>
-		</NavbarPrincipal>
-	);
-};
-
 export default Navbar;

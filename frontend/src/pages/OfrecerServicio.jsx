@@ -1,6 +1,96 @@
 import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
 import { ButtonBlue } from '../styledcomponents/Buttons';
+import { provincias } from './CreateAccount';
 
+const url = 'https://serviceclub.onrender.com/api/services/';
+
+const OfrecerServicio = () => {
+	const professions = [
+		'Pintores',
+		'Plomeros',
+		'Electricistas',
+		'Albañiles',
+		'Carpinteros',
+		'Fleteros',
+		'Cerrajeros',
+		'Jardineros',
+		'Gasistas',
+		'Fumigadores',
+		'Técnicos en Aire Acondicionado',
+		'Técnicos en Electrodomesticos',
+	];
+
+	const { register, handleSubmit } = useForm();
+	const onSubmit = handleSubmit((data) => {
+		const userId = localStorage.getItem('id');
+		data.userId = userId;
+		data.certified = true;
+
+		const payload = {
+			method: 'POST',
+			body: JSON.stringify(data),
+			headers: {
+				'Content-type': 'application/json',
+			},
+		};
+
+		fetch(url, payload)
+			.then((response) => {
+				return response.json();
+			})
+			.then((data) => {
+				console.log(data);
+				if (data.status === 'created') {
+					alert('Servicio Creado con éxito');
+				} else {
+					alert(data.response);
+				}
+			});
+	});
+
+	return (
+		<Container>
+			<Title>
+				Quiero ofrecer un <BlueText>servicio.</BlueText>
+			</Title>
+			<Form onSubmit={onSubmit}>
+				<Column>
+					<Label htmlFor="category">Categoría</Label>
+					<Select id="category" {...register('category')}>
+						<option value="">Selecciona una categoría</option>
+						{professions.map((category) => (
+							<option key={category} value={category}>
+								{category}
+							</option>
+						))}
+					</Select>
+				</Column>
+				<Column>
+					<Label htmlFor="description">Descripción</Label>
+					<TextArea
+						id="description"
+						placeholder="Ej: 7 años de experiencia en..."
+						{...register('description')}
+					></TextArea>
+				</Column>
+
+				<Column>
+					<Label htmlFor="serviceLocation">Localidad</Label>
+					<Select id="serviceLocation" {...register('serviceLocation')}>
+						<option value="">Selecciona una provincia</option>
+						{provincias.map((provincia) => (
+							<option key={provincia.value} value={provincia.value}>
+								{provincia.label}
+							</option>
+						))}
+					</Select>
+				</Column>
+				<ButtonBlue>Publicar</ButtonBlue>
+			</Form>
+		</Container>
+	);
+};
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -61,89 +151,5 @@ const Select = styled.select`
 const BlueText = styled.span`
 	color: var(--primary);
 `;
-
-const OfrecerServicio = () => {
-	const professions = [
-		'Pintores',
-		'Plomeros',
-		'Electricistas',
-		'Albañiles',
-		'Carpinteros',
-		'Fleteros',
-		'Cerrajeros',
-		'Jardineros',
-		'Gasistas',
-		'Fumigadores',
-		'Técnicos en Aire Acondicionado',
-		'Técnicos en Electrodomesticos',
-	];
-
-	const provincias = [
-		{ label: 'Buenos Aires', value: 'Buenos Aires' },
-		{ label: 'Catamarca', value: 'Catamarca' },
-		{ label: 'Chaco', value: 'Chaco' },
-		{ label: 'Chubut', value: 'Chubut' },
-		{ label: 'Córdoba', value: 'Córdoba' },
-		{ label: 'Corrientes', value: 'Corrientes' },
-		{ label: 'Entre Ríos', value: 'Entre Ríos' },
-		{ label: 'Formosa', value: 'Formosa' },
-		{ label: 'Jujuy', value: 'Jujuy' },
-		{ label: 'La Pampa', value: 'La Pampa' },
-		{ label: 'La Rioja', value: 'La Rioja' },
-		{ label: 'Mendoza', value: 'Mendoza' },
-		{ label: 'Misiones', value: 'Misiones' },
-		{ label: 'Neuquén', value: 'Neuquén' },
-		{ label: 'Río Negro', value: 'Río Negro' },
-		{ label: 'Salta', value: 'Salta' },
-		{ label: 'San Juan', value: 'San Juan' },
-		{ label: 'San Luis', value: 'San Luis' },
-		{ label: 'Santa Cruz', value: 'Santa Cruz' },
-		{ label: 'Santa Fe', value: 'Santa Fe' },
-		{ label: 'Santiago del Estero', value: 'Santiago del Estero' },
-		{ label: 'Tierra del Fuego', value: 'Tierra del Fuego' },
-		{ label: 'Tucumán', value: 'Tucumán' },
-	];
-
-	return (
-		<Container>
-			<Title>
-				Quiero ofrecer un <BlueText>servicio.</BlueText>
-			</Title>
-			<Form>
-				<Column>
-					<Label htmlFor="profession">Categoría</Label>
-					<Select id="profession">
-						<option value="">Selecciona una categoría</option>
-						{professions.map((profession) => (
-							<option key={profession} value={profession}>
-								{profession}
-							</option>
-						))}
-					</Select>
-				</Column>
-				<Column>
-					<Label htmlFor="description">Descripción</Label>
-					<TextArea
-						id="description"
-						placeholder="Ej: 7 años de experiencia en..."
-					></TextArea>
-				</Column>
-
-				<Column>
-					<Label htmlFor="province">Localidad</Label>
-					<Select id="province">
-						<option value="">Selecciona una provincia</option>
-						{provincias.map((provincia) => (
-							<option key={provincia.value} value={provincia.value}>
-								{provincia.label}
-							</option>
-						))}
-					</Select>
-				</Column>
-				<ButtonBlue>Publicar</ButtonBlue>
-			</Form>
-		</Container>
-	);
-};
 
 export default OfrecerServicio;

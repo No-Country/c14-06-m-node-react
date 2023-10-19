@@ -8,7 +8,7 @@ import CreateAccount from './pages/CreateAccount';
 import OfrecerServicio from './pages/OfrecerServicio';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import SignIn from './pages/SignIn';
+import LogIn from './pages/LogIn';
 import styled from 'styled-components';
 
 const ScrollToTop = ({ children }) => {
@@ -42,7 +42,7 @@ const App = () => {
 						<Route path="/" element={<Home />} />
 						<Route path="/como-funciona" element={<ComoFunciona />} />
 						<Route path="/crear-cuenta" element={<CreateAccount />} />
-						<Route path="/iniciar-sesion" element={<SignIn />} />
+						<Route path="/iniciar-sesion" element={<LogIn />} />
 					</Routes>
 					<Footer />
 				</Container>

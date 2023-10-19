@@ -8,7 +8,8 @@ import { useState } from 'react';
 import ModalSignInSuccess from '../components/ModalSignInSuccess';
 
 //LISTA DE PROVINCIAS ARGENTINAS//
-const provincias = [
+// eslint-disable-next-line react-refresh/only-export-components
+export const provincias = [
 	{ label: 'Buenos Aires', value: 'Buenos Aires' },
 	{ label: 'Catamarca', value: 'Catamarca' },
 	{ label: 'Chaco', value: 'Chaco' },
@@ -154,15 +155,18 @@ const CreateAccount = () => {
 						name=""
 						id="phone"
 						{...register('phone', {
-							required: { value: true, message: 'Telefono es requerido' },
+							required: {
+								value: true,
+								message: 'Telefono es requerido',
+							},
 							pattern: {
-								value: /[0-9]/,
+								value: /^\d{10}$/,
 								message: 'Telefono invalido',
 							},
 						})}
 					/>
 					{errors.phone && (
-						<StyledSpanErrores>Telefono es requerido</StyledSpanErrores>
+						<StyledSpanErrores>{errors.phone.message}</StyledSpanErrores>
 					)}
 				</LabelDiv>
 
