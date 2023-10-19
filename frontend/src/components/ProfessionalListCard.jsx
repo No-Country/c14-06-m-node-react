@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import verificado from '../assets/images/verificado.png';
 import { Link } from 'react-router-dom';
+import noPhoto from '../assets/images/noPhoto.png';
 
 const Card = styled.div`
 	display: flex;
@@ -75,13 +77,23 @@ const StyledLink = styled(Link)`
 	color: var(--primary);
 `;
 
-const IsLoggedIn = localStorage.token ? true : false;
-
 const ProfessionalListCard = ({ name, imgUrl, info, telephone, location }) => {
+	const IsLoggedIn = localStorage.token ? true : false;
+
+	const [imageValid, setImageValid] = useState(true);
+
+	const handleImageError = () => {
+		setImageValid(false);
+	};
+
 	return (
 		<Card>
 			<ImageContainer>
-				<Image src={imgUrl} alt="Imagen" />
+				{imageValid ? (
+					<Image src={imgUrl} alt="Imagen" onError={handleImageError} />
+				) : (
+					<Image src={noPhoto} alt="Imagen" />
+				)}
 			</ImageContainer>
 			<Content>
 				<Title>{name}</Title>
