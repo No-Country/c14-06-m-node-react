@@ -31,6 +31,17 @@ class ServicesService {
 				$unwind: '$user_info',
 			},
 			{
+				$lookup: {
+					from: 'categories',
+					localField: 'categoryRef',
+					foreignField: '_id',
+					as: 'category_info',
+				},
+			},
+			{
+				$unwind: '$category_info',
+			},
+			{
 				$project: {
 					_id: 1,
 					qualification: 1,
@@ -41,6 +52,7 @@ class ServicesService {
 					serviceLocation: 1,
 					active: 1,
 					user: '$user_info',
+					_category: '$category_info',
 				},
 			},
 		];
@@ -85,6 +97,17 @@ class ServicesService {
 					$unwind: '$user_info',
 				},
 				{
+					$lookup: {
+						from: 'categories',
+						localField: 'categoryRef',
+						foreignField: '_id',
+						as: 'category_info',
+					},
+				},
+				{
+					$unwind: '$category_info',
+				},
+				{
 					$project: {
 						_id: 1,
 						qualification: 1,
@@ -94,6 +117,7 @@ class ServicesService {
 						serviceImg: 1,
 						serviceLocation: 1,
 						user: '$user_info',
+						_category: '$category_info',
 					},
 				},
 			])
