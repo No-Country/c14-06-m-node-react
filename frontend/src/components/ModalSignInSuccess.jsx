@@ -12,9 +12,6 @@ const ModalSignInSuccess = ({ state }) => {
 						<ModalHeader>
 							<h2>Te registraste exitosamente</h2>
 						</ModalHeader>
-						{/* <CloseModalButton>
-        <FontAwesomeIcon icon={faXmark} size="lg" />
-        </CloseModalButton> */}
 
 						<LoaderContainer>
 							<Loader />
