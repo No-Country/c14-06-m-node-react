@@ -1,11 +1,21 @@
 import { Router } from 'express';
+import multer from 'multer';
 import validateDto from '../middlewares/validate-dto.middleware.js';
+import multerErrorMiddleware from '../middlewares/multer-error.middleware.js';
 import UsersController from '../controllers/users.controller.js';
 import {
 	paramsValidator,
 	createUserBodyValidator,
 	updateUserBodyValidator,
 } from '../schema/user.schema.js';
+
+const upload = multer({
+	dest: './uploads',
+	limits: {
+		fileSize: 5242880, // cada archivo puede pesar máximo 5mb
+		files: 1,
+	},
+});
 
 const router = Router();
 
@@ -30,12 +40,13 @@ router.put(
 	UsersController.updateOne
 );
 
-// para subir imagen
-// router.patch(
-// 	'/:userId/image',
-// 	validateDto(paramsValidator, 'params'),
-// 	UsersController
-// );
+router.patch(
+	'/:userId/image',
+	validateDto(paramsValidator, 'params'),
+	upload.single('image'),
+	multerErrorMiddleware,
+	UsersController.updateImage
+);
 
 router.delete(
 	'/:userId',
