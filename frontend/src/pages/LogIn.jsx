@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-// import meta from '../assets/images/meta.svg';
-// import google from '../assets/images/google.svg';
+import { useState } from 'react';
+import Modal from '../components/Modal';
 
 const url = 'https://serviceclub.onrender.com/api/session';
 
 const LogIn = () => {
+	const [modalState, changeModalState] = useState(false);
+	const [titulo, changeTitulo] = useState('Cargando ...');
+	const [parrafo, changeParrafo] = useState('Por favor espera.');
+
 	const {
 		register,
 		handleSubmit,
@@ -14,7 +18,9 @@ const LogIn = () => {
 	} = useForm();
 
 	const onSubmit = handleSubmit((data) => {
-		console.log(data);
+		//Aparece Modal de carga
+		changeModalState(true);
+
 		const payload = {
 			method: 'POST',
 			body: JSON.stringify(data),
@@ -25,17 +31,24 @@ const LogIn = () => {
 
 		fetch(`${url}/login`, payload)
 			.then((response) => {
-				if (response.status != 201) {
-					alert('Algunos de los datos es incorrecto');
+				if (response.status === 201) {
+					changeTitulo('Ingresaste de forma exitosa');
+					changeParrafo('Bienvenido!');
+				} else {
+					changeTitulo('ERROR: Uno de los datos ingresados es incorrecto');
+					changeParrafo('Intenta otra vez');
+					setTimeout(() => {
+						changeModalState(false);
+						changeTitulo('Cargando ...');
+						changeParrafo('Por favor espera.');
+					}, 2000);
 				}
+
 				return response.json();
 			})
 			.then((data) => {
-				// console.log(data);
-
 				if (data.token) {
 					//Token en localStorage
-					console.log(data.token);
 					localStorage.setItem('token', data.token);
 
 					//OBTENER ID DE USUARIO AL INICIAR SESION
@@ -51,7 +64,6 @@ const LogIn = () => {
 					fetch(`${url}/current`, payloadCurrentUser)
 						.then((response) => response.json())
 						.then((data) => {
-							console.log(data._id);
 							localStorage.setItem('id', data._id);
 						});
 
@@ -65,6 +77,12 @@ const LogIn = () => {
 
 	return (
 		<DivContainer>
+			<Modal
+				state={modalState}
+				changeState={changeModalState}
+				titulo={titulo}
+				parrafo={parrafo}
+			></Modal>
 			<StyledTitle>
 				Bienvenido a Servicios<StyledSpan>Club</StyledSpan>
 			</StyledTitle>

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { ButtonBlue } from '../styledcomponents/Buttons';
-import { provincias } from './CreateAccount';
+import { provincias } from '../assets/usefulData';
 
 const url = 'https://serviceclub.onrender.com/api/services/';
 

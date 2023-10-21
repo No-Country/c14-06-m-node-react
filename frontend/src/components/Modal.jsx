@@ -1,30 +1,25 @@
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import {faXmark} from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 
 // eslint-disable-next-line react/prop-types
-const ModalSignInSuccess = ({ state }) => {
+const Modal = ({ state, titulo, parrafo }) => {
 	return (
 		<>
 			{state && (
 				<Overlay>
 					<ModalContainer>
 						<ModalHeader>
-							<h2>Te registraste exitosamente</h2>
+							<h2>{titulo}</h2>
 						</ModalHeader>
-
 						<LoaderContainer>
 							<Loader />
 						</LoaderContainer>
-
-						<p>Redirigiendo a la web de ServiciosClub</p>
+						<p>{parrafo}</p>
 					</ModalContainer>
 				</Overlay>
 			)}
 		</>
 	);
 };
-export default ModalSignInSuccess;
 
 const Overlay = styled.div`
 	width: 100vw;
@@ -38,7 +33,6 @@ const Overlay = styled.div`
 	justify-content: center;
 	padding: 40px;
 `;
-
 const ModalContainer = styled.div`
 	width: 500px;
 	height: 400px;
@@ -61,27 +55,11 @@ const ModalHeader = styled.div`
 	}
 `;
 
-// const CloseModalButton = styled.button`
-//     position: absolute;
-//     top: 20px;
-//     right: 20px;
-//     width: 30px;
-//     height: 30px;
-//     border: none;
-//     background: none;
-//     cursor: pointer;
-//     border-radius: 5px;
-//     &:hover{
-//         background: #f2f2f2;
-//     }
-
-// `;
 const LoaderContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	padding: 50px;
 `;
-
 const Loader = styled.div`
 	border: 10px solid #f3f3f3; /* Light grey */
 	border-top: 10px solid #3498db; /* Blue */
@@ -99,3 +77,4 @@ const Loader = styled.div`
 		}
 	}
 `;
+export default Modal;
