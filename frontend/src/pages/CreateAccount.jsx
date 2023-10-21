@@ -1,45 +1,16 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-// import meta from '../assets/images/meta.svg';
-// import google from '../assets/images/google.svg';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import ModalSignInSuccess from '../components/ModalSignInSuccess';
-
-//LISTA DE PROVINCIAS ARGENTINAS//
-// eslint-disable-next-line react-refresh/only-export-components
-
-export const provincias = [
-	{ label: 'Buenos Aires', value: 'Buenos Aires' },
-	{ label: 'Catamarca', value: 'Catamarca' },
-	{ label: 'Chaco', value: 'Chaco' },
-	{ label: 'Chubut', value: 'Chubut' },
-	{ label: 'Córdoba', value: 'Córdoba' },
-	{ label: 'Corrientes', value: 'Corrientes' },
-	{ label: 'Entre Ríos', value: 'Entre Ríos' },
-	{ label: 'Formosa', value: 'Formosa' },
-	{ label: 'Jujuy', value: 'Jujuy' },
-	{ label: 'La Pampa', value: 'La Pampa' },
-	{ label: 'La Rioja', value: 'La Rioja' },
-	{ label: 'Mendoza', value: 'Mendoza' },
-	{ label: 'Misiones', value: 'Misiones' },
-	{ label: 'Neuquén', value: 'Neuquén' },
-	{ label: 'Río Negro', value: 'Río Negro' },
-	{ label: 'Salta', value: 'Salta' },
-	{ label: 'San Juan', value: 'San Juan' },
-	{ label: 'San Luis', value: 'San Luis' },
-	{ label: 'Santa Cruz', value: 'Santa Cruz' },
-	{ label: 'Santa Fe', value: 'Santa Fe' },
-	{ label: 'Santiago del Estero', value: 'Santiago del Estero' },
-	{ label: 'Tierra del Fuego', value: 'Tierra del Fuego' },
-	{ label: 'Tucumán', value: 'Tucumán' },
-];
+import Modal from '../components/Modal';
+import { provincias } from '../assets/usefulData';
 
 const endpoint = 'https://serviceclub.onrender.com/api/session/register';
 
 const CreateAccount = () => {
 	const [modalState, changeModalState] = useState(false);
-
+	const [titulo, changeTitulo] = useState('Cargando ...');
+	const [parrafo, changeParrafo] = useState('Por favor espera.');
 	const {
 		register,
 		handleSubmit,
@@ -48,6 +19,7 @@ const CreateAccount = () => {
 	} = useForm();
 
 	const onSubmit = handleSubmit((data) => {
+		changeModalState(true);
 		data.role = 'user';
 		data.profileImg = '';
 		const payload = {
@@ -62,20 +34,35 @@ const CreateAccount = () => {
 			.then((response) => {
 				if (response.status === 201) {
 					//APARECE MODEAL DE REGISTRO EXITOSO
-					changeModalState(true);
+					changeTitulo('Te registraste exitosamente!');
+					changeParrafo('Redirigiendo a la web de ServiciosClub');
 					setTimeout(() => {
 						location.replace('/iniciar-sesion');
 					}, 3000);
+
+					return response.json();
 				} else if (response.status === 400) {
-					alert('Correo usado');
+					//Cambia titulo y parrafo de Modal
+					changeTitulo('Correo usado');
+					changeParrafo('Intenta con otro correo');
+					setTimeout(() => {
+						//Modal vuelve a su estado original
+						changeModalState(false);
+						changeTitulo('Cargando ...');
+						changeParrafo('Por favor espera.');
+					}, 3000);
 				}
 			})
-			.then((data) => console.log(data));
+			.then((data) => data);
 	});
 	return (
 		<DivContainer>
-			<ModalSignInSuccess state={modalState} changeState={changeModalState} />
-
+			<Modal
+				state={modalState}
+				changeState={changeModalState}
+				titulo={titulo}
+				parrafo={parrafo}
+			></Modal>
 			<StyledTitle>
 				Crea tu<StyledSpan>Cuenta</StyledSpan>
 			</StyledTitle>
