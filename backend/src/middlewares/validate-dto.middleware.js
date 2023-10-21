@@ -27,7 +27,9 @@ function validateDto(ajvValidate, obj) {
 				},
 				[]
 			);
-			return next(errorMessages);
+			const customError = new Error(errorMessages[0]);
+			customError.status = 400;
+			return next(customError);
 		}
 		next();
 	};

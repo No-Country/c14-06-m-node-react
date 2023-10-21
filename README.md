@@ -40,7 +40,7 @@ pnpm start
 Run the fullstack application in development mode (with live reload enabled in the backend):
 
 ```bash
-pnpm run start:dev
+pnpm run dev
 ```
 
 Point your browser at http://localhost:3000 to see the frontend, or http://localhost:3001 to access the backend API.
