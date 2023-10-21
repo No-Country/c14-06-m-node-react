@@ -133,7 +133,7 @@ const ProfessionalsList = () => {
 			) : (
 				professionalList.response.map(
 					(professional) =>
-						professional.category === categoryTitle && (
+						professional.category.code === categoryTitle && (
 							<ProfessionalListCard
 								key={professional._id}
 								imgUrl={professional.user.profileImg}

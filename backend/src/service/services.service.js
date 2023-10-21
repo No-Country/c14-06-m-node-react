@@ -7,9 +7,11 @@ const getServicesCollection = async () => {
 	const db = connectedClient.db('ServiciosClub');
 	const servicesCollection = db.collection('services');
 	const usersCollection = db.collection('users');
+	const categoriesCollection = db.collection('categories');
 	return {
 		servicesCollection,
 		usersCollection,
+		categoriesCollection,
 		connectedClient,
 	};
 };
@@ -31,21 +33,41 @@ class ServicesService {
 				$unwind: '$user_info',
 			},
 			{
+				$lookup: {
+					from: 'categories',
+					localField: 'categoryRef',
+					foreignField: '_id',
+					as: 'category_info',
+				},
+			},
+			{
+				$unwind: '$category_info',
+			},
+			{
 				$project: {
 					_id: 1,
 					qualification: 1,
 					certified: 1,
 					description: 1,
-					category: 1,
-					serviceImg: 1,
 					serviceLocation: 1,
 					active: 1,
 					user: '$user_info',
+					category: '$category_info',
 				},
 			},
 		];
 		// Si hay algún filtro de búsqueda, se agrega al aggregation en el campo $match
 		if (Object.keys(filters).length !== 0) {
+			if ('active' in filters) {
+				filters.active === 'true'
+					? (filters.active = true)
+					: (filters.active = false);
+			}
+			if ('certified' in filters) {
+				filters.certified === 'true'
+					? (filters.certified = true)
+					: (filters.certified = false);
+			}
 			aggregation.unshift({
 				$match: filters,
 			});
@@ -66,38 +88,48 @@ class ServicesService {
 		const { servicesCollection, connectedClient } =
 			await getServicesCollection();
 		const objectId = new ObjectId(serviceId);
-		const service = await servicesCollection
-			.aggregate([
-				{
-					$match: {
-						_id: objectId,
-					},
+		const aggregation = [
+			{
+				$match: {
+					_id: objectId,
 				},
-				{
-					$lookup: {
-						from: 'users',
-						localField: 'userRef',
-						foreignField: '_id',
-						as: 'user_info',
-					},
+			},
+			{
+				$lookup: {
+					from: 'users',
+					localField: 'userRef',
+					foreignField: '_id',
+					as: 'user_info',
 				},
-				{
-					$unwind: '$user_info',
+			},
+			{
+				$unwind: '$user_info',
+			},
+			{
+				$lookup: {
+					from: 'categories',
+					localField: 'categoryRef',
+					foreignField: '_id',
+					as: 'category_info',
 				},
-				{
-					$project: {
-						_id: 1,
-						qualification: 1,
-						certified: 1,
-						description: 1,
-						category: 1,
-						serviceImg: 1,
-						serviceLocation: 1,
-						user: '$user_info',
-					},
+			},
+			{
+				$unwind: '$category_info',
+			},
+			{
+				$project: {
+					_id: 1,
+					active: 1,
+					qualification: 1,
+					certified: 1,
+					description: 1,
+					serviceLocation: 1,
+					user: '$user_info',
+					category: '$category_info',
 				},
-			])
-			.toArray();
+			},
+		];
+		const service = await servicesCollection.aggregate(aggregation).toArray();
 		if (!service || service.length === 0) {
 			const customError = new Error('Servicio no encontrado');
 			customError.status = HTTP_STATUS.NOT_FOUND;
@@ -108,16 +140,14 @@ class ServicesService {
 	}
 
 	async createService(servicePayload) {
-		const { servicesCollection, usersCollection, connectedClient } =
-			await getServicesCollection();
 		const {
-			category,
-			description,
-			userId,
-			certified,
-			serviceLocation,
-			serviceImg,
-		} = servicePayload;
+			servicesCollection,
+			usersCollection,
+			categoriesCollection,
+			connectedClient,
+		} = await getServicesCollection();
+		const { category, description, userId, certified, serviceLocation } =
+			servicePayload;
 		if (
 			!category ||
 			!description ||
@@ -129,8 +159,17 @@ class ServicesService {
 			customError.status = HTTP_STATUS.BAD_REQUEST;
 			throw customError;
 		}
-		const objectId = new ObjectId(userId);
-		const registeredUser = await usersCollection.findOne({ _id: objectId }); //Evaluamos que el usuario que se hace profesional ya exista en la base
+		const registeredCategory = await categoriesCollection.findOne({
+			code: category,
+		});
+		if (!registeredCategory) {
+			const customError = new Error('No se reconoce la categoría seleccionada');
+			customError.status = HTTP_STATUS.BAD_REQUEST;
+			throw customError;
+		}
+		const categoryObjectId = new ObjectId(registeredCategory._id);
+		const userObjectId = new ObjectId(userId);
+		const registeredUser = await usersCollection.findOne({ _id: userObjectId }); //Evaluamos que el usuario que se hace profesional ya exista en la base
 		if (!registeredUser) {
 			const customError = new Error('No se ha encontrado al usuario');
 			customError.status = HTTP_STATUS.NOT_FOUND;
@@ -139,13 +178,13 @@ class ServicesService {
 		if (registeredUser.role === 'user') {
 			//En caso de que el usuario tenga role user se lo cambiamos a pro
 			await usersCollection.updateOne(
-				{ _id: objectId },
+				{ _id: userObjectId },
 				{ $set: { role: 'pro' } }
 			);
 		}
 		const registeredService = await servicesCollection.findOne({
-			userRef: objectId,
-			category,
+			userRef: userObjectId,
+			categoryRef: categoryObjectId,
 		}); //Evaluamos que el usuario no se haya registrado ya para este servicio
 		if (registeredService) {
 			const customError = new Error(
@@ -156,17 +195,13 @@ class ServicesService {
 		}
 		const newService = {
 			//Creamos el nuevo objeto para el servicio
-			category,
+			userRef: userObjectId,
+			categoryRef: categoryObjectId,
 			description,
-			userRef: objectId,
 			certified,
 			serviceLocation,
-			serviceImg,
 			active: true,
-			qualification: {
-				rankings: 0,
-				average: 0,
-			},
+			qualification: [],
 		};
 		const createdService = await servicesCollection.insertOne(newService);
 		await connectedClient.close();
@@ -176,14 +211,8 @@ class ServicesService {
 	async updateService(serviceId, servicePayload) {
 		const { servicesCollection, connectedClient } =
 			await getServicesCollection();
-		const {
-			description,
-			certified,
-			serviceLocation,
-			qualification,
-			serviceImg,
-			active,
-		} = servicePayload;
+		const { description, certified, serviceLocation, qualification, active } =
+			servicePayload;
 		if (!serviceId || Object.keys(servicePayload).length === 0) {
 			//Evaluamos que haya un id y que se mande algún dato
 			const customError = new Error('Datos incompletos.');
@@ -203,17 +232,14 @@ class ServicesService {
 		if (description) {
 			service.description = description;
 		}
-		if (active) {
+		if ('active' in servicePayload) {
 			service.active = active;
 		}
-		if (certified) {
+		if ('certified' in servicePayload) {
 			service.certified = certified;
 		}
 		if (serviceLocation) {
 			service.serviceLocation = serviceLocation;
-		}
-		if (serviceImg) {
-			service.serviceImg = serviceImg;
 		}
 		if (qualification !== undefined) {
 			//Calculamos el promedio entre las calificaciones previas y la actual
