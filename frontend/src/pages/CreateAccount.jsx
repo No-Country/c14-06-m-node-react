@@ -3,12 +3,12 @@ import styled from 'styled-components';
 // import meta from '../assets/images/meta.svg';
 // import google from '../assets/images/google.svg';
 import { useForm } from 'react-hook-form';
-import Select from 'react-select';
 import { useState } from 'react';
 import ModalSignInSuccess from '../components/ModalSignInSuccess';
 
 //LISTA DE PROVINCIAS ARGENTINAS//
 // eslint-disable-next-line react-refresh/only-export-components
+
 export const provincias = [
 	{ label: 'Buenos Aires', value: 'Buenos Aires' },
 	{ label: 'Catamarca', value: 'Catamarca' },
@@ -85,8 +85,9 @@ const CreateAccount = () => {
 					<label htmlFor="name">Nombre</label>
 					<StyledInput
 						type="text"
-						name=""
+						name="name"
 						id="name"
+						placeholder="John"
 						{...register('name', {
 							required: { value: true, message: 'Nombre es requerido' },
 							minLength: {
@@ -94,8 +95,12 @@ const CreateAccount = () => {
 								message: 'Nombre debe tener al menos 2 caracteres',
 							},
 							maxLength: {
-								value: 20,
-								message: 'Nombre no puede tener mas de 20 caracteres',
+								value: 30,
+								message: 'Nombre no puede tener mas de 30 caracteres',
+							},
+							pattern: {
+								value: /^[a-zA-Z]+$/,
+								message: 'Nombre solo acepta letras',
 							},
 						})}
 					/>
@@ -109,8 +114,9 @@ const CreateAccount = () => {
 					<label htmlFor="surname">Apellido</label>
 					<StyledInput
 						type="text"
-						name=""
+						name="surname"
 						id="surname"
+						placeholder="Wayne"
 						{...register('surname', {
 							required: { value: true, message: 'Apellido es requerido' },
 							minLength: {
@@ -119,7 +125,11 @@ const CreateAccount = () => {
 							},
 							maxLength: {
 								value: 20,
-								message: 'Apellido no puede tener mas de 20 caracteres',
+								message: 'Apellido no puede tener mas de 30 caracteres',
+							},
+							pattern: {
+								value: /^[a-zA-Z]+$/,
+								message: 'Apellido solo acepta letras',
 							},
 						})}
 					/>
@@ -134,8 +144,9 @@ const CreateAccount = () => {
 					<label htmlFor="email">Email</label>
 					<StyledInput
 						type="email"
-						name=""
+						name="email"
 						id="email"
+						placeholder="gotham@city.go"
 						{...register('email', {
 							required: { value: true, message: 'Correo es requerido' },
 							pattern: {
@@ -150,33 +161,52 @@ const CreateAccount = () => {
 				</LabelDiv>
 				<LabelDiv>
 					<label htmlFor="phone">Telefono</label>
-					<StyledInput
-						type="tel"
-						name=""
-						id="phone"
-						{...register('phone', {
-							required: {
-								value: true,
-								message: 'Telefono es requerido',
-							},
-							pattern: {
-								value: /^\d{10}$/,
-								message: 'Telefono invalido',
-							},
-						})}
-					/>
+					<ContainerPhone>
+						<AreaCode>+54</AreaCode>
+						<StyledInputPhone
+							type="tel"
+							name="phone"
+							placeholder="1234567890"
+							id="phone"
+							{...register('phone', {
+								required: {
+									value: true,
+									message: 'Telefono es requerido',
+								},
+								pattern: {
+									value: /^\d{10}$/,
+									message: 'Telefono debe tener 10 numeros.',
+								},
+							})}
+						/>
+					</ContainerPhone>
+
 					{errors.phone && (
 						<StyledSpanErrores>{errors.phone.message}</StyledSpanErrores>
 					)}
 				</LabelDiv>
 
 				<LabelDiv>
-					<label htmlFor="location">Ubicacion</label>
+					<label htmlFor="location">Provincia</label>
 					<Select
 						id="location"
-						{...register('location')}
-						options={provincias}
-					/>
+						{...register('location', {
+							required: {
+								value: true,
+								message: 'Debe seleccionar una provincia',
+							},
+						})}
+					>
+						<option value="">Selecciona una provincia</option>
+						{provincias.map((provincia) => (
+							<option key={provincia.value} value={provincia.value}>
+								{provincia.label}
+							</option>
+						))}
+					</Select>
+					{errors.location && (
+						<StyledSpanErrores>{errors.location.message}</StyledSpanErrores>
+					)}
 				</LabelDiv>
 				<LabelDiv>
 					<label htmlFor="password">Contraseña</label>
@@ -194,8 +224,8 @@ const CreateAccount = () => {
 								message: 'Contraseña debe tener al menos 6 caracteres',
 							},
 							maxLength: {
-								value: 12,
-								message: 'Contraseña no debe tener mas de 12 caracteres',
+								value: 50,
+								message: 'Contraseña no debe tener más de 50 caracteres',
 							},
 						})}
 					/>
@@ -227,8 +257,7 @@ const CreateAccount = () => {
 				<DivInfoContraseña>
 					<span>Su contraseña debe:</span>
 					<ul>
-						<li>tener entre 6 y 12 caracteres</li>
-						<li>solo contener letras y/o números</li>
+						<li>tener entre 6 y 50 caracteres</li>
 					</ul>
 				</DivInfoContraseña>
 				<TextTerms>
@@ -238,21 +267,6 @@ const CreateAccount = () => {
 				<DivButton>
 					<ButtonForm type="">Crear Cuenta</ButtonForm>
 				</DivButton>
-				{/* <DivSecundario>
-				<Divider />
-					<span>
-						Al hacer clic en Regístrate con Facebook o Regístrate con Google,
-						aceptas las Condiciones de uso y la Política de privacidad.
-					</span>
-					<ButtonSM>
-						<img src={meta} alt="meta icon" />
-						Iniciar sesión con Meta
-					</ButtonSM>
-					<ButtonSM>
-						<img src={google} alt="google icon" />
-						Iniciar sesión con Google
-					</ButtonSM>
-				</DivSecundario> */}
 			</StyledForm>
 			<span>
 				¿Ya tienes una cuenta? Clickea aquí para&nbsp;
@@ -300,22 +314,11 @@ const StyledForm = styled.form`
 	text-align: start;
 `;
 
-// const HorizontalDiv = styled.div`
-// 	display: flex;
-// 	justify-content: space-between;
-// 	align-items: center;
-// 	font-size: 0.9rem;
-// 	gap: 1rem;
-// `;
 const LabelDiv = styled.div`
 	display: flex;
 	flex-direction: column;
 	width: 100%;
 	padding: 0.8rem 0;
-`;
-
-const StyledInput = styled.input`
-	height: 2.5rem;
 `;
 
 const StyledSpanErrores = styled.span`
@@ -340,28 +343,6 @@ const ButtonForm = styled.button`
 	}
 `;
 
-// const ButtonSM = styled.button`
-// 	display: flex;
-// 	flex-direction: row;
-// 	justify-content: center;
-// 	align-items: center;
-// 	gap: 1rem;
-// 	padding: 1rem;
-// 	margin-top: 0.2rem;
-// 	width: 100%;
-// 	flex-wrap: nowrap;
-// 	background-color: white;
-// 	border: 1px solid var(--primary);
-// 	height: 2rem;
-// 	font-weight: 600;
-// 	font-size: 1rem;
-// 	cursor: pointer;
-
-// 	&:hover {
-// 		color: var(--primary);
-// 	}
-// `;
-
 const DivInfoContraseña = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -376,18 +357,30 @@ const DivInfoContraseña = styled.div`
 const TextTerms = styled.span`
 	margin-top: 8px;
 `;
-/*const Divider = styled.div`
-	width: 100%;
-	border-top: 1px solid #000;
-	margin: 10px 0;
-`;*/
-// const DivSecundario = styled.div`
-// 	display: flex;
-// 	flex-direction: column;
-// 	justify-content: center;
-// 	align-items: center;
-// 	font-size: 0.8rem;
-// 	gap: 0.4rem;
-// `;
 
+const Select = styled.select`
+	width: 100%;
+	padding: 0.5rem;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+`;
+
+const ContainerPhone = styled.div`
+	display: flex;
+	width: 100%;
+	align-items: center;
+`;
+
+const StyledInput = styled.input`
+	height: 2.5rem;
+`;
+
+const StyledInputPhone = styled.input`
+	height: 2.5rem;
+	width: 100%;
+`;
+
+const AreaCode = styled.p`
+	padding-right: 1%;
+`;
 export default CreateAccount;

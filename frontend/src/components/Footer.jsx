@@ -146,10 +146,10 @@ const Footer = () => {
 			</Support>*/}
 			<SocialMedia>
 				<IconsUl>
-					<a href="https://www.facebook.com/servici0sclub">
+					<a href="https://www.facebook.com/servici0sclub" target="_">
 						<StyledIcon icon={faFacebook} />
 					</a>
-					<a href="https://www.instagram.com/servicios.club">
+					<a href="https://www.instagram.com/servicios.club" target="_">
 						<StyledIcon icon={faInstagram} />
 					</a>
 				</IconsUl>
