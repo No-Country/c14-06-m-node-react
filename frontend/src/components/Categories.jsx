@@ -55,56 +55,69 @@ const Icon = styled.img`
 	background-image: url(${(props) => (props.icon ? props.icon : noIcon)});
 	background-repeat: no-repeat;
 	background-size: 100%;
+	border-radius: 10px;
 `;
 
 const CategoriesList = [
 	{
 		title: 'Pintores',
 		icon: painter,
+		category: 'painter',
 	},
 	{
 		title: 'Plomeros',
 		icon: plumber,
+		category: 'plumber',
 	},
 	{
 		title: 'Electricistas',
 		icon: electrician,
+		category: 'electrician',
 	},
 	{
 		title: 'Albañiles',
 		icon: bricklayer,
+		category: 'bricklayer',
 	},
 	{
 		title: 'Carpinteros',
 		icon: carpenter,
+		category: 'carpenter',
 	},
 	{
 		title: 'Fleteros',
 		icon: freight,
+		category: 'freight',
 	},
 	{
 		title: 'Cerrajeros',
 		icon: locksmith,
+		category: 'locksmith',
 	},
 	{
 		title: 'Jardineros',
 		icon: gardener,
+		category: 'gardener',
 	},
 	{
 		title: 'Gasistas',
 		icon: gasman,
+		category: 'gas-fitter',
 	},
 	{
 		title: 'Fumigadores',
 		icon: fumigation,
+		category: 'fumigator',
 	},
 	{
 		title: 'Técnicos en Aire Acondicionado',
 		icon: aa,
+		category: 'air-conditioner',
 	},
 	{
 		title: 'Técnicos en Electrodomesticos',
 		icon: appliances,
+		category: 'appliance',
 	},
 ];
 
@@ -119,7 +132,7 @@ const Categories = () => {
 				{CategoriesList.map((category) => (
 					<Link
 						to={{
-							pathname: `/profesionalsList/${category.title}`,
+							pathname: `/ProfessionalsList/${category.category}`,
 						}}
 						key={category.title}
 					>

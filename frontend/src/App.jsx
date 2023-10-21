@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import ProfesionalsList from './components/ProfesionalsList';
+import ProfessionalsList from './components/ProfessionalsList';
 import ComoFunciona from './pages/ComoFunciona';
 import Home from './pages/Home';
 import CreateAccount from './pages/CreateAccount';
@@ -26,6 +26,7 @@ ScrollToTop.propTypes = {
 const Container = styled.div`
 	max-width: 1200px;
 	margin: 0 auto;
+	min-height: calc(100vh - var(--navbar-height));
 `;
 const App = () => {
 	return (
@@ -36,8 +37,12 @@ const App = () => {
 					<Routes>
 						<Route path="/ofrecer-servicio" element={<OfrecerServicio />} />
 						<Route
-							path="/profesionalsList/:categoryTitle"
-							element={<ProfesionalsList />}
+							path="/professionalsList/:categoryTitle"
+							element={<ProfessionalsList />}
+						/>
+						<Route
+							path="/professionalsList/:categoryTitle/:location"
+							element={<ProfessionalsList />}
 						/>
 						<Route path="/" element={<Home />} />
 						<Route path="/como-funciona" element={<ComoFunciona />} />

@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
 import { createGlobalStyle } from 'styled-components';
 
+// eslint-disable-next-line react-refresh/only-export-components
 const GlobalStyles = createGlobalStyle`
   
   :root {

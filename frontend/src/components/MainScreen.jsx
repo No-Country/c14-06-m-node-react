@@ -121,6 +121,8 @@ const Select = styled.select`
 	appearance: auto;
 	max-height: 100px;
 	overflow-y: auto;
+	height: 50px;
+	font-size: 1.1rem;
 `;
 
 const Buscar = styled.div`
@@ -207,7 +209,7 @@ const Home = () => {
 
 		return url;
 	};
-
+	const IsLoggedIn = localStorage.token ? true : false;
 	return (
 		<MainScreen>
 			<ContainerLeft>
@@ -215,7 +217,13 @@ const Home = () => {
 				<StyledUl>
 					<Active>Contratar</Active>
 					<li>
-						<StyledLink to="/ofrecer-servicio">Ofrecer un servicio</StyledLink>
+						{IsLoggedIn ? (
+							<StyledLink to="/ofrecer-servicio">
+								Ofrecer un servicio
+							</StyledLink>
+						) : (
+							<StyledLink to="/iniciar-sesion">Ofrecer un servicio</StyledLink>
+						)}
 					</li>
 				</StyledUl>
 				{/** <ContainerSearch>
@@ -264,9 +272,9 @@ const Home = () => {
 				</Buscar>
 				<StyledP>
 					Encuentra un
-					<Link to="/professionalsList/plumbers"> Plomero</Link>,
-					<Link to="/professionalsList/gardeners"> Jardinero</Link>,
-					<Link to="/professionalsList/gasmans"> Gasista</Link>, &nbsp;
+					<Link to="/professionalsList/plumber"> Plomero</Link>,
+					<Link to="/professionalsList/gardener"> Jardinero</Link>,
+					<Link to="/professionalsList/gas-fitter"> Gasista</Link>, &nbsp;
 					<HashLink smooth to="/#categories">
 						y más servicios...
 					</HashLink>

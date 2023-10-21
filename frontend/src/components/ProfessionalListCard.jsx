@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import verificado from '../assets/images/verificado.png';
+import { Link } from 'react-router-dom';
+import noPhoto from '../assets/images/noPhoto.png';
 
 const Card = styled.div`
 	display: flex;
@@ -24,6 +27,7 @@ const Image = styled.img`
 	width: 190px;
 	height: 210px;
 	padding: 1em;
+	object-fit: cover;
 `;
 
 const Content = styled.div`
@@ -61,7 +65,7 @@ const ContentRight = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 20px;
-	text-align: right;
+	text-align: center;
 `;
 
 const VerificadoImage = styled.img`
@@ -69,11 +73,27 @@ const VerificadoImage = styled.img`
 	height: 1rem;
 `;
 
-const ProfesionalListCard = ({ name, imgUrl, info, telephone }) => {
+const StyledLink = styled(Link)`
+	color: var(--primary);
+`;
+
+const ProfessionalListCard = ({ name, imgUrl, info, telephone, location }) => {
+	const IsLoggedIn = localStorage.token ? true : false;
+
+	const [imageValid, setImageValid] = useState(true);
+
+	const handleImageError = () => {
+		setImageValid(false);
+	};
+
 	return (
 		<Card>
 			<ImageContainer>
-				<Image src={imgUrl} alt="Imagen" />
+				{imageValid ? (
+					<Image src={imgUrl} alt="Imagen" onError={handleImageError} />
+				) : (
+					<Image src={noPhoto} alt="Imagen" />
+				)}
 			</ImageContainer>
 			<Content>
 				<Title>{name}</Title>
@@ -81,18 +101,32 @@ const ProfesionalListCard = ({ name, imgUrl, info, telephone }) => {
 					Profesional Certificado <VerificadoImage src={verificado} alt="" />
 				</SubTitle>
 				<Info>{info}</Info>
+				<span>
+					<i className="fa-solid fa-location-dot"></i>
+					&nbsp;
+					{location}
+				</span>
 				<Valoracion>Valoración: ★★★★☆</Valoracion>
 			</Content>
-			<ContentRight>✆ {telephone}</ContentRight>
+			<ContentRight>
+				{IsLoggedIn ? (
+					<span>✆ {telephone}</span>
+				) : (
+					<span>
+						<StyledLink to="../iniciar-sesion">✆ Ver teléfono</StyledLink>
+					</span>
+				)}
+			</ContentRight>
 		</Card>
 	);
 };
 
-ProfesionalListCard.propTypes = {
+ProfessionalListCard.propTypes = {
 	name: PropTypes.string.isRequired,
 	imgUrl: PropTypes.string.isRequired,
 	info: PropTypes.string.isRequired,
 	telephone: PropTypes.string.isRequired,
+	location: PropTypes.string.isRequired,
 };
 
-export default ProfesionalListCard;
+export default ProfessionalListCard;
