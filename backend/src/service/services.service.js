@@ -44,6 +44,18 @@ class ServicesService {
 				$unwind: '$category_info',
 			},
 			{
+				$group: {
+					_id: '$_id',
+					description: { $first: '$description' },
+					certified: { $first: '$certified' },
+					serviceLocation: { $first: '$serviceLocation' },
+					active: { $first: '$active' },
+					qualification: { $first: '$qualification' },
+					user_info: { $first: '$user_info' },
+					category_info: { $first: '$category_info' },
+				},
+			},
+			{
 				$project: {
 					_id: 1,
 					qualification: 1,
@@ -51,8 +63,19 @@ class ServicesService {
 					description: 1,
 					serviceLocation: 1,
 					active: 1,
-					user: '$user_info',
-					category: '$category_info',
+					category: {
+						categoryName: '$category_info.categoryName',
+						code: '$category_info.code',
+					},
+					user: {
+						_id: '$user_info._id',
+						name: '$user_info.name',
+						surname: '$user_info.surname',
+						email: '$user_info.email',
+						phone: '$user_info.phone',
+						profileImg: '$user_info.profileImg',
+						location: '$user_info.location',
+					},
 				},
 			},
 		];
@@ -117,15 +140,38 @@ class ServicesService {
 				$unwind: '$category_info',
 			},
 			{
+				$group: {
+					_id: '$_id',
+					description: { $first: '$description' },
+					certified: { $first: '$certified' },
+					serviceLocation: { $first: '$serviceLocation' },
+					active: { $first: '$active' },
+					qualification: { $first: '$qualification' },
+					user_info: { $first: '$user_info' },
+					category_info: { $first: '$category_info' },
+				},
+			},
+			{
 				$project: {
 					_id: 1,
-					active: 1,
 					qualification: 1,
 					certified: 1,
 					description: 1,
 					serviceLocation: 1,
-					user: '$user_info',
-					category: '$category_info',
+					active: 1,
+					category: {
+						categoryName: '$category_info.categoryName',
+						code: '$category_info.code',
+					},
+					user: {
+						_id: '$user_info._id',
+						name: '$user_info.name',
+						surname: '$user_info.surname',
+						email: '$user_info.email',
+						phone: '$user_info.phone',
+						profileImg: '$user_info.profileImg',
+						location: '$user_info.location',
+					},
 				},
 			},
 		];
@@ -204,6 +250,10 @@ class ServicesService {
 			qualification: [],
 		};
 		const createdService = await servicesCollection.insertOne(newService);
+		await usersCollection.findOneAndUpdate(
+			{ _id: userObjectId },
+			{ $push: { servicesRef: createdService.insertedId } }
+		);
 		await connectedClient.close();
 		return createdService;
 	}
