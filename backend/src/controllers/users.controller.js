@@ -1,10 +1,12 @@
 import UsersService from '../service/users.service.js';
+import ServicesService from '../service/services.service.js';
 import HTTP_STATUS from '../utils/http-constants.js';
 import { validatePhoneNumber } from '../utils/validate-phone.js';
 import { deleteTempFilesBuffers } from '../utils/cloudinary.js';
 import { validateFileExtension } from '../utils/validate-file-extension.js';
 
 const usersService = new UsersService();
+const servicesService = new ServicesService();
 
 class UsersController {
 	static async getAll(req, res, next) {
@@ -104,6 +106,9 @@ class UsersController {
 		const { userId } = req.params;
 		try {
 			const deletedUser = await usersService.deleteUser(userId);
+			deletedUser.servicesRef?.forEach(async (service) => {
+				await servicesService.deleteService(service._id);
+			});
 			res.status(200).json({
 				status: 'success',
 				response: deletedUser,

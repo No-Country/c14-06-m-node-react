@@ -21,22 +21,138 @@ const getUsersCollection = async () => {
 class UsersService {
 	async getUsers(filters) {
 		const { usersCollection, connectedClient } = await getUsersCollection();
-		const users = await usersCollection.find(filters).toArray();
+		const aggregation = [
+			{
+				$lookup: {
+					from: 'services',
+					localField: 'servicesRef',
+					foreignField: '_id',
+					as: 'service_info',
+				},
+			},
+			{
+				$unwind: '$service_info',
+			},
+			{
+				$group: {
+					_id: '$_id',
+					name: { $first: '$name' },
+					surname: { $first: '$surname' },
+					email: { $first: '$email' },
+					phone: { $first: '$phone' },
+					location: { $first: '$location' },
+					role: { $first: '$role' },
+					profileImg: { $first: '$profileImg' },
+					services: { $push: '$service_info' },
+				},
+			},
+			{
+				$project: {
+					_id: 1,
+					name: 1,
+					surname: 1,
+					email: 1,
+					phone: 1,
+					location: 1,
+					role: 1,
+					profileImg: 1,
+					services: {
+						$map: {
+							input: '$services',
+							as: 'service',
+							in: {
+								_id: '$$service._id',
+								categoryRef: '$$service.categoryRef',
+								description: '$$service.description',
+								certified: '$$service.certified',
+								serviceLocation: '$$service.serviceLocation',
+								active: '$$service.active',
+								qualification: '$$service.qualification',
+							},
+						},
+					},
+				},
+			},
+		];
+		if (Object.keys(filters).length !== 0) {
+			aggregation.unshift({
+				$match: filters,
+			});
+		}
+		const users = await usersCollection.aggregate(aggregation).toArray();
 		await connectedClient.close();
 		return users;
 	}
 
 	async getUserById(userId) {
 		const { usersCollection, connectedClient } = await getUsersCollection();
-		const objectId = new ObjectId(userId);
-		const user = await usersCollection.findOne({ _id: objectId });
-		if (!user) {
+		const userObjectId = new ObjectId(userId);
+		const aggregation = [
+			{
+				$match: {
+					_id: userObjectId,
+				},
+			},
+			{
+				$lookup: {
+					from: 'services',
+					localField: 'servicesRef',
+					foreignField: '_id',
+					as: 'service_info',
+				},
+			},
+			{
+				$unwind: '$service_info',
+			},
+			{
+				$group: {
+					_id: '$_id',
+					name: { $first: '$name' },
+					surname: { $first: '$surname' },
+					email: { $first: '$email' },
+					phone: { $first: '$phone' },
+					location: { $first: '$location' },
+					role: { $first: '$role' },
+					profileImg: { $first: '$profileImg' },
+					services: { $push: '$service_info' },
+				},
+			},
+			{
+				$project: {
+					_id: 1,
+					name: 1,
+					surname: 1,
+					email: 1,
+					phone: 1,
+					location: 1,
+					role: 1,
+					profileImg: 1,
+					services: {
+						$map: {
+							input: '$services',
+							as: 'service',
+							in: {
+								_id: '$$service._id',
+								categoryRef: '$$service.categoryRef',
+								description: '$$service.description',
+								certified: '$$service.certified',
+								serviceLocation: '$$service.serviceLocation',
+								active: '$$service.active',
+								qualification: '$$service.qualification',
+							},
+						},
+					},
+				},
+			},
+		];
+		const user = await usersCollection.aggregate(aggregation).toArray();
+		if (user.length === 0) {
 			const customError = new Error('Usuario no encontrado');
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
 		await connectedClient.close();
-		return user;
+		return user[0];
 	}
 
 	async getUserByEmail(userEmail) {
@@ -48,6 +164,7 @@ class UsersService {
 
 	async createUser(userPayload) {
 		const { usersCollection, connectedClient } = await getUsersCollection();
+		userPayload.servicesRef = [];
 		const createdUser = await usersCollection.insertOne(userPayload);
 		await connectedClient.close();
 		return createdUser;
