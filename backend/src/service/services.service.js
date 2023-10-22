@@ -18,7 +18,7 @@ const getServicesCollection = async () => {
 
 class ServicesService {
 	async getServices(filters) {
-		const { servicesCollection, connectedClient } =
+		const { servicesCollection, categoriesCollection, connectedClient } =
 			await getServicesCollection();
 		const aggregation = [
 			{
@@ -90,6 +90,14 @@ class ServicesService {
 				filters.certified === 'true'
 					? (filters.certified = true)
 					: (filters.certified = false);
+			}
+			if ('category' in filters) {
+				const category = await categoriesCollection.findOne({
+					code: filters.category,
+				});
+				const categoryObjectId = new ObjectId(category._id);
+				filters.categoryRef = categoryObjectId;
+				delete filters.category;
 			}
 			aggregation.unshift({
 				$match: filters,
