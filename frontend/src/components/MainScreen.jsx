@@ -8,7 +8,7 @@ import { ButtonBlue } from '../styledcomponents/Buttons';
 import { useState } from 'react';
 
 const MainScreen = styled.div`
-	height: calc(100vh - var(--navbar-height));
+	min-height: calc(100vh - var(--navbar-height));
 	display: grid;
 	grid-template-areas: 'left right';
 	align-items: center;
