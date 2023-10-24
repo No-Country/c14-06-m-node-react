@@ -73,7 +73,8 @@ const initializePassport = () => {
 			},
 			async (jwt_payload, done) => {
 				try {
-					return done(null, jwt_payload);
+					const { _id, iat, exp } = jwt_payload;
+					return done(null, { _id, iat, exp });
 				} catch (error) {
 					return done(error, false);
 				}

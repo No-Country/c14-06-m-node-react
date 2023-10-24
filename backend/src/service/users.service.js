@@ -67,7 +67,8 @@ class UsersService {
 								certified: '$$service.certified',
 								serviceLocation: '$$service.serviceLocation',
 								active: '$$service.active',
-								qualification: '$$service.qualification',
+								qualifications: '$$service.qualifications',
+								rating: '$$service.rating',
 							},
 						},
 					},
@@ -138,21 +139,23 @@ class UsersService {
 								certified: '$$service.certified',
 								serviceLocation: '$$service.serviceLocation',
 								active: '$$service.active',
-								qualification: '$$service.qualification',
+								qualifications: '$$service.qualifications',
+								rating: '$$service.rating',
 							},
 						},
 					},
 				},
 			},
 		];
-		const user = await usersCollection.aggregate(aggregation).toArray();
-		if (user.length === 0) {
+		const users = await usersCollection.aggregate(aggregation).toArray();
+		const user = users[0];
+		if (!user) {
 			const customError = new Error('Usuario no encontrado');
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
 		await connectedClient.close();
-		return user[0];
+		return user;
 	}
 
 	async getUserByEmail(userEmail) {

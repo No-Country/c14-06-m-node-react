@@ -43,6 +43,23 @@ class ServicesController {
 		}
 	}
 
+	static async qualifyOne(req, res, next) {
+		const { serviceId } = req.params;
+		const qualificationPayload = req.body;
+		try {
+			const ratedService = await servicesService.qualifyService(
+				serviceId,
+				qualificationPayload
+			);
+			res.status(200).json({
+				status: 'success',
+				response: ratedService,
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
+
 	static async updateOne(req, res, next) {
 		const { serviceId } = req.params;
 		const servicePayload = req.body;

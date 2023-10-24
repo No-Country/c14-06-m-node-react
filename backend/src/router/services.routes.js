@@ -9,6 +9,8 @@ router.get('/:serviceId', ServicesController.getById);
 
 router.post('/', ServicesController.addOne);
 
+router.post('/:serviceId/qualifications', ServicesController.qualifyOne);
+
 router.put('/:serviceId', ServicesController.updateOne);
 
 router.delete('/:serviceId', ServicesController.remove);

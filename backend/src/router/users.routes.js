@@ -19,7 +19,7 @@ const upload = multer({
 
 const router = Router();
 
-router.get('/', UsersController.getAll);
+router.get('/', UsersController.getAll); //BORRAR
 
 router.get(
 	'/:userId',
