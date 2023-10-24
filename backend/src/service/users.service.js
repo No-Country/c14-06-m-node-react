@@ -19,78 +19,79 @@ const getUsersCollection = async () => {
 };
 
 class UsersService {
-	async getUsers(filters) {
-		const { usersCollection, connectedClient } = await getUsersCollection();
-		const aggregation = [
-			{
-				$lookup: {
-					from: 'services',
-					localField: 'servicesRef',
-					foreignField: '_id',
-					as: 'service_info',
-				},
-			},
-			{
-				$unwind: {
-					path: '$service_info',
-					preserveNullAndEmptyArrays: true,
-				},
-			},
-			{
-				$group: {
-					_id: '$_id',
-					name: { $first: '$name' },
-					surname: { $first: '$surname' },
-					email: { $first: '$email' },
-					phone: { $first: '$phone' },
-					location: { $first: '$location' },
-					role: { $first: '$role' },
-					profileImg: { $first: '$profileImg' },
-					servicesRef: { $push: '$service_info' },
-				},
-			},
-			{
-				$project: {
-					_id: 1,
-					name: 1,
-					surname: 1,
-					email: 1,
-					phone: 1,
-					location: 1,
-					role: 1,
-					profileImg: 1,
-					services: {
-						$map: {
-							input: '$servicesRef',
-							as: 'service',
-							in: {
-								_id: '$$service._id',
-								categoryRef: '$$service.categoryRef',
-								description: '$$service.description',
-								certified: '$$service.certified',
-								serviceLocation: '$$service.serviceLocation',
-								active: '$$service.active',
-								qualifications: '$$service.qualifications',
-								rating: '$$service.rating',
-							},
-						},
-					},
-				},
-			},
-		];
-		if (Object.keys(filters).length !== 0) {
-			aggregation.unshift({
-				$match: filters,
-			});
-		}
-		const users = await usersCollection.aggregate(aggregation).toArray();
-		await connectedClient.close();
-		return users;
-	}
+	// async getUsers(filters) {
+	// 	const { usersCollection, connectedClient } = await getUsersCollection();
+	// 	const aggregation = [
+	// 		{
+	// 			$lookup: {
+	// 				from: 'services',
+	// 				localField: 'servicesRef',
+	// 				foreignField: '_id',
+	// 				as: 'service_info',
+	// 			},
+	// 		},
+	// 		{
+	// 			$unwind: {
+	// 				path: '$service_info',
+	// 				preserveNullAndEmptyArrays: true,
+	// 			},
+	// 		},
+	// 		{
+	// 			$group: {
+	// 				_id: '$_id',
+	// 				name: { $first: '$name' },
+	// 				surname: { $first: '$surname' },
+	// 				email: { $first: '$email' },
+	// 				phone: { $first: '$phone' },
+	// 				location: { $first: '$location' },
+	// 				role: { $first: '$role' },
+	// 				profileImg: { $first: '$profileImg' },
+	// 				servicesRef: { $push: '$service_info' },
+	// 			},
+	// 		},
+	// 		{
+	// 			$project: {
+	// 				_id: 1,
+	// 				name: 1,
+	// 				surname: 1,
+	// 				email: 1,
+	// 				phone: 1,
+	// 				location: 1,
+	// 				role: 1,
+	// 				profileImg: 1,
+	// 				services: {
+	// 					$map: {
+	// 						input: '$servicesRef',
+	// 						as: 'service',
+	// 						in: {
+	// 							_id: '$$service._id',
+	// 							categoryRef: '$$service.categoryRef',
+	// 							description: '$$service.description',
+	// 							certified: '$$service.certified',
+	// 							serviceLocation: '$$service.serviceLocation',
+	// 							active: '$$service.active',
+	// 							qualifications: '$$service.qualifications',
+	// 							rating: '$$service.rating',
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	];
+	// 	if (Object.keys(filters).length !== 0) {
+	// 		aggregation.unshift({
+	// 			$match: filters,
+	// 		});
+	// 	}
+	// 	const users = await usersCollection.aggregate(aggregation).toArray();
+	// 	await connectedClient.close();
+	// 	return users;
+	// }
 
-	async getUserById(userId) {
+	async getUserById(userId, userIdToken) {
 		const { usersCollection, connectedClient } = await getUsersCollection();
 		const userObjectId = new ObjectId(userId);
+		const tokenObjectId = new ObjectId(userIdToken);
 		const aggregation = [
 			{
 				$match: {
@@ -160,6 +161,12 @@ class UsersService {
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
+		const tokenUser = await usersCollection.findOne({ _id: tokenObjectId });
+		if (userId !== userIdToken && tokenUser.role !== 'admin') {
+			const customError = new Error('No se tiene acceso a este perfil');
+			customError.status = HTTP_STATUS.FORBIDDEN;
+			throw customError;
+		}
 		await connectedClient.close();
 		return user;
 	}
@@ -180,13 +187,20 @@ class UsersService {
 		return createdUser;
 	}
 
-	async updateUser(userId, userPayload) {
+	async updateUser(userId, userPayload, userIdToken) {
 		const { usersCollection, connectedClient } = await getUsersCollection();
 		const objectId = new ObjectId(userId);
+		const tokenObjectId = new ObjectId(userIdToken);
 		const user = await usersCollection.findOne({ _id: objectId });
 		if (!user) {
 			const customError = new Error('Usuario no encontrado');
 			customError.status = HTTP_STATUS.NOT_FOUND;
+			throw customError;
+		}
+		const tokenUser = await usersCollection.findOne({ _id: tokenObjectId });
+		if (userId !== userIdToken && tokenUser.role !== 'admin') {
+			const customError = new Error('No se tiene acceso a este perfil');
+			customError.status = HTTP_STATUS.FORBIDDEN;
 			throw customError;
 		}
 		const filter = { _id: objectId };
@@ -198,13 +212,20 @@ class UsersService {
 		return userUpdated;
 	}
 
-	async updateImage(userId, imagePath) {
+	async updateImage(userId, userIdToken, imagePath) {
 		const { usersCollection, connectedClient } = await getUsersCollection();
 		const objectId = new ObjectId(userId);
+		const tokenObjectId = new ObjectId(userIdToken);
 		const user = await usersCollection.findOne({ _id: objectId });
 		if (!user) {
 			const customError = new Error('Usuario no encontrado');
 			customError.status = HTTP_STATUS.NOT_FOUND;
+			throw customError;
+		}
+		const tokenUser = await usersCollection.findOne({ _id: tokenObjectId });
+		if (userId !== userIdToken && tokenUser.role !== 'admin') {
+			const customError = new Error('No se tiene acceso a este perfil');
+			customError.status = HTTP_STATUS.FORBIDDEN;
 			throw customError;
 		}
 		const filter = { _id: objectId };
@@ -233,16 +254,22 @@ class UsersService {
 		}
 	}
 
-	async deleteUser(userId) {
+	async deleteUser(userId, userIdToken) {
 		const { usersCollection, connectedClient } = await getUsersCollection();
 		const objectId = new ObjectId(userId);
+		const tokenObjectId = new ObjectId(userIdToken);
 		const user = await usersCollection.findOne({ _id: objectId });
 		if (!user) {
 			const customError = new Error('Usuario no encontrado');
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
-
+		const tokenUser = await usersCollection.findOne({ _id: tokenObjectId });
+		if (userId !== userIdToken && tokenUser.role !== 'admin') {
+			const customError = new Error('No se tiene acceso a este perfil');
+			customError.status = HTTP_STATUS.FORBIDDEN;
+			throw customError;
+		}
 		await deleteUserImageFromCloudinary(user.profileImg);
 		const deletedUser = await usersCollection.deleteOne({ _id: objectId });
 		await connectedClient.close();

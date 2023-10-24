@@ -301,7 +301,24 @@ class ServicesService {
 			customError.status = HTTP_STATUS.FORBIDDEN;
 			throw customError;
 		}
-		service.qualifications.forEach((qualification) => {
+		const registeredCategories = [];
+		if (user.servicesRef) {
+			for (const serviceRef of user.servicesRef) {
+				const userService = await servicesCollection.findOne({
+					_id: serviceRef,
+				});
+				let stringId = JSON.stringify(userService?.categoryRef);
+				registeredCategories.push(stringId);
+			}
+			if (registeredCategories.includes(JSON.stringify(service.categoryRef))) {
+				const customError = new Error(
+					'No se puede calificar servicios de la misma categoría que son ofrecidos por el usuario'
+				);
+				customError.status = HTTP_STATUS.FORBIDDEN;
+				throw customError;
+			}
+		}
+		service.qualifications?.forEach((qualification) => {
 			if (
 				JSON.stringify(userObjectId) === JSON.stringify(qualification.userId)
 			) {
