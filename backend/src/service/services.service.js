@@ -50,7 +50,8 @@ class ServicesService {
 					certified: { $first: '$certified' },
 					serviceLocation: { $first: '$serviceLocation' },
 					active: { $first: '$active' },
-					qualification: { $first: '$qualification' },
+					qualifications: { $first: '$qualification' },
+					rating: { $first: '$rating' },
 					user_info: { $first: '$user_info' },
 					category_info: { $first: '$category_info' },
 				},
@@ -58,7 +59,8 @@ class ServicesService {
 			{
 				$project: {
 					_id: 1,
-					qualification: 1,
+					qualifications: 1,
+					rating: 1,
 					certified: 1,
 					description: 1,
 					serviceLocation: 1,
@@ -154,19 +156,21 @@ class ServicesService {
 					certified: { $first: '$certified' },
 					serviceLocation: { $first: '$serviceLocation' },
 					active: { $first: '$active' },
-					qualification: { $first: '$qualification' },
+					qualifications: { $first: '$qualifications' },
 					user_info: { $first: '$user_info' },
 					category_info: { $first: '$category_info' },
+					rating: { $first: '$rating' },
 				},
 			},
 			{
 				$project: {
 					_id: 1,
-					qualification: 1,
+					qualifications: 1,
 					certified: 1,
 					description: 1,
 					serviceLocation: 1,
 					active: 1,
+					rating: 1,
 					category: {
 						categoryName: '$category_info.categoryName',
 						code: '$category_info.code',
@@ -183,12 +187,14 @@ class ServicesService {
 				},
 			},
 		];
-		const service = await servicesCollection.aggregate(aggregation).toArray();
-		if (!service || service.length === 0) {
+		const services = await servicesCollection.aggregate(aggregation).toArray();
+		const service = services[0];
+		if (!service) {
 			const customError = new Error('Servicio no encontrado');
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
+
 		await connectedClient.close();
 		return service;
 	}
@@ -255,7 +261,8 @@ class ServicesService {
 			certified,
 			serviceLocation,
 			active: true,
-			qualification: [],
+			qualifications: [],
+			rating: 0,
 		};
 		const createdService = await servicesCollection.insertOne(newService);
 		await usersCollection.findOneAndUpdate(
@@ -266,11 +273,48 @@ class ServicesService {
 		return createdService;
 	}
 
+	async qualifyService(serviceId, qualificationPayload) {
+		const { servicesCollection, usersCollection, connectedClient } =
+			await getServicesCollection();
+		const { userId, comment, score } = qualificationPayload;
+		if (!userId || !comment || score === undefined) {
+			const customError = new Error('Campos obligatorios incompletos');
+			customError.status = HTTP_STATUS.BAD_REQUEST;
+			throw customError;
+		}
+		const userObjectId = new ObjectId(userId);
+		const user = await usersCollection.findOne({ _id: userObjectId });
+		if (!user) {
+			const customError = new Error('No se encuentra al usuario');
+			customError.status = HTTP_STATUS.NOT_FOUND;
+			throw customError;
+		}
+		const serviceObjectId = new ObjectId(serviceId);
+		const service = await servicesCollection.findOne({ _id: serviceObjectId });
+		if (!service) {
+			const customError = new Error('No se encuentra al servicio');
+			customError.status = HTTP_STATUS.NOT_FOUND;
+			throw customError;
+		}
+		const ratedService = await servicesCollection.updateOne(
+			{ _id: serviceObjectId },
+			{ $push: { qualifications: qualificationPayload } }
+		);
+		const newRating =
+			(service.rating * service.qualifications.length + score) /
+			(service.qualifications.length + 1);
+		await servicesCollection.findOneAndUpdate(
+			{ _id: serviceObjectId },
+			{ $set: { rating: newRating } }
+		);
+		await connectedClient.close();
+		return ratedService;
+	}
+
 	async updateService(serviceId, servicePayload) {
 		const { servicesCollection, connectedClient } =
 			await getServicesCollection();
-		const { description, certified, serviceLocation, qualification, active } =
-			servicePayload;
+		const { description, certified, serviceLocation, active } = servicePayload;
 		if (!serviceId || Object.keys(servicePayload).length === 0) {
 			//Evaluamos que haya un id y que se mande algún dato
 			const customError = new Error('Datos incompletos.');
@@ -298,15 +342,6 @@ class ServicesService {
 		}
 		if (serviceLocation) {
 			service.serviceLocation = serviceLocation;
-		}
-		if (qualification !== undefined) {
-			//Calculamos el promedio entre las calificaciones previas y la actual
-			let total =
-				service.qualification.rankings * service.qualification.average;
-			total += qualification;
-			const newAmount = (service.qualification.rankings += 1);
-			service.qualification.average = Math.round(total / newAmount);
-			service.qualification.rankings = newAmount;
 		}
 		const serviceUpdated = await servicesCollection.replaceOne(
 			{ _id: objectId },

@@ -3,12 +3,15 @@ import passport from 'passport';
 import SessionsController from '../controllers/sessions.controller.js';
 import gmailTransport from '../config/transport.config.js';
 import envs from '../config/env.config.js';
+import validateDto from '../middlewares/validate-dto.middleware.js';
+import { createUserBodyValidator } from '../schema/user.schema.js';
 
 const router = Router();
 
 router.post(
 	'/register',
 	passport.authenticate('register', { failureRedirect: 'failregister' }),
+	validateDto(createUserBodyValidator, 'body'),
 	async (req, res) => {
 		const { email, name } = req.body;
 		await gmailTransport.sendMail({
