@@ -130,20 +130,21 @@ const LogIn = () => {
 						<StyledSpanErrores>{errors.password.message}</StyledSpanErrores>
 					)}
 				</LabelDiv>
+				{/*
 				<HorizontalDiv>
-					{/* <div>
+					 <div>
 						<Checkbox type="checkbox"></Checkbox>
 						<label>Recordarme</label>
-					</div> */}
+					</div> 
 					<div>
 						<Link to="/recuperar-pass">¿Olvidaste tu contraseña?</Link>
 					</div>
-				</HorizontalDiv>
+				</HorizontalDiv>*/}
 				<DivButton>
 					<ButtonForm type="">Iniciar Sesión</ButtonForm>
 				</DivButton>
-				<Divider />
-				{/* <DivSecundario>
+				{/*<Divider />
+				 <DivSecundario>
 					<span>
 						Al hacer clic en Regístrate con Facebook o Regístrate con Google,
 						aceptas las Condiciones de uso y la Política de privacidad.
@@ -203,13 +204,13 @@ const StyledForm = styled.form`
 	width: 100%;
 	max-width: 520px;
 `;
-
+/*
 const HorizontalDiv = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	font-size: 0.9rem;
-`;
+`;*/
 const LabelDiv = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -268,11 +269,11 @@ const StyledSpanErrores = styled.span`
 // 	}
 // `;
 
-const Divider = styled.div`
+/*const Divider = styled.div`
 	width: 100%;
 	border-top: 1px solid #000;
 	margin: 10px 0;
-`;
+`;*/
 // const DivSecundario = styled.div`
 // 	display: flex;
 // 	flex-direction: column;
