@@ -31,7 +31,10 @@ class UsersService {
 				},
 			},
 			{
-				$unwind: '$service_info',
+				$unwind: {
+					path: '$service_info',
+					preserveNullAndEmptyArrays: true,
+				},
 			},
 			{
 				$group: {
@@ -43,7 +46,7 @@ class UsersService {
 					location: { $first: '$location' },
 					role: { $first: '$role' },
 					profileImg: { $first: '$profileImg' },
-					services: { $push: '$service_info' },
+					servicesRef: { $push: '$service_info' },
 				},
 			},
 			{
@@ -58,7 +61,7 @@ class UsersService {
 					profileImg: 1,
 					services: {
 						$map: {
-							input: '$services',
+							input: '$servicesRef',
 							as: 'service',
 							in: {
 								_id: '$$service._id',
@@ -103,7 +106,10 @@ class UsersService {
 				},
 			},
 			{
-				$unwind: '$service_info',
+				$unwind: {
+					path: '$service_info',
+					preserveNullAndEmptyArrays: true,
+				},
 			},
 			{
 				$group: {
@@ -115,7 +121,7 @@ class UsersService {
 					location: { $first: '$location' },
 					role: { $first: '$role' },
 					profileImg: { $first: '$profileImg' },
-					services: { $push: '$service_info' },
+					servicesRef: { $push: '$service_info' },
 				},
 			},
 			{
@@ -130,7 +136,7 @@ class UsersService {
 					profileImg: 1,
 					services: {
 						$map: {
-							input: '$services',
+							input: '$servicesRef',
 							as: 'service',
 							in: {
 								_id: '$$service._id',
@@ -168,6 +174,7 @@ class UsersService {
 	async createUser(userPayload) {
 		const { usersCollection, connectedClient } = await getUsersCollection();
 		userPayload.servicesRef = [];
+		userPayload.profileImg = '';
 		const createdUser = await usersCollection.insertOne(userPayload);
 		await connectedClient.close();
 		return createdUser;
