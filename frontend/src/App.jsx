@@ -10,6 +10,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LogIn from './pages/LogIn';
 import styled from 'styled-components';
+import UserProfile from './pages/UserProfile';
 
 const ScrollToTop = ({ children }) => {
 	const location = useLocation();
@@ -48,6 +49,7 @@ const App = () => {
 						<Route path="/como-funciona" element={<ComoFunciona />} />
 						<Route path="/crear-cuenta" element={<CreateAccount />} />
 						<Route path="/iniciar-sesion" element={<LogIn />} />
+						<Route path="/mi-perfil" element={<UserProfile />} />
 					</Routes>
 					<Footer />
 				</Container>
