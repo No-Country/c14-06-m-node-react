@@ -88,6 +88,20 @@ class UsersService {
 	// 	return users;
 	// }
 
+	async getCurrentbyToken(userId) {
+		const { usersCollection, connectedClient } = await getUsersCollection();
+		const tokenObjectId = new ObjectId(userId);
+		const user = await usersCollection.findOne({ _id: tokenObjectId });
+		if (!user) {
+			const customError = new Error('Usuario no encontrado');
+			customError.status = HTTP_STATUS.NOT_FOUND;
+			throw customError;
+		}
+		delete user.password;
+		await connectedClient.close();
+		return user;
+	}
+
 	async getUserById(userId, userIdToken) {
 		const { usersCollection, connectedClient } = await getUsersCollection();
 		const userObjectId = new ObjectId(userId);
@@ -249,7 +263,6 @@ class UsersService {
 			return userUpdated;
 		} catch (error) {
 			await connectedClient.close();
-			console.log(error);
 			throw new Error('Ocurrió un error al intentar subir la imágen');
 		}
 	}

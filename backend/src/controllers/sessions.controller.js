@@ -30,7 +30,7 @@ class SessionsController {
 	static async currentSession(req, res, next) {
 		const { _id } = req.user;
 		try {
-			const user = await usersService.getUserById(_id);
+			const user = await usersService.getCurrentbyToken(_id);
 			res.status(200).json({
 				status: 'success',
 				response: user,
