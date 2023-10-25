@@ -5,6 +5,7 @@ import UsersService from '../service/users.service.js';
 import { createHash, evaluatePassword } from '../utils/bcrypt.js';
 import envs from './env.config.js';
 import HTTP_STATUS from '../utils/http-constants.js';
+import { validatePhoneNumber } from '../utils/validate-phone.js';
 
 const usersService = new UsersService();
 const ExtractJWT = jwt.ExtractJwt;
@@ -18,6 +19,16 @@ const initializePassport = () => {
 			{ passReqToCallback: true, usernameField: 'email' },
 			async (req, email, password, done) => {
 				try {
+					const { countryName, validPhone } = validatePhoneNumber(
+						req.body.phone
+					);
+					if (!validPhone) {
+						const customError = new Error(
+							`Número de teléfono de ${countryName} inválido`
+						);
+						customError.status = HTTP_STATUS.BAD_REQUEST;
+						throw customError;
+					}
 					const registeredUser = await usersService.getUserByEmail(email);
 					if (registeredUser) {
 						return done({
@@ -25,6 +36,7 @@ const initializePassport = () => {
 							message: 'Email ya registrado',
 						});
 					}
+
 					const hashedPass = await createHash(password);
 					const newUser = {
 						...req.body,
