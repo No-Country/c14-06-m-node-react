@@ -10,8 +10,8 @@ const router = Router();
 
 router.post(
 	'/register',
-	passport.authenticate('register', { failureRedirect: 'failregister' }),
 	validateDto(createUserBodyValidator, 'body'),
+	passport.authenticate('register', { failureRedirect: 'failregister' }),
 	async (req, res) => {
 		const { email, name } = req.body;
 		await gmailTransport.sendMail({
