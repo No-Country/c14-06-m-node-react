@@ -75,7 +75,6 @@ const ServicesDetail = () => {
 			} catch (error) {
 				setError(error.message);
 				setLoading(false);
-				console.log(error);
 			}
 		};
 

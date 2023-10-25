@@ -100,7 +100,6 @@ const ProfessionalsList = () => {
 			} catch (error) {
 				setError(error);
 				setLoading(false);
-				console.log(error);
 			}
 		};
 

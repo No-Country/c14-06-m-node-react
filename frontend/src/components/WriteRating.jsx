@@ -59,6 +59,7 @@ const WriteRating = ({ serviceId }) => {
 
 	const handleStarClick = (selectedRating) => {
 		setRating(selectedRating);
+		clearErrors('rating');
 	};
 
 	const handleStarHover = (hoveredRating) => {
@@ -73,13 +74,18 @@ const WriteRating = ({ serviceId }) => {
 		register,
 		handleSubmit,
 		formState: { errors },
+		setError,
+		clearErrors,
 	} = useForm();
 	const onSubmit = handleSubmit((data) => {
 		if (rating === 0) {
-			errors.rating = {
-				message: '*Por favor seleccionar una calificación',
-			};
+			setError('rating', {
+				type: 'manual',
+				message: 'Por favor selecciona una calificación',
+			});
+			return;
 		}
+
 		const payload = {
 			method: 'POST',
 			body: JSON.stringify({ ...data, score: rating }),
@@ -90,18 +96,20 @@ const WriteRating = ({ serviceId }) => {
 		};
 		console.log(url, payload);
 
-		fetch(url, payload)
-			.then((response) => {
-				return response.json();
-			})
-			.then((data) => {
-				console.log(data);
-				if (data.status === 'success') {
-					alert('Valoración registrada con éxito');
-				} else {
-					alert(data.response);
-				}
-			});
+		{
+			fetch(url, payload)
+				.then((response) => {
+					return response.json();
+				})
+				.then((data) => {
+					console.log(data);
+					if (data.status === 'success') {
+						alert('Valoración registrada con éxito');
+					} else {
+						alert(data.response);
+					}
+				});
+		}
 	});
 
 	return (
