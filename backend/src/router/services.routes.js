@@ -8,6 +8,16 @@ import {
 	paramsValidator,
 	updateServiceBodyValidator,
 } from '../schema/service.schema.js';
+import multerErrorMiddleware from '../middlewares/multer-error.middleware.js';
+import multer from 'multer';
+
+const upload = multer({
+	dest: './uploads',
+	limits: {
+		fileSize: 5242880, // cada archivo puede pesar máximo 5mb
+		files: 1,
+	},
+});
 
 const router = Router();
 
@@ -36,6 +46,8 @@ router.post(
 router.put(
 	'/:serviceId',
 	passport.authenticate('jwt', { session: false }),
+	upload.single('certificate'),
+	multerErrorMiddleware,
 	validateDto(paramsValidator, 'params'),
 	validateDto(updateServiceBodyValidator, 'body'),
 	ServicesController.updateOne
