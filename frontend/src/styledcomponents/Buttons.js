@@ -31,5 +31,3 @@ export const ButtonGray = styled.input`
 	border: none;
 	cursor: pointer;
 `;
-
-
