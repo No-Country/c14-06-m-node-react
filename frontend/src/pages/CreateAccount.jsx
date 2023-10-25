@@ -74,7 +74,7 @@ const CreateAccount = () => {
 						type="text"
 						name="name"
 						id="name"
-						placeholder="John"
+						placeholder="Bruno"
 						{...register('name', {
 							required: { value: true, message: 'Nombre es requerido' },
 							minLength: {
@@ -103,7 +103,7 @@ const CreateAccount = () => {
 						type="text"
 						name="surname"
 						id="surname"
-						placeholder="Wayne"
+						placeholder="Diaz"
 						{...register('surname', {
 							required: { value: true, message: 'Apellido es requerido' },
 							minLength: {
