@@ -58,13 +58,6 @@ const serviceSchema = {
 		// errorMessage: 'ID de categoría inválido',
 	},
 
-	userRef: {
-		$id: 'serviceUserId',
-		type: 'string',
-		format: 'ObjectId',
-		errorMessage: 'ID del profesional del servicio inválido',
-	},
-
 	description: {
 		$id: 'serviceDescription',
 		type: 'string',
@@ -79,7 +72,7 @@ const serviceSchema = {
 		items: { $ref: 'serviceQualification' },
 	},
 
-	location: {
+	serviceLocation: {
 		$id: 'serviceLocation',
 		type: 'string',
 		minLength: 3,
@@ -111,20 +104,18 @@ const serviceSchema = {
 
 const createServiceBodySchema = {
 	type: 'object',
-	required: ['category', 'userRef', 'description', 'location'],
+	required: ['category', 'description', 'serviceLocation'],
 	errorMessage: {
 		required: {
 			category: 'Por favor, ingrese la categoría del servicio',
-			userRef: 'Por favor, ingrese el ID del profesional',
 			description: 'Por favor, ingrese una descripcion para el servicio',
-			location: 'Por favor, ingrese la ubicación de su servicio',
+			serviceLocation: 'Por favor, ingrese la ubicación de su servicio',
 		},
 	},
 	properties: {
 		category: serviceSchema.category,
-		userRef: serviceSchema.userRef,
 		description: serviceSchema.description,
-		location: serviceSchema.location,
+		serviceLocation: serviceSchema.serviceLocation,
 	},
 	additionalProperties: false,
 };
@@ -134,9 +125,10 @@ const updateServiceBodySchema = {
 	properties: {
 		category: serviceSchema.category,
 		description: serviceSchema.description,
-		location: serviceSchema.location,
+		serviceLocation: serviceSchema.serviceLocation,
+		certificate: { type: 'string' },
 	},
-	// additionalProperties: false,
+	additionalProperties: false,
 };
 
 const addQualificationBodySchema = { $ref: 'serviceQualification' };
