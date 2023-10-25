@@ -141,6 +141,7 @@ const ProfessionalsList = () => {
 								info={professional.description}
 								telephone={professional.user.phone}
 								location={professional.serviceLocation}
+								rating={true}
 							/>
 						)
 				)

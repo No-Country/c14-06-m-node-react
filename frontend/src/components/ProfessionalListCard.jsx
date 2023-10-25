@@ -13,7 +13,7 @@ const Card = styled.div`
 	overflow: hidden;
 	justify-content: center;
 	align-items: center;
-	width: 80%;
+	width: 100%;
 	@media (max-width: 768px) {
 		flex-direction: column;
 	}
@@ -35,6 +35,7 @@ const Content = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 20px;
+	gap: 0.6rem;
 `;
 
 const Title = styled.h2`
@@ -47,7 +48,6 @@ const SubTitle = styled.h2`
 	display: flex;
 	align-items: center;
 	gap: 2px;
-	margin-top: 8px;
 `;
 
 const Info = styled.p`
@@ -77,7 +77,14 @@ const StyledLink = styled(Link)`
 	color: var(--primary);
 `;
 
-const ProfessionalListCard = ({ name, imgUrl, info, telephone, location }) => {
+const ProfessionalListCard = ({
+	name,
+	imgUrl,
+	info,
+	telephone,
+	location,
+	rating,
+}) => {
 	const IsLoggedIn = localStorage.token ? true : false;
 
 	const [imageValid, setImageValid] = useState(true);
@@ -100,13 +107,15 @@ const ProfessionalListCard = ({ name, imgUrl, info, telephone, location }) => {
 				<SubTitle>
 					Profesional Certificado <VerificadoImage src={verificado} alt="" />
 				</SubTitle>
-				<Info>{info}</Info>
-				<span>
-					<i className="fa-solid fa-location-dot"></i>
-					&nbsp;
-					{location}
-				</span>
-				<Valoracion>Valoración: ★★★★☆</Valoracion>
+				{info && <Info>{info}</Info>}
+				{location && (
+					<span>
+						<i className="fa-solid fa-location-dot"></i>
+						&nbsp;
+						{location}
+					</span>
+				)}
+				{rating && <Valoracion>Valoración: ★★★★☆</Valoracion>}
 			</Content>
 			<ContentRight>
 				{IsLoggedIn ? (
@@ -127,6 +136,7 @@ ProfessionalListCard.propTypes = {
 	info: PropTypes.string.isRequired,
 	telephone: PropTypes.string.isRequired,
 	location: PropTypes.string.isRequired,
+	rating: PropTypes.string.isRequired,
 };
 
 export default ProfessionalListCard;
