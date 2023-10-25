@@ -31,7 +31,7 @@ const LogIn = () => {
 
 		fetch(`${url}/login`, payload)
 			.then((response) => {
-				if (response.status === 201) {
+				if (response.ok) {
 					changeTitulo('Ingresaste de forma exitosa');
 					changeParrafo('Bienvenido!');
 				} else {
@@ -47,31 +47,13 @@ const LogIn = () => {
 				return response.json();
 			})
 			.then((data) => {
-				if (data.token) {
-					//Token en localStorage
-					localStorage.setItem('token', data.token);
-
-					//OBTENER ID DE USUARIO AL INICIAR SESION
-
-					const tokenCurrentUser = localStorage.getItem('token');
-					const payloadCurrentUser = {
-						method: 'GET',
-						headers: {
-							Authorization: tokenCurrentUser,
-						},
-					};
-
-					fetch(`${url}/current`, payloadCurrentUser)
-						.then((response) => response.json())
-						.then((data) => {
-							localStorage.setItem('id', data._id);
-						});
-
-					//redireccion
-					setTimeout(() => {
-						location.replace('/');
-					}, 3000);
-				}
+				//Token en localStorage
+				localStorage.setItem('token', data.response.token);
+				localStorage.setItem('user', JSON.stringify(data.response.user));
+				//redireccion
+				setTimeout(() => {
+					location.replace('/');
+				}, 3000);
 			});
 	});
 

@@ -20,11 +20,22 @@ const CreateAccount = () => {
 
 	const onSubmit = handleSubmit((data) => {
 		changeModalState(true);
-		data.role = 'user';
-		data.profileImg = '';
+
+		const body = {
+			name: data.name,
+			surname: data.surname,
+			email: data.email,
+			password: data.password,
+			phone: `+54 ${data.phone}`,
+			location: data.location,
+			role: 'user',
+		};
+
+		console.log(body);
+
 		const payload = {
 			method: 'POST',
-			body: JSON.stringify(data),
+			body: JSON.stringify(body),
 			headers: {
 				'Content-type': 'application/json',
 			},
@@ -32,6 +43,7 @@ const CreateAccount = () => {
 
 		fetch(endpoint, payload)
 			.then((response) => {
+				console.log(response);
 				if (response.status === 201) {
 					//APARECE MODEAL DE REGISTRO EXITOSO
 					changeTitulo('Te registraste exitosamente!');
@@ -42,6 +54,7 @@ const CreateAccount = () => {
 
 					return response.json();
 				} else if (response.status === 400) {
+					response.json();
 					//Cambia titulo y parrafo de Modal
 					changeTitulo('Correo usado');
 					changeParrafo('Intenta con otro correo');
@@ -53,7 +66,7 @@ const CreateAccount = () => {
 					}, 3000);
 				}
 			})
-			.then((data) => data);
+			.then((data) => console.log(data));
 	});
 	return (
 		<DivContainer>
@@ -207,8 +220,8 @@ const CreateAccount = () => {
 								message: 'Contraseña es requerida',
 							},
 							minLength: {
-								value: 6,
-								message: 'Contraseña debe tener al menos 6 caracteres',
+								value: 8,
+								message: 'Contraseña debe tener al menos 8 caracteres',
 							},
 							maxLength: {
 								value: 50,
@@ -244,7 +257,7 @@ const CreateAccount = () => {
 				<DivInfoContraseña>
 					<span>Su contraseña debe:</span>
 					<ul>
-						<li>tener entre 6 y 50 caracteres</li>
+						<li>tener entre 8 y 50 caracteres</li>
 					</ul>
 				</DivInfoContraseña>
 				<TextTerms>
