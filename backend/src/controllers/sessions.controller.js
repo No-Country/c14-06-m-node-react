@@ -1,4 +1,7 @@
+import UsersService from '../service/users.service.js';
 import { generateToken } from '../utils/session.utils.js';
+
+const usersService = new UsersService();
 
 class SessionsController {
 	static async login(req, res, next) {
@@ -11,18 +14,30 @@ class SessionsController {
 				});
 			}
 			const access_token = generateToken(user);
-			res.status(201).json({
-				status: 'created',
-				response: 'Inicio de sesion exitoso',
-				token: 'Bearer ' + access_token,
+			const response = {
+				token: `Bearer ${access_token}`,
+				user,
+			};
+			res.status(200).json({
+				status: 'success',
+				response,
 			});
 		} catch (error) {
 			next(error);
 		}
 	}
 
-	static async currentSession(req, res) {
-		return res.json(req.user);
+	static async currentSession(req, res, next) {
+		const { _id } = req.user;
+		try {
+			const user = await usersService.getCurrentbyToken(_id);
+			res.status(200).json({
+				status: 'success',
+				response: user,
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
 }
 

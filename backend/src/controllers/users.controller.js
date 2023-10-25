@@ -24,8 +24,9 @@ class UsersController {
 
 	static async getById(req, res, next) {
 		const { userId } = req.params;
+		const userIdToken = req.user._id;
 		try {
-			const user = await usersService.getUserById(userId);
+			const user = await usersService.getUserById(userId, userIdToken);
 			res.status(200).json({
 				status: 'success',
 				response: user,
@@ -35,28 +36,17 @@ class UsersController {
 		}
 	}
 
-	static async addOne(req, res, next) {
-		const userPayload = req.body;
-		try {
-			validateUserPhone(userPayload);
-
-			const createUser = await usersService.createUser(userPayload);
-			res.status(201).json({
-				status: 'created',
-				response: createUser,
-			});
-		} catch (error) {
-			next(error);
-		}
-	}
-
 	static async updateOne(req, res, next) {
 		const { userId } = req.params;
+		const userIdToken = req.user._id;
 		const userPayload = req.body;
 		try {
 			if (userPayload.phone !== undefined) validateUserPhone(userPayload);
-
-			const updatedUser = await usersService.updateUser(userId, userPayload);
+			const updatedUser = await usersService.updateUser(
+				userId,
+				userPayload,
+				userIdToken
+			);
 			res.status(200).json({
 				status: 'success',
 				response: updatedUser,
@@ -68,6 +58,7 @@ class UsersController {
 
 	static async updateImage(req, res, next) {
 		const { userId } = req.params;
+		const userIdToken = req.user._id;
 		const { file } = req;
 		/* file = {
 			fieldname: 'image',
@@ -90,7 +81,11 @@ class UsersController {
 			const VALID_EXTENSIONS = ['jpg', 'png', 'jpeg', 'webp', 'gif'];
 			validateFileExtension(file.originalname, VALID_EXTENSIONS);
 
-			const updatedUser = await usersService.updateImage(userId, file.path);
+			const updatedUser = await usersService.updateImage(
+				userId,
+				userIdToken,
+				file.path
+			);
 			res.status(200).json({
 				status: 'success',
 				response: updatedUser,
@@ -104,8 +99,9 @@ class UsersController {
 
 	static async remove(req, res, next) {
 		const { userId } = req.params;
+		const userIdToken = req.user._id;
 		try {
-			const deletedUser = await usersService.deleteUser(userId);
+			const deletedUser = await usersService.deleteUser(userId, userIdToken);
 			deletedUser.servicesRef?.forEach(async (service) => {
 				await servicesService.deleteService(service._id);
 			});
