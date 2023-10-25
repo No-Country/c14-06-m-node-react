@@ -206,15 +206,8 @@ class ServicesService {
 			categoriesCollection,
 			connectedClient,
 		} = await getServicesCollection();
-		const { category, description, certified, serviceLocation } =
-			servicePayload;
-		if (
-			!category ||
-			!description ||
-			certified === undefined ||
-			!serviceLocation ||
-			!userId
-		) {
+		const { category, description, serviceLocation } = servicePayload;
+		if (!category || !description || !serviceLocation || !userId) {
 			const customError = new Error('Campos obligatorios incompletos');
 			customError.status = HTTP_STATUS.BAD_REQUEST;
 			throw customError;
@@ -258,7 +251,7 @@ class ServicesService {
 			userRef: userObjectId,
 			categoryRef: categoryObjectId,
 			description,
-			certified,
+			certified: false,
 			serviceLocation,
 			active: true,
 			qualifications: [],
