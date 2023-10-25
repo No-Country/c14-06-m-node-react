@@ -133,10 +133,10 @@ const ProfessionalListCard = ({
 ProfessionalListCard.propTypes = {
 	name: PropTypes.string.isRequired,
 	imgUrl: PropTypes.string.isRequired,
-	info: PropTypes.string.isRequired,
+	info: PropTypes.string,
 	telephone: PropTypes.string.isRequired,
 	location: PropTypes.string.isRequired,
-	rating: PropTypes.string.isRequired,
+	rating: PropTypes.number,
 };
 
 export default ProfessionalListCard;

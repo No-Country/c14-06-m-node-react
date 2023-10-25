@@ -4,6 +4,7 @@ import ProfessionalListCard from '../components/ProfessionalListCard';
 import styled from 'styled-components';
 import RaitingCard from '../components/RaitingCard';
 import WriteRating from '../components/WriteRating';
+import StarRating from '../components/StarRating';
 
 const ServiceDetailContainer = styled.div`
 	display: flex;
@@ -83,7 +84,7 @@ const ServicesDetail = () => {
 	console.log(serviceDetail);
 
 	if (loading) {
-		return <LoadingMessage>Buscando servicio...</LoadingMessage>;
+		return <LoadingMessage>Cargando servicio...</LoadingMessage>;
 	}
 
 	if (error) {
@@ -103,15 +104,17 @@ const ServicesDetail = () => {
 						telephone={serviceDetail.user.phone}
 						location={serviceDetail.serviceLocation}
 					/>
-					<RatingDiv>
-						<b>Valoración</b>
-						<RaitingStars>★★★★☆</RaitingStars>
-						<RaitingCaption>(1 valoración)</RaitingCaption>
-					</RatingDiv>
 					<div>
 						<h4>Descripción del servicio:</h4>
 						<p>{serviceDetail.description}</p>
 					</div>
+					<RatingDiv>
+						<b>Valoración</b>
+						<RaitingStars>
+							<StarRating rating={89} />
+						</RaitingStars>
+						<RaitingCaption>(1 valoración)</RaitingCaption>
+					</RatingDiv>
 					<RatingCardsDiv>
 						<CardDiv>
 							<RaitingCard />
@@ -123,7 +126,7 @@ const ServicesDetail = () => {
 							<RaitingCard />
 						</CardDiv>
 					</RatingCardsDiv>
-					<WriteRating />
+					<WriteRating serviceId={serviceDetail._id} />
 				</ServiceDetailContainer>
 			)}
 		</>
