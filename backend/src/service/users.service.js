@@ -12,8 +12,10 @@ const getUsersCollection = async () => {
 	const connectedClient = await getClient();
 	const db = connectedClient.db('ServiciosClub');
 	const usersCollection = db.collection('users');
+	const categoriesCollection = db.collection('categories');
 	return {
 		usersCollection,
+		categoriesCollection,
 		connectedClient,
 	};
 };
@@ -103,7 +105,8 @@ class UsersService {
 	}
 
 	async getUserById(userId, userIdToken) {
-		const { usersCollection, connectedClient } = await getUsersCollection();
+		const { usersCollection, categoriesCollection, connectedClient } =
+			await getUsersCollection();
 		const userObjectId = new ObjectId(userId);
 		const tokenObjectId = new ObjectId(userIdToken);
 		const aggregation = [
@@ -174,6 +177,14 @@ class UsersService {
 			const customError = new Error('Usuario no encontrado');
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
+		}
+		for (const service of user.services) {
+			const category = await categoriesCollection.findOne({
+				_id: service.categoryRef,
+			});
+			delete category._id;
+			service.category = category;
+			delete service.categoryRef;
 		}
 		const tokenUser = await usersCollection.findOne({ _id: tokenObjectId });
 		if (userId !== userIdToken && tokenUser.role !== 'admin') {
