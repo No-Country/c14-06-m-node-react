@@ -32,7 +32,7 @@ export const saveToCloudinary = async (relativePathFile) => {
 		return { publicId, secureUrl };
 	} catch (err) {
 		console.log(err);
-		throw 'Error al subir imágen a cloudinary';
+		throw 'Error al subir imagen a cloudinary';
 	}
 };
 
@@ -43,7 +43,7 @@ export const deleteFromCloudinary = async (publicId) => {
 		if (result !== 'ok') throw result;
 	} catch (err) {
 		console.log(err);
-		console.log('Error al borrar una imágen de cloudinary');
+		console.log('Error al borrar una imagen de cloudinary');
 	}
 };
 

@@ -136,11 +136,8 @@ const updateUserBodySchema = {
 		name: userSchema.name,
 		surname: userSchema.surname,
 		email: userSchema.email,
-		password: userSchema.password,
 		phone: userSchema.phone,
 		location: userSchema.location,
-		role: userSchema.role,
-		profileImg: userSchema.profileImg,
 	},
 	additionalProperties: false,
 };

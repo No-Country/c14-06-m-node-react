@@ -199,21 +199,21 @@ class ServicesService {
 		return service;
 	}
 
-	async createService(servicePayload) {
+	async createService(servicePayload, userId) {
 		const {
 			servicesCollection,
 			usersCollection,
 			categoriesCollection,
 			connectedClient,
 		} = await getServicesCollection();
-		const { category, description, userId, certified, serviceLocation } =
+		const { category, description, certified, serviceLocation } =
 			servicePayload;
 		if (
 			!category ||
 			!description ||
-			!userId ||
 			certified === undefined ||
-			!serviceLocation
+			!serviceLocation ||
+			!userId
 		) {
 			const customError = new Error('Campos obligatorios incompletos');
 			customError.status = HTTP_STATUS.BAD_REQUEST;
@@ -273,10 +273,10 @@ class ServicesService {
 		return createdService;
 	}
 
-	async qualifyService(serviceId, qualificationPayload) {
+	async qualifyService(serviceId, qualificationPayload, userId) {
 		const { servicesCollection, usersCollection, connectedClient } =
 			await getServicesCollection();
-		const { userId, comment, score } = qualificationPayload;
+		const { comment, score } = qualificationPayload;
 		if (!userId || !comment || score === undefined) {
 			const customError = new Error('Campos obligatorios incompletos');
 			customError.status = HTTP_STATUS.BAD_REQUEST;
@@ -296,6 +296,40 @@ class ServicesService {
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
+		if (JSON.stringify(service.userRef) === JSON.stringify(userObjectId)) {
+			const customError = new Error('No se puede calificar un servicio propio');
+			customError.status = HTTP_STATUS.FORBIDDEN;
+			throw customError;
+		}
+		const registeredCategories = [];
+		if (user.servicesRef) {
+			for (const serviceRef of user.servicesRef) {
+				const userService = await servicesCollection.findOne({
+					_id: serviceRef,
+				});
+				let stringId = JSON.stringify(userService?.categoryRef);
+				registeredCategories.push(stringId);
+			}
+			if (registeredCategories.includes(JSON.stringify(service.categoryRef))) {
+				const customError = new Error(
+					'No se puede calificar servicios de la misma categoría que son ofrecidos por el usuario'
+				);
+				customError.status = HTTP_STATUS.FORBIDDEN;
+				throw customError;
+			}
+		}
+		service.qualifications?.forEach((qualification) => {
+			if (
+				JSON.stringify(userObjectId) === JSON.stringify(qualification.userId)
+			) {
+				const customError = new Error(
+					'No se puede calificar dos veces al mismo servicio'
+				);
+				customError.status = HTTP_STATUS.FORBIDDEN;
+				throw customError;
+			}
+		});
+		qualificationPayload.userId = userId;
 		const ratedService = await servicesCollection.updateOne(
 			{ _id: serviceObjectId },
 			{ $push: { qualifications: qualificationPayload } }
@@ -311,24 +345,34 @@ class ServicesService {
 		return ratedService;
 	}
 
-	async updateService(serviceId, servicePayload) {
-		const { servicesCollection, connectedClient } =
+	async updateService(serviceId, servicePayload, userId) {
+		const { servicesCollection, usersCollection, connectedClient } =
 			await getServicesCollection();
 		const { description, certified, serviceLocation, active } = servicePayload;
 		if (!serviceId || Object.keys(servicePayload).length === 0) {
-			//Evaluamos que haya un id y que se mande algún dato
 			const customError = new Error('Datos incompletos.');
 			customError.status = HTTP_STATUS.BAD_REQUEST;
 			throw customError;
 		}
-		const objectId = new ObjectId(serviceId);
+		const serviceObjectId = new ObjectId(serviceId);
 		const service = await servicesCollection.findOne({
-			_id: objectId,
+			_id: serviceObjectId,
 		});
 		if (!service) {
-			//Evaluamos que exista el profesional a modificar
 			const customError = new Error('Servicio no encontrado');
 			customError.status = HTTP_STATUS.NOT_FOUND;
+			throw customError;
+		}
+		const userObjectId = new ObjectId(userId);
+		const user = await usersCollection.findOne({ _id: userObjectId });
+		if (
+			user?.role !== 'admin' &&
+			JSON.stringify(service.userRef) !== JSON.stringify(userId)
+		) {
+			const customError = new Error(
+				'Solo el propietario o el administrador pueden editar el servicio'
+			);
+			customError.status = HTTP_STATUS.FORBIDDEN;
 			throw customError;
 		}
 		if (description) {
@@ -344,27 +388,39 @@ class ServicesService {
 			service.serviceLocation = serviceLocation;
 		}
 		const serviceUpdated = await servicesCollection.replaceOne(
-			{ _id: objectId },
+			{ _id: serviceObjectId },
 			service
 		);
 		await connectedClient.close();
 		return serviceUpdated;
 	}
 
-	async deleteService(serviceId) {
-		const { servicesCollection, connectedClient } =
+	async deleteService(serviceId, userId) {
+		const { servicesCollection, usersCollection, connectedClient } =
 			await getServicesCollection();
-		const objectId = new ObjectId(serviceId);
+		const serviceObjectId = new ObjectId(serviceId);
 		const service = await servicesCollection.findOne({
-			_id: objectId,
+			_id: serviceObjectId,
 		});
 		if (!service) {
 			const customError = new Error('servicio no encontrado');
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
+		const userObjectId = new ObjectId(userId);
+		const user = await usersCollection.findOne({ _id: userObjectId });
+		if (
+			user?.role !== 'admin' &&
+			JSON.stringify(service.userRef) !== JSON.stringify(userId)
+		) {
+			const customError = new Error(
+				'Solo el propietario o el administrador pueden borrar el servicio'
+			);
+			customError.status = HTTP_STATUS.FORBIDDEN;
+			throw customError;
+		}
 		const deletedService = await servicesCollection.deleteOne({
-			_id: objectId,
+			_id: serviceObjectId,
 		});
 		await connectedClient.close();
 		return deletedService;
