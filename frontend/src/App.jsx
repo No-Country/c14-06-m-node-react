@@ -10,7 +10,9 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LogIn from './pages/LogIn';
 import styled from 'styled-components';
+import ServicesDetail from './pages/ServicesDetail';
 import UserProfile from './pages/UserProfile';
+
 
 const ScrollToTop = ({ children }) => {
 	const location = useLocation();
@@ -28,6 +30,7 @@ const Container = styled.div`
 	max-width: 1200px;
 	margin: 0 auto;
 	min-height: calc(100vh - var(--navbar-height));
+	padding: 1.5rem;
 `;
 const App = () => {
 	return (
@@ -49,6 +52,7 @@ const App = () => {
 						<Route path="/como-funciona" element={<ComoFunciona />} />
 						<Route path="/crear-cuenta" element={<CreateAccount />} />
 						<Route path="/iniciar-sesion" element={<LogIn />} />
+						<Route path="/servicio/:serviceId" element={<ServicesDetail />} />
 						<Route path="/mi-perfil" element={<UserProfile />} />
 					</Routes>
 					<Footer />
