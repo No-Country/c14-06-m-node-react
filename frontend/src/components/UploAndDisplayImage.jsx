@@ -21,6 +21,7 @@ const UploadAndDisplayImage = () => {
 				<StyledInputFile
 					type="file"
 					name="myImage"
+					accept="image/png, image/jpeg"
 					onChange={(event) => {
 						console.log(event.target.files[0]);
 						setSelectedImage(event.target.files[0]);
