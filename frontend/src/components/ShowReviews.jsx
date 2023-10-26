@@ -46,6 +46,7 @@ const ShowReview = ({ reviews }) => {
 			</RatingCardsDiv>
 		);
 	}
+
 	return (
 		<>
 			<Calificaciones>Comentarios: </Calificaciones>
@@ -56,6 +57,8 @@ const ShowReview = ({ reviews }) => {
 							comment={review.comment}
 							score={review.score}
 							userId={review.userId}
+							username={review.user.name + ' ' + review.user.surname}
+							profileImg={review.user.profileImg}
 							index={index}
 						/>
 					</CardDiv>
