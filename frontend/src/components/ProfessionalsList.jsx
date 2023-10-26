@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ProfessionalListCard from './ProfessionalListCard';
+import { Link } from 'react-router-dom';
 
 const ProfessionalsListContainer = styled.div`
 	width: 100%;
@@ -32,6 +33,10 @@ const NoServicesMessage = styled.div`
 	font-size: 1.2rem;
 	padding: 1rem;
 	margin: auto;
+`;
+
+const StyledLink = styled(Link)`
+	width: 100%;
 `;
 
 const professions = [
@@ -95,7 +100,6 @@ const ProfessionalsList = () => {
 			} catch (error) {
 				setError(error);
 				setLoading(false);
-				console.log(error);
 			}
 		};
 
@@ -133,15 +137,25 @@ const ProfessionalsList = () => {
 			) : (
 				professionalList.response.map(
 					(professional) =>
-						professional.category.code === categoryTitle && (
-							<ProfessionalListCard
-								key={professional._id}
-								imgUrl={professional.user.profileImg}
-								name={professional.user.name}
-								info={professional.description}
-								telephone={professional.user.phone}
-								location={professional.serviceLocation}
-							/>
+						professional.category.code === categoryTitle &&
+						professional.active && (
+							<>
+								<StyledLink
+									to={{
+										pathname: `/servicio/${professional._id}`,
+									}}
+								>
+									<ProfessionalListCard
+										key={professional._id}
+										imgUrl={professional.user.profileImg}
+										name={professional.user.name}
+										info={professional.description}
+										telephone={professional.user.phone}
+										location={professional.serviceLocation}
+										rating={true}
+									/>
+								</StyledLink>
+							</>
 						)
 				)
 			)}

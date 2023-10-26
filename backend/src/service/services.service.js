@@ -1,6 +1,11 @@
 import HTTP_STATUS from '../utils/http-constants.js';
 import getClient from '../database/mongo-client.js';
 import { ObjectId } from 'mongodb';
+import {
+	deleteFromCloudinary,
+	getPublicIdFromCloudinaryUrl,
+	saveToCloudinary,
+} from '../utils/cloudinary.js';
 
 const getServicesCollection = async () => {
 	const connectedClient = await getClient();
@@ -48,6 +53,7 @@ class ServicesService {
 					_id: '$_id',
 					description: { $first: '$description' },
 					certified: { $first: '$certified' },
+					certificate: { $first: '$certificate' },
 					serviceLocation: { $first: '$serviceLocation' },
 					active: { $first: '$active' },
 					qualifications: { $first: '$qualification' },
@@ -62,6 +68,7 @@ class ServicesService {
 					qualifications: 1,
 					rating: 1,
 					certified: 1,
+					certificate: 1,
 					description: 1,
 					serviceLocation: 1,
 					active: 1,
@@ -154,6 +161,7 @@ class ServicesService {
 					_id: '$_id',
 					description: { $first: '$description' },
 					certified: { $first: '$certified' },
+					certificate: { $first: '$certificate' },
 					serviceLocation: { $first: '$serviceLocation' },
 					active: { $first: '$active' },
 					qualifications: { $first: '$qualifications' },
@@ -167,6 +175,7 @@ class ServicesService {
 					_id: 1,
 					qualifications: 1,
 					certified: 1,
+					certificate: 1,
 					description: 1,
 					serviceLocation: 1,
 					active: 1,
@@ -252,6 +261,7 @@ class ServicesService {
 			categoryRef: categoryObjectId,
 			description,
 			certified: false,
+			certificate: '',
 			serviceLocation,
 			active: true,
 			qualifications: [],
@@ -341,12 +351,13 @@ class ServicesService {
 	async updateService(serviceId, servicePayload, userId) {
 		const { servicesCollection, usersCollection, connectedClient } =
 			await getServicesCollection();
-		const { description, certified, serviceLocation, active } = servicePayload;
-		if (!serviceId || Object.keys(servicePayload).length === 0) {
-			const customError = new Error('Datos incompletos.');
-			customError.status = HTTP_STATUS.BAD_REQUEST;
-			throw customError;
-		}
+		const {
+			description,
+			certificate = null,
+			serviceLocation,
+			active,
+		} = servicePayload;
+
 		const serviceObjectId = new ObjectId(serviceId);
 		const service = await servicesCollection.findOne({
 			_id: serviceObjectId,
@@ -374,8 +385,22 @@ class ServicesService {
 		if ('active' in servicePayload) {
 			service.active = active;
 		}
-		if ('certified' in servicePayload) {
-			service.certified = certified;
+		if (certificate !== null) {
+			try {
+				const oldCertificate = service.certificate || '';
+				if (oldCertificate.startsWith('https://')) {
+					await deleteFromCloudinary(
+						getPublicIdFromCloudinaryUrl(oldCertificate)
+					);
+				}
+
+				const { secureUrl } = await saveToCloudinary(certificate);
+				service.certificate = secureUrl;
+				service.certified = true;
+			} catch (error) {
+				await connectedClient.close();
+				throw new Error('Ocurrió un error al intentar subir la imágen');
+			}
 		}
 		if (serviceLocation) {
 			service.serviceLocation = serviceLocation;
@@ -412,6 +437,13 @@ class ServicesService {
 			customError.status = HTTP_STATUS.FORBIDDEN;
 			throw customError;
 		}
+
+		if (service.certificate?.startsWith('https://')) {
+			await deleteFromCloudinary(
+				getPublicIdFromCloudinaryUrl(service.certificate)
+			);
+		}
+
 		const deletedService = await servicesCollection.deleteOne({
 			_id: serviceObjectId,
 		});
