@@ -1,6 +1,6 @@
 import HTTP_STATUS from '../utils/http-constants.js';
 import '../database/mongo-client.js';
-import getClient from '../database/mongo-client.js';
+import { connectDB } from '../database/mongo-client.js';
 import { ObjectId } from 'mongodb';
 import {
 	deleteFromCloudinary,
@@ -9,14 +9,12 @@ import {
 } from '../utils/cloudinary.js';
 
 const getUsersCollection = async () => {
-	const connectedClient = await getClient();
-	const db = connectedClient.db('ServiciosClub');
+	const db = await connectDB();
 	const usersCollection = db.collection('users');
 	const categoriesCollection = db.collection('categories');
 	return {
 		usersCollection,
 		categoriesCollection,
-		connectedClient,
 	};
 };
 
@@ -91,7 +89,7 @@ class UsersService {
 	// }
 
 	async getCurrentbyToken(userId) {
-		const { usersCollection, connectedClient } = await getUsersCollection();
+		const { usersCollection } = await getUsersCollection();
 		const tokenObjectId = new ObjectId(userId);
 		const user = await usersCollection.findOne({ _id: tokenObjectId });
 		if (!user) {
@@ -100,12 +98,11 @@ class UsersService {
 			throw customError;
 		}
 		delete user.password;
-		await connectedClient.close();
 		return user;
 	}
 
 	async getUserById(userId, userIdToken) {
-		const { usersCollection, categoriesCollection, connectedClient } =
+		const { usersCollection, categoriesCollection } =
 			await getUsersCollection();
 		const userObjectId = new ObjectId(userId);
 		const tokenObjectId = new ObjectId(userIdToken);
@@ -192,28 +189,25 @@ class UsersService {
 			customError.status = HTTP_STATUS.FORBIDDEN;
 			throw customError;
 		}
-		await connectedClient.close();
 		return user;
 	}
 
 	async getUserByEmail(userEmail) {
-		const { usersCollection, connectedClient } = await getUsersCollection();
+		const { usersCollection } = await getUsersCollection();
 		const user = await usersCollection.findOne({ email: userEmail });
-		await connectedClient.close();
 		return user;
 	}
 
 	async createUser(userPayload) {
-		const { usersCollection, connectedClient } = await getUsersCollection();
+		const { usersCollection } = await getUsersCollection();
 		userPayload.servicesRef = [];
 		userPayload.profileImg = '';
 		const createdUser = await usersCollection.insertOne(userPayload);
-		await connectedClient.close();
 		return createdUser;
 	}
 
 	async updateUser(userId, userPayload, userIdToken) {
-		const { usersCollection, connectedClient } = await getUsersCollection();
+		const { usersCollection } = await getUsersCollection();
 		const objectId = new ObjectId(userId);
 		const tokenObjectId = new ObjectId(userIdToken);
 		const user = await usersCollection.findOne({ _id: objectId });
@@ -233,12 +227,11 @@ class UsersService {
 			$set: userPayload,
 		};
 		const userUpdated = await usersCollection.updateOne(filter, updateDocument);
-		await connectedClient.close();
 		return userUpdated;
 	}
 
 	async updateImage(userId, userIdToken, imagePath) {
-		const { usersCollection, connectedClient } = await getUsersCollection();
+		const { usersCollection } = await getUsersCollection();
 		const objectId = new ObjectId(userId);
 		const tokenObjectId = new ObjectId(userIdToken);
 		const user = await usersCollection.findOne({ _id: objectId });
@@ -270,16 +263,14 @@ class UsersService {
 				filter,
 				updateDocument
 			);
-			await connectedClient.close();
 			return userUpdated;
 		} catch (error) {
-			await connectedClient.close();
 			throw new Error('Ocurrió un error al intentar subir la imágen');
 		}
 	}
 
 	async deleteUser(userId, userIdToken) {
-		const { usersCollection, connectedClient } = await getUsersCollection();
+		const { usersCollection } = await getUsersCollection();
 		const objectId = new ObjectId(userId);
 		const tokenObjectId = new ObjectId(userIdToken);
 		const user = await usersCollection.findOne({ _id: objectId });
@@ -296,7 +287,6 @@ class UsersService {
 		}
 		await deleteUserImageFromCloudinary(user.profileImg);
 		const deletedUser = await usersCollection.deleteOne({ _id: objectId });
-		await connectedClient.close();
 		return deletedUser;
 	}
 }

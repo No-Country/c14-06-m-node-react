@@ -1,5 +1,5 @@
 import HTTP_STATUS from '../utils/http-constants.js';
-import getClient from '../database/mongo-client.js';
+import { connectDB } from '../database/mongo-client.js';
 import { ObjectId } from 'mongodb';
 import {
 	deleteFromCloudinary,
@@ -8,8 +8,7 @@ import {
 } from '../utils/cloudinary.js';
 
 const getServicesCollection = async () => {
-	const connectedClient = await getClient();
-	const db = connectedClient.db('ServiciosClub');
+	const db = await connectDB();
 	const servicesCollection = db.collection('services');
 	const usersCollection = db.collection('users');
 	const categoriesCollection = db.collection('categories');
@@ -17,13 +16,12 @@ const getServicesCollection = async () => {
 		servicesCollection,
 		usersCollection,
 		categoriesCollection,
-		connectedClient,
 	};
 };
 
 class ServicesService {
 	async getServices(filters) {
-		const { servicesCollection, categoriesCollection, connectedClient } =
+		const { servicesCollection, categoriesCollection } =
 			await getServicesCollection();
 		const aggregation = [
 			{
@@ -120,12 +118,11 @@ class ServicesService {
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
-		await connectedClient.close();
 		return services;
 	}
 
 	async getServiceById(serviceId) {
-		const { servicesCollection, usersCollection, connectedClient } =
+		const { servicesCollection, usersCollection } =
 			await getServicesCollection();
 		const objectId = new ObjectId(serviceId);
 		const aggregation = [
@@ -213,17 +210,12 @@ class ServicesService {
 				profileImg: user.profileImg,
 			};
 		}
-		await connectedClient.close();
 		return service;
 	}
 
 	async createService(servicePayload, userId) {
-		const {
-			servicesCollection,
-			usersCollection,
-			categoriesCollection,
-			connectedClient,
-		} = await getServicesCollection();
+		const { servicesCollection, usersCollection, categoriesCollection } =
+			await getServicesCollection();
 		const { category, description, serviceLocation } = servicePayload;
 		if (!category || !description || !serviceLocation || !userId) {
 			const customError = new Error('Campos obligatorios incompletos');
@@ -281,12 +273,11 @@ class ServicesService {
 			{ _id: userObjectId },
 			{ $push: { servicesRef: createdService.insertedId } }
 		);
-		await connectedClient.close();
 		return createdService;
 	}
 
 	async qualifyService(serviceId, qualificationPayload, userId) {
-		const { servicesCollection, usersCollection, connectedClient } =
+		const { servicesCollection, usersCollection } =
 			await getServicesCollection();
 		const { comment, score } = qualificationPayload;
 		if (!userId || !comment || score === undefined) {
@@ -353,12 +344,11 @@ class ServicesService {
 			{ _id: serviceObjectId },
 			{ $set: { rating: newRating } }
 		);
-		await connectedClient.close();
 		return ratedService;
 	}
 
 	async updateService(serviceId, servicePayload, userId) {
-		const { servicesCollection, usersCollection, connectedClient } =
+		const { servicesCollection, usersCollection } =
 			await getServicesCollection();
 		const {
 			description,
@@ -407,7 +397,6 @@ class ServicesService {
 				service.certificate = secureUrl;
 				service.certified = true;
 			} catch (error) {
-				await connectedClient.close();
 				throw new Error('Ocurrió un error al intentar subir la imágen');
 			}
 		}
@@ -418,12 +407,11 @@ class ServicesService {
 			{ _id: serviceObjectId },
 			service
 		);
-		await connectedClient.close();
 		return serviceUpdated;
 	}
 
 	async deleteService(serviceId, userId) {
-		const { servicesCollection, usersCollection, connectedClient } =
+		const { servicesCollection, usersCollection } =
 			await getServicesCollection();
 		const serviceObjectId = new ObjectId(serviceId);
 		const service = await servicesCollection.findOne({
@@ -456,7 +444,6 @@ class ServicesService {
 		const deletedService = await servicesCollection.deleteOne({
 			_id: serviceObjectId,
 		});
-		await connectedClient.close();
 		return deletedService;
 	}
 }

@@ -12,6 +12,11 @@ const client = new MongoClient(mongoUri, {
 	},
 });
 
-export default async () => {
-	return await client.connect();
+let db;
+export const connectDB = async () => {
+	if (!db) {
+		await client.connect();
+		db = client.db('ServiciosClub');
+	}
+	return db;
 };
