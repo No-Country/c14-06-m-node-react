@@ -13,7 +13,6 @@ import styled from 'styled-components';
 import ServicesDetail from './pages/ServicesDetail';
 import UserProfile from './pages/UserProfile';
 
-
 const ScrollToTop = ({ children }) => {
 	const location = useLocation();
 	useEffect(() => {

@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import person1 from '../assets/images/person1.jpg';
+// import person1 from '../assets/images/person1.jpg';
 import styled from 'styled-components';
 
 const UploadAndDisplayImage = () => {
 	const [selectedImage, setSelectedImage] = useState(null);
+	const userImg = JSON.parse(localStorage.getItem('user')).profileImg;
 
 	return (
 		<StyledContainer>
 			{!selectedImage && (
 				<div>
-					<img alt="not found" src={person1} />
+					<img alt="not found" src={userImg} />
 				</div>
 			)}
 			{selectedImage && (
