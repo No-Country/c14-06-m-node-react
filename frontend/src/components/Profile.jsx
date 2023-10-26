@@ -1,10 +1,22 @@
 import styled from 'styled-components';
 import { provincias } from '../assets/usefulData';
 import { ButtonBlue, ButtonGray } from '../styledcomponents/Buttons';
-import person1 from '../assets/images/person1.jpg';
+
 import { useForm } from 'react-hook-form';
+import UploadAndDisplayImage from './UploAndDisplayImage';
+import Modal from './Modal';
+import { useState } from 'react';
 
 export default function Profile() {
+	const userId = JSON.parse(localStorage.getItem('user'))._id;
+	const userToken = localStorage.getItem('token');
+
+	const [modalState, changeModalState] = useState(false);
+	const [titulo, changeTitulo] = useState('Cargando ...');
+	const [parrafo, changeParrafo] = useState('Por favor espera.');
+
+	const url = 'https://serviceclub.onrender.com/api/users';
+
 	const {
 		register,
 		handleSubmit,
@@ -12,12 +24,80 @@ export default function Profile() {
 		formState: { errors },
 	} = useForm();
 
+	const removeEmptyFields = (data) => {
+		Object.keys(data).forEach((key) => {
+			if (data[key] === '' || data[key] == null) {
+				delete data[key];
+			}
+		});
+	};
+
+	const addCodeToPhone = (data) => {
+		if (data.phone === '' || data.phone == null) {
+			data.phone = '';
+		} else {
+			const parsePhone = `+54 ${data.phone}`;
+			console.log(parsePhone);
+			data.phone = parsePhone;
+		}
+	};
+
+	const isDataEmpty = (data) => {
+		if (Object.keys(data).length === 0) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
 	const onSubmit = handleSubmit((data) => {
-		console.log(data);
+		addCodeToPhone(data);
+		removeEmptyFields(data);
+
+		if (isDataEmpty(data)) {
+			return alert('No se ha realizado ningun cambio');
+		} else {
+			changeModalState(true);
+			const payload = {
+				method: 'PUT',
+				body: JSON.stringify(data),
+				headers: {
+					'Content-type': 'application/json',
+					Authorization: userToken,
+				},
+			};
+
+			fetch(`${url}/${userId}`, payload)
+				.then((response) => {
+					console.log(response);
+
+					if (response.ok) {
+						changeTitulo('Cambios realizados con éxito');
+						changeParrafo(
+							'Para verlos reflejados debes volver a iniciar sesión'
+						);
+						setTimeout(() => {
+							localStorage.clear();
+							location.replace('/iniciar-sesion');
+						}, 3000);
+
+						return response.json();
+					}
+				})
+				.then((data) => {
+					console.log(data);
+				});
+		}
 	});
 
 	return (
 		<ContainerDatos>
+			<Modal
+				state={modalState}
+				changeState={changeModalState}
+				titulo={titulo}
+				parrafo={parrafo}
+			></Modal>
 			<h1>Editar perfil</h1>
 			<Form onSubmit={onSubmit}>
 				<ContainerA>
@@ -90,13 +170,7 @@ export default function Profile() {
 						)}
 					</SubContainer>
 
-					<ContainerFoto>
-						<div>
-							<img src={person1} alt="" />
-						</div>
-
-						<ButtonBlue>Editar Foto</ButtonBlue>
-					</ContainerFoto>
+					<UploadAndDisplayImage />
 				</ContainerA>
 				<Label htmlFor="">Email</Label>
 				<Input
@@ -166,21 +240,6 @@ const ContainerDatos = styled.div`
 
 	h1 {
 		padding-bottom: 5%;
-	}
-`;
-const ContainerFoto = styled.div`
-	width: 100%;
-	height: 250px;
-	justify-content: space-evenly;
-	align-items: center;
-	margin-left: 5%;
-
-	img {
-		border-radius: 10px;
-	}
-
-	button {
-		width: 40%;
 	}
 `;
 

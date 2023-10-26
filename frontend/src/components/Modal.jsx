@@ -41,6 +41,10 @@ const ModalContainer = styled.div`
 	position: relative;
 	box-shadow: rgba(0, 0, 0, 0.25);
 	padding: 20px;
+
+	p {
+		text-align: center;
+	}
 `;
 
 const ModalHeader = styled.div`

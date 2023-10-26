@@ -3,9 +3,14 @@ import { useForm } from 'react-hook-form';
 import { ButtonBlue } from '../styledcomponents/Buttons';
 import { provincias } from '../assets/usefulData';
 
-const url = 'https://serviceclub.onrender.com/api/services/';
-
 const OfrecerServicio = () => {
+	const url = 'https://serviceclub.onrender.com/api/services/';
+	const getToken = localStorage.getItem('token');
+
+	if (!getToken) {
+		location.replace('/');
+	}
+
 	const professions = [
 		{
 			label: 'Pintores',
@@ -59,15 +64,12 @@ const OfrecerServicio = () => {
 
 	const { register, handleSubmit } = useForm();
 	const onSubmit = handleSubmit((data) => {
-		const userId = localStorage.getItem('id');
-		data.userId = userId;
-		data.certified = true;
-
 		const payload = {
 			method: 'POST',
 			body: JSON.stringify(data),
 			headers: {
 				'Content-type': 'application/json',
+				Authorization: getToken,
 			},
 		};
 

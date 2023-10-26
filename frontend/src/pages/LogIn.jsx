@@ -34,6 +34,7 @@ const LogIn = () => {
 				if (response.ok) {
 					changeTitulo('Ingresaste de forma exitosa');
 					changeParrafo('Bienvenido!');
+					return response.json();
 				} else {
 					changeTitulo('ERROR: Uno de los datos ingresados es incorrecto');
 					changeParrafo('Intenta otra vez');
@@ -43,8 +44,6 @@ const LogIn = () => {
 						changeParrafo('Por favor espera.');
 					}, 2000);
 				}
-
-				return response.json();
 			})
 			.then((data) => {
 				//Token en localStorage
