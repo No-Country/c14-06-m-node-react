@@ -52,15 +52,16 @@ const ShowServiceRaiting = ({ serviceId, rating, qualifications }) => {
 		if (IsLoggedIn) {
 			try {
 				const userJSON = localStorage.getItem('user');
-				const user = JSON.parse(userJSON);
-				if (user && user._id) {
-					// Verificar que user y user._id existan
-					myId = user._id;
-					const myRating = qualifications.find(
-						(rating) => rating.userId === myId
-					);
-					if (myRating) {
-						setRated(true);
+				if (userJSON) {
+					const user = JSON.parse(userJSON);
+					if (user && user._id) {
+						myId = user._id;
+						const myRating = qualifications.find(
+							(rating) => rating.userId === myId
+						);
+						if (myRating) {
+							setRated(true);
+						}
 					}
 				}
 			} catch (error) {
