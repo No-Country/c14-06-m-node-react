@@ -3,6 +3,8 @@ import WriteRating from '../components/WriteRating';
 import StarRating from '../components/StarRating';
 import ShowReviews from '../components/ShowReviews';
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
+
 const RatingDiv = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -42,17 +44,21 @@ const ShowServiceRaiting = ({ serviceId, rating, qualifications }) => {
 		return message;
 	};
 
-	//Verificar si ya califiqué
+	const IsLoggedIn = localStorage.token ? true : false;
+	const [rated, setRated] = useState(false);
+
 	const userJSON = localStorage.getItem('user');
 	const user = JSON.parse(userJSON);
 	const myId = user._id;
-	let rated = false;
-	if (myId) {
-		let myRating = qualifications.find((rating) => rating.userId === myId);
-		if (myRating) {
-			rated = true;
+
+	useEffect(() => {
+		if (IsLoggedIn) {
+			const myRating = qualifications.find((rating) => rating.userId === myId);
+			if (myRating) {
+				setRated(true);
+			}
 		}
-	}
+	}, [qualifications, IsLoggedIn, myId]);
 
 	return (
 		<>
