@@ -46,8 +46,13 @@ const ShowServiceRaiting = ({ serviceId, rating, qualifications }) => {
 	const userJSON = localStorage.getItem('user');
 	const user = JSON.parse(userJSON);
 	const myId = user._id;
-	console.log(myId);
-	const myRating = qualifications.find((rating) => rating.userId === myId);
+	let rated = false;
+	if (myId) {
+		let myRating = qualifications.find((rating) => rating.userId === myId);
+		if (myRating) {
+			rated = true;
+		}
+	}
 
 	return (
 		<>
@@ -63,7 +68,7 @@ const ShowServiceRaiting = ({ serviceId, rating, qualifications }) => {
 
 			<ShowReviews reviews={qualifications} />
 
-			{myRating ? (
+			{rated ? (
 				<p>Gracias por tu calificación</p>
 			) : (
 				<WriteRating serviceId={serviceId} />
