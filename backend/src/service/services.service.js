@@ -125,7 +125,7 @@ class ServicesService {
 	}
 
 	async getServiceById(serviceId) {
-		const { servicesCollection, connectedClient } =
+		const { servicesCollection, usersCollection, connectedClient } =
 			await getServicesCollection();
 		const objectId = new ObjectId(serviceId);
 		const aggregation = [
@@ -203,7 +203,16 @@ class ServicesService {
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
-
+		for (const qualification of service.qualifications) {
+			const userObjectId = new ObjectId(qualification.userId);
+			const user = await usersCollection.findOne({ _id: userObjectId });
+			qualification.user = {
+				name: user.name,
+				surname: user.surname,
+				email: user.email,
+				profileImg: user.profileImg,
+			};
+		}
 		await connectedClient.close();
 		return service;
 	}
