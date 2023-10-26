@@ -7,6 +7,14 @@ import DeleteAccount from '../components/DeleteAccount';
 // import {useForm } from 'react-hook-form';
 
 const UserProfile = () => {
+	const getToken = localStorage.getItem('token');
+	if (!getToken) {
+		location.replace('/');
+	}
+
+	const getUserRole = JSON.parse(localStorage.getItem('user')).role;
+	const isWorker = getUserRole === 'pro' ? true : false;
+
 	const [active, setActive] = useState('miPerfil');
 	return (
 		<>
@@ -14,10 +22,18 @@ const UserProfile = () => {
 				<ContainerLista>
 					<ListaNavegacion>
 						<li onClick={() => setActive('miPerfil')}>Perfil</li>
-						<li onClick={() => setActive('misServicios')}>Mis Servicios</li>
-						<li onClick={() => setActive('editarServicios')}>
-							Editar Servicios
-						</li>
+
+						{isWorker ? (
+							<>
+								<li onClick={() => setActive('misServicios')}>Mis Servicios</li>
+								<li onClick={() => setActive('editarServicios')}>
+									Editar Servicios
+								</li>
+							</>
+						) : (
+							<Invisible />
+						)}
+
 						<li onClick={() => setActive('elimnarCuenta')}>Eliminar Cuenta</li>
 					</ListaNavegacion>
 				</ContainerLista>
@@ -59,6 +75,11 @@ const ListaNavegacion = styled.ul`
 			cursor: pointer;
 		}
 	}
+`;
+
+const Invisible = styled.div`
+	display: none;
+	visibility: hidden;
 `;
 
 export default UserProfile;

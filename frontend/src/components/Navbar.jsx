@@ -29,6 +29,16 @@ const Navbar = () => {
 						<StyledLink to="/">Home</StyledLink>
 					</Li>
 				</HideOnMobile>
+				{IsLoggedIn ? (
+					<HideOnMobile>
+						<Li>
+							<StyledLink to="/mi-perfil">Mi Perfil</StyledLink>
+						</Li>
+					</HideOnMobile>
+				) : (
+					<Invisible />
+				)}
+
 				<HideOnXsMobile>
 					<Li>
 						<HashLink smooth to="/#categories">
