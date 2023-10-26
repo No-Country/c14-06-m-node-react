@@ -47,15 +47,24 @@ const ShowServiceRaiting = ({ serviceId, rating, qualifications }) => {
 	const IsLoggedIn = localStorage.token ? true : false;
 	const [rated, setRated] = useState(false);
 
-	const userJSON = localStorage.getItem('user');
-	const user = JSON.parse(userJSON);
-	const myId = user._id;
-
+	let myId = '';
 	useEffect(() => {
 		if (IsLoggedIn) {
-			const myRating = qualifications.find((rating) => rating.userId === myId);
-			if (myRating) {
-				setRated(true);
+			try {
+				const userJSON = localStorage.getItem('user');
+				const user = JSON.parse(userJSON);
+				if (user && user._id) {
+					// Verificar que user y user._id existan
+					myId = user._id;
+					const myRating = qualifications.find(
+						(rating) => rating.userId === myId
+					);
+					if (myRating) {
+						setRated(true);
+					}
+				}
+			} catch (error) {
+				setRated(false);
 			}
 		}
 	}, [qualifications, IsLoggedIn, myId]);
