@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProfessionalListCard from '../components/ProfessionalListCard';
 import styled from 'styled-components';
-import RaitingCard from '../components/RaitingCard';
-import WriteRating from '../components/WriteRating';
-import StarRating from '../components/StarRating';
+
+import ShowServiceRaiting from '../components/ShowServiceRaiting';
 
 const ServiceDetailContainer = styled.div`
 	display: flex;
@@ -25,34 +24,10 @@ const NoServicesMessage = styled.div`
 	margin: auto;
 `;
 
-const RatingDiv = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-	font-size: 1.1rem;
-	line-height: 2rem;
+const Title = styled.span`
+	font-size: 1.2rem;
+	font-weight: 600;
 `;
-const RaitingStars = styled.span`
-	color: var(--primary);
-	font-size: 2.5rem;
-	letter-spacing: 0.3rem;
-`;
-const RaitingCaption = styled.span`
-	font-size: 0.8rem;
-`;
-
-const RatingCardsDiv = styled.div`
-	display: flex;
-	justify-content: space-around;
-	width: 100%;
-`;
-
-const CardDiv = styled.div`
-	flex: 0 0 calc(33.333% - 20px);
-`;
-
 const ServicesDetail = () => {
 	const { serviceId } = useParams();
 	const [serviceDetail, setServiceDetail] = useState(null);
@@ -80,7 +55,6 @@ const ServicesDetail = () => {
 
 		fetchData();
 	}, [serviceId]);
-	console.log(serviceDetail);
 
 	if (loading) {
 		return <LoadingMessage>Cargando servicio...</LoadingMessage>;
@@ -104,28 +78,14 @@ const ServicesDetail = () => {
 						location={serviceDetail.serviceLocation}
 					/>
 					<div>
-						<h4>Descripción del servicio:</h4>
+						<Title>Descripción del servicio:</Title>
 						<p>{serviceDetail.description}</p>
 					</div>
-					<RatingDiv>
-						<b>Valoración</b>
-						<RaitingStars>
-							<StarRating rating={89} />
-						</RaitingStars>
-						<RaitingCaption>(1 valoración)</RaitingCaption>
-					</RatingDiv>
-					<RatingCardsDiv>
-						<CardDiv>
-							<RaitingCard />
-						</CardDiv>
-						<CardDiv>
-							<RaitingCard />
-						</CardDiv>
-						<CardDiv>
-							<RaitingCard />
-						</CardDiv>
-					</RatingCardsDiv>
-					<WriteRating serviceId={serviceDetail._id} />
+					<ShowServiceRaiting
+						serviceId={serviceDetail._id}
+						rating={serviceDetail.rating}
+						qualifications={serviceDetail.qualifications}
+					/>
 				</ServiceDetailContainer>
 			)}
 		</>

@@ -4,11 +4,8 @@ const StarRating = ({ rating = 0 }) => {
 	const [stars, setStars] = useState('☆☆☆☆☆');
 
 	useEffect(() => {
-		// Redondea la calificación al número entero más cercano
-		const roundedRating = Math.round(rating / 20); // Dividido por 20 ya que 100 / 5 = 20
-
 		// Calcula las estrellas completas
-		const fullStars = '★'.repeat(roundedRating);
+		const fullStars = '★'.repeat(rating);
 
 		// Calcula las estrellas vacías
 		const emptyStars = '☆'.repeat(5 - fullStars.length);
@@ -19,6 +16,6 @@ const StarRating = ({ rating = 0 }) => {
 	return <div>{stars}</div>;
 };
 StarRating.propTypes = {
-	rating: PropTypes.number.isRequired,
+	rating: PropTypes.number,
 };
 export default StarRating;

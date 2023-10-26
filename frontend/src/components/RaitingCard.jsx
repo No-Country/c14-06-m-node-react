@@ -1,12 +1,17 @@
 import styled from 'styled-components';
+/*import noIcon from '../assets/images/noIcon.png';*/
+import PropTypes from 'prop-types';
+import StarRating from './StarRating';
+/*import { useState, useEffect } from 'react';*/
 
 const RatingCardDiv = styled.div`
-	margin-top: 5rem;
+	/*margin-top: 5rem;*/
 	margin-bottom: 2rem;
 	position: relative;
-	padding: 50px 20px 20px 20px;
+	padding: /*50px*/ 28px 20px 20px 20px;
 	border-radius: 10px;
-	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+	border: 1px solid gray;
+	box-shadow: rgba(149, 157, 165, 0.4) 0px 8px 24px;
 	display: flex;
 	gap: 1rem;
 	flex-direction: column;
@@ -16,37 +21,68 @@ const RatingCardDiv = styled.div`
 	line-height: 1.4rem;
 `;
 
-const UserImage = styled.img`
+/*const UserImage = styled.img`
 	position: absolute;
 	width: 5.4rem;
 	height: 5.4rem;
 	border-radius: 50%;
-	background-image: url('http://localhost:3000/src/assets/images/noPhoto.png');
 	top: -45px;
 	right: calc(50% - 2.7rem);
-`;
+`;*/
 
 const RatingStars = styled.div`
 	color: var(--primary);
 	font-weight: bolder;
 	font-size: 1.5rem;
 `;
-const RaitingCard = () => {
+const RaitingCard = ({ comment, score }) => {
+	{
+		/*const [userImg, setUserImg] = useState('');
+	const [userName, setUserName] = useState('');
+	useEffect(() => {
+		const fetchData = async () => {
+			const apiUrl = `https://serviceclub.onrender.com/api/users/${userId}`;
+
+			const payload = {
+				method: 'GET',
+				headers: {
+					'Content-type': 'application/json',
+					Authorization: `Bearer ${localStorage.token}`, // Usando el token
+				},
+			};
+
+			try {
+				const query = await fetch(apiUrl, payload);
+				if (!query.ok) {
+					throw new Error(`HTTP Error: ${query.status}`);
+				}
+
+				const data = await query.json();
+				console.log(data);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+
+		fetchData();
+	}, [userId]);
+	console.log('commentss ' + comment + ' score ' + score + ' user ' + userId);
+*/
+	}
 	return (
 		<RatingCardDiv>
-			<UserImage />
-			<RatingStars>★★★★☆</RatingStars>
-			<span>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam ratione
-				reiciendis exercitationem odio autem voluptatum sed, sequi eveniet rem
-				quis nam ipsa distinctio magni temporibus, et provident ab dolor
-				consequatur. Qui, nisi voluptates beatae cumque commodi saepe voluptate
-				et excepturi id corrupti aut aliquid quas ea similique molestiae dolor
-				cupiditate.
-			</span>
-			<b>algo</b>
+			{/*<UserImage src={noIcon} alt="Imagen de usuario del comentario" />*/}
+			<RatingStars>
+				<StarRating rating={score} />
+			</RatingStars>
+			<span>{comment}</span>
+			{/*<b>Nombre de usuario</b>*/}
 		</RatingCardDiv>
 	);
 };
-
+RaitingCard.propTypes = {
+	comment: PropTypes.string,
+	score: PropTypes.number,
+	userId: PropTypes.string,
+};
 export default RaitingCard;

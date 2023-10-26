@@ -3,6 +3,10 @@ import { ButtonBlue } from '../styledcomponents/Buttons';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+{
+	/*import Modal from '../components/Modal'*/
+}
 
 const WriteRatingContainer = styled.div`
 	display: flex;
@@ -51,11 +55,26 @@ const StyledSpanErrores = styled.span`
 	font-size: 0.8rem;
 `;
 
+const LogInOption = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	justify-content: space-evenly;
+	gap: 1rem;
+	padding: 1rem;
+`;
+
 const WriteRating = ({ serviceId }) => {
 	const url = `https://serviceclub.onrender.com/api/services/${serviceId}/qualifications`;
+	const IsLoggedIn = localStorage.token ? true : false;
 
 	const [rating, setRating] = useState(0);
 	const [hoveredRating, setHoveredRating] = useState(0);
+	const [, /*modalState*/ changeModalState] = useState(false);
+	const [, /*titulo*/ changeTitulo] = useState('Cargando ...');
+	const [, /*parrafo*/ changeParrafo] = useState('Por favor espera.');
 
 	const handleStarClick = (selectedRating) => {
 		setRating(selectedRating);
@@ -86,6 +105,8 @@ const WriteRating = ({ serviceId }) => {
 			return;
 		}
 
+		changeModalState(true);
+
 		const payload = {
 			method: 'POST',
 			body: JSON.stringify({ ...data, score: rating }),
@@ -94,7 +115,6 @@ const WriteRating = ({ serviceId }) => {
 				Authorization: `${localStorage.token}`,
 			},
 		};
-		console.log(url, payload);
 
 		{
 			fetch(url, payload)
@@ -104,8 +124,18 @@ const WriteRating = ({ serviceId }) => {
 				.then((data) => {
 					console.log(data);
 					if (data.status === 'success') {
+						changeTitulo('Valoración registrada con éxito');
+						changeParrafo('¡Muchas gracias!');
 						alert('Valoración registrada con éxito');
+						window.location.reload();
 					} else {
+						changeTitulo('Error al cargar la valoración');
+						changeParrafo('Intenta nuevamente');
+						setTimeout(() => {
+							changeModalState(false);
+							changeTitulo('Cargando ...');
+							changeParrafo('Por favor espera.');
+						}, 2000);
 						alert(data.response);
 					}
 				});
@@ -118,57 +148,68 @@ const WriteRating = ({ serviceId }) => {
 				<Title>
 					<TextBlue>Valorar</TextBlue> servicio del profesional
 				</Title>
-				<span>No se permiten insultos ni faltas de respeto.</span>
-				<TextArea
-					id="comment"
-					rows={6}
-					placeholder="Ej: Muy conforme con su trabajo..."
-					{...register('comment', {
-						required: {
-							value: true,
-							message: '*Por favor escribe un comentario.',
-						},
-						minLength: {
-							value: 12,
-							message: '*Debe tener al menos 12 caracteres',
-						},
-						maxLength: {
-							value: 60,
-							message: '*Debe ser menor a 60 caracteres',
-						},
-						pattern: {
-							value: /^[^<>]*$/,
-							message: '*No se aceptan caracteres especiales.',
-						},
-					})}
-				/>
-				{errors.comment && (
-					<StyledSpanErrores>{errors.comment.message}</StyledSpanErrores>
+				{!IsLoggedIn ? (
+					<LogInOption>
+						Inicia Sesión para poder valorar.
+						<Link to="/iniciar-sesion">
+							<ButtonBlue>Iniciar Sesión</ButtonBlue>
+						</Link>
+					</LogInOption>
+				) : (
+					<>
+						<span>No se permiten insultos ni faltas de respeto.</span>
+						<TextArea
+							id="comment"
+							rows={6}
+							placeholder="Ej: Muy conforme con su trabajo..."
+							{...register('comment', {
+								required: {
+									value: true,
+									message: '*Por favor escribe un comentario.',
+								},
+								minLength: {
+									value: 12,
+									message: '*Debe tener al menos 12 caracteres',
+								},
+								maxLength: {
+									value: 60,
+									message: '*Debe ser menor a 60 caracteres',
+								},
+								pattern: {
+									value: /^[^<>]*$/,
+									message: '*No se aceptan caracteres especiales.',
+								},
+							})}
+						/>
+						{errors.comment && (
+							<StyledSpanErrores>{errors.comment.message}</StyledSpanErrores>
+						)}
+						<Stars>
+							{[1, 2, 3, 4, 5].map((star) => (
+								<Star
+									key={star}
+									filled={star <= (hoveredRating || rating) ? '' : ''}
+									onClick={() => handleStarClick(star)}
+									onMouseEnter={() => handleStarHover(star)}
+									onMouseLeave={handleStarLeave}
+								>
+									{star <= (hoveredRating || rating) ? '★' : '☆'}
+								</Star>
+							))}
+							{errors.rating && (
+								<StyledSpanErrores>{errors.rating.message}</StyledSpanErrores>
+							)}
+						</Stars>
+						<ButtonBlue type="submit">Valorar</ButtonBlue>
+					</>
 				)}
-				<Stars>
-					{[1, 2, 3, 4, 5].map((star) => (
-						<Star
-							key={star}
-							filled={star <= (hoveredRating || rating) ? '' : ''}
-							onClick={() => handleStarClick(star)}
-							onMouseEnter={() => handleStarHover(star)}
-							onMouseLeave={handleStarLeave}
-						>
-							{star <= (hoveredRating || rating) ? '★' : '☆'}
-						</Star>
-					))}
-					{errors.rating && (
-						<StyledSpanErrores>{errors.rating.message}</StyledSpanErrores>
-					)}
-				</Stars>
-				<ButtonBlue type="submit">Valorar</ButtonBlue>
 			</Form>
 		</WriteRatingContainer>
 	);
 };
 
 WriteRating.propTypes = {
-	serviceId: PropTypes.string.isRequired,
+	serviceId: PropTypes.string,
 };
 
 export default WriteRating;
