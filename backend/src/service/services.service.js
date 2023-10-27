@@ -86,30 +86,38 @@ class ServicesService {
 				},
 			},
 		];
+
 		// Si hay algún filtro de búsqueda, se agrega al aggregation en el campo $match
+		const matchStage = {
+			$match: {},
+		};
 		if (Object.keys(filters).length !== 0) {
+			matchStage.$match = filters;
 			if ('active' in filters) {
 				filters.active === 'true'
-					? (filters.active = true)
+					? (matchStage.$match.active = true)
 					: (filters.active = false);
 			}
 			if ('certified' in filters) {
 				filters.certified === 'true'
-					? (filters.certified = true)
-					: (filters.certified = false);
+					? (matchStage.$match.certified = true)
+					: (matchStage.$match.certified = false);
 			}
 			if ('category' in filters) {
 				const category = await categoriesCollection.findOne({
 					code: filters.category,
 				});
 				const categoryObjectId = new ObjectId(category._id);
-				filters.categoryRef = categoryObjectId;
-				delete filters.category;
+				matchStage.$match.categoryRef = categoryObjectId;
+				delete matchStage.$match.category;
 			}
-			aggregation.unshift({
-				$match: filters,
-			});
+			if ('location' in filters) {
+				matchStage.$match['user_info.location'] = filters.location;
+				delete matchStage.$match.location;
+			}
+			aggregation.splice(2, 0, matchStage);
 		}
+
 		const services = await servicesCollection.aggregate(aggregation).toArray();
 		if (services.length === 0) {
 			const customError = new Error(
