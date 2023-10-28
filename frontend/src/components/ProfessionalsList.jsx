@@ -152,7 +152,9 @@ const ProfessionalsList = () => {
 										info={professional.description}
 										telephone={professional.user.phone}
 										location={professional.serviceLocation}
-										rating={true}
+										rating={
+											professional.rating > 0 ? professional.rating : null
+										}
 									/>
 								</StyledLink>
 							</>
