@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import verificado from '../assets/images/verificado.png';
 import { Link } from 'react-router-dom';
 import noPhoto from '../assets/images/noPhoto.png';
+import StarRating from './StarRating';
 
 const Card = styled.div`
 	display: flex;
@@ -107,6 +108,11 @@ const ProfessionalListCard = ({
 				<SubTitle>
 					Profesional Certificado <VerificadoImage src={verificado} alt="" />
 				</SubTitle>
+				{rating && (
+					<Valoracion>
+						<StarRating rating={rating} />
+					</Valoracion>
+				)}
 				{info && <Info>{info}</Info>}
 				{location && (
 					<span>
@@ -115,7 +121,6 @@ const ProfessionalListCard = ({
 						{location}
 					</span>
 				)}
-				{rating && <Valoracion>Valoración: ★★★★☆</Valoracion>}
 			</Content>
 			<ContentRight>
 				{IsLoggedIn ? (
