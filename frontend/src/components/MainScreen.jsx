@@ -184,9 +184,11 @@ const Home = () => {
 
 	const [selectedProfession, setSelectedProfession] = useState('');
 	const [selectedProvince, setSelectedProvince] = useState('');
+	const isSelectProvinceDisabled = !selectedProfession;
 
 	const handleProfessionChange = (event) => {
 		setSelectedProfession(event.target.value);
+		setSelectedProvince('');
 	};
 
 	const handleProvinceChange = (event) => {
@@ -256,6 +258,7 @@ const Home = () => {
 						placeholder="Selecciona una provincia"
 						value={selectedProvince}
 						onChange={handleProvinceChange}
+						disabled={isSelectProvinceDisabled}
 					>
 						<option value="" disabled>
 							Selecciona una provincia
