@@ -73,9 +73,7 @@ const ShowServiceRaiting = ({ serviceId, rating, qualifications }) => {
 	return (
 		<>
 			<RatingDiv>
-				<b>
-					Valoración: <Text>{rating + '/5'}</Text>
-				</b>
+				<b>Valoración: {rating >= 1 && <Text>{rating + '/5'}</Text>}</b>
 				<RaitingStars>
 					<StarRating rating={rating} />
 				</RaitingStars>

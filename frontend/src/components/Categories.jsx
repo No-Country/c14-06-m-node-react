@@ -60,21 +60,6 @@ const Icon = styled.img`
 
 const CategoriesList = [
 	{
-		title: 'Pintores',
-		icon: painter,
-		category: 'painter',
-	},
-	{
-		title: 'Plomeros',
-		icon: plumber,
-		category: 'plumber',
-	},
-	{
-		title: 'Electricistas',
-		icon: electrician,
-		category: 'electrician',
-	},
-	{
 		title: 'Albañiles',
 		icon: bricklayer,
 		category: 'bricklayer',
@@ -85,19 +70,24 @@ const CategoriesList = [
 		category: 'carpenter',
 	},
 	{
-		title: 'Fleteros',
-		icon: freight,
-		category: 'freight',
-	},
-	{
 		title: 'Cerrajeros',
 		icon: locksmith,
 		category: 'locksmith',
 	},
 	{
-		title: 'Jardineros',
-		icon: gardener,
-		category: 'gardener',
+		title: 'Electricistas',
+		icon: electrician,
+		category: 'electrician',
+	},
+	{
+		title: 'Fleteros',
+		icon: freight,
+		category: 'freight',
+	},
+	{
+		title: 'Fumigadores',
+		icon: fumigation,
+		category: 'fumigator',
 	},
 	{
 		title: 'Gasistas',
@@ -105,10 +95,21 @@ const CategoriesList = [
 		category: 'gas-fitter',
 	},
 	{
-		title: 'Fumigadores',
-		icon: fumigation,
-		category: 'fumigator',
+		title: 'Jardineros',
+		icon: gardener,
+		category: 'gardener',
 	},
+	{
+		title: 'Pintores',
+		icon: painter,
+		category: 'painter',
+	},
+	{
+		title: 'Plomeros',
+		icon: plumber,
+		category: 'plumber',
+	},
+
 	{
 		title: 'Técnicos en Aire Acondicionado',
 		icon: aa,

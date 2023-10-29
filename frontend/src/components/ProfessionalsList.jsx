@@ -149,10 +149,14 @@ const ProfessionalsList = () => {
 										key={professional._id}
 										imgUrl={professional.user.profileImg}
 										name={professional.user.name}
+										certified={professional.certified}
 										info={professional.description}
 										telephone={professional.user.phone}
 										location={professional.serviceLocation}
-										rating={true}
+										province={professional.user.location}
+										rating={
+											professional.rating > 0 ? professional.rating : null
+										}
 									/>
 								</StyledLink>
 							</>

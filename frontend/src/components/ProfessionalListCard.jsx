@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import verificado from '../assets/images/verificado.png';
 import { Link } from 'react-router-dom';
 import noPhoto from '../assets/images/noPhoto.png';
+import StarRating from './StarRating';
 
 const Card = styled.div`
 	display: flex;
@@ -27,6 +28,7 @@ const Image = styled.img`
 	width: 190px;
 	height: 210px;
 	padding: 1em;
+	border-radius: 1.8rem;
 	object-fit: cover;
 `;
 
@@ -58,6 +60,7 @@ const Valoracion = styled.div`
 	margin-top: auto;
 	color: var(--primary);
 	font-weight: bolder;
+	font-size: 1.2rem;
 `;
 
 const ContentRight = styled.div`
@@ -80,9 +83,11 @@ const StyledLink = styled(Link)`
 const ProfessionalListCard = ({
 	name,
 	imgUrl,
+	certified,
 	info,
 	telephone,
 	location,
+	province,
 	rating,
 }) => {
 	const IsLoggedIn = localStorage.token ? true : false;
@@ -104,18 +109,23 @@ const ProfessionalListCard = ({
 			</ImageContainer>
 			<Content>
 				<Title>{name}</Title>
-				<SubTitle>
-					Profesional Certificado <VerificadoImage src={verificado} alt="" />
-				</SubTitle>
-				{info && <Info>{info}</Info>}
-				{location && (
-					<span>
-						<i className="fa-solid fa-location-dot"></i>
-						&nbsp;
-						{location}
-					</span>
+				{certified && (
+					<SubTitle>
+						Profesional Certificado <VerificadoImage src={verificado} alt="" />
+					</SubTitle>
 				)}
-				{rating && <Valoracion>Valoración: ★★★★☆</Valoracion>}
+				{rating && (
+					<Valoracion>
+						<StarRating rating={rating} />
+					</Valoracion>
+				)}
+				{info && <Info>{info}</Info>}
+				<span>
+					<i className="fa-solid fa-location-dot"></i>
+					&nbsp;
+					{province && province + ', '}
+					{location && location}
+				</span>
 			</Content>
 			<ContentRight>
 				{IsLoggedIn ? (
@@ -133,9 +143,11 @@ const ProfessionalListCard = ({
 ProfessionalListCard.propTypes = {
 	name: PropTypes.string.isRequired,
 	imgUrl: PropTypes.string.isRequired,
+	certified: PropTypes.bool,
 	info: PropTypes.string,
 	telephone: PropTypes.string.isRequired,
 	location: PropTypes.string.isRequired,
+	province: PropTypes.string,
 	rating: PropTypes.number,
 };
 
