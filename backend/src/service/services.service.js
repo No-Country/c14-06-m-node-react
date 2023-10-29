@@ -85,6 +85,12 @@ class ServicesService {
 					},
 				},
 			},
+			{
+				$sort: {
+					rating: -1,
+					_id: 1,
+				},
+			},
 		];
 
 		// Si hay algún filtro de búsqueda, se agrega al aggregation en el campo $match
