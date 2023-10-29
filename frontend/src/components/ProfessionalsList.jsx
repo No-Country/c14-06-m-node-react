@@ -149,6 +149,7 @@ const ProfessionalsList = () => {
 										key={professional._id}
 										imgUrl={professional.user.profileImg}
 										name={professional.user.name}
+										certified={professional.certified}
 										info={professional.description}
 										telephone={professional.user.phone}
 										location={professional.serviceLocation}

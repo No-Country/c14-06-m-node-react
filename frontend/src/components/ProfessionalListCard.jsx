@@ -81,6 +81,7 @@ const StyledLink = styled(Link)`
 const ProfessionalListCard = ({
 	name,
 	imgUrl,
+	certified,
 	info,
 	telephone,
 	location,
@@ -105,9 +106,11 @@ const ProfessionalListCard = ({
 			</ImageContainer>
 			<Content>
 				<Title>{name}</Title>
-				<SubTitle>
-					Profesional Certificado <VerificadoImage src={verificado} alt="" />
-				</SubTitle>
+				{certified && (
+					<SubTitle>
+						Profesional Certificado <VerificadoImage src={verificado} alt="" />
+					</SubTitle>
+				)}
 				{rating && (
 					<Valoracion>
 						<StarRating rating={rating} />
@@ -138,6 +141,7 @@ const ProfessionalListCard = ({
 ProfessionalListCard.propTypes = {
 	name: PropTypes.string.isRequired,
 	imgUrl: PropTypes.string.isRequired,
+	certified: PropTypes.bool,
 	info: PropTypes.string,
 	telephone: PropTypes.string.isRequired,
 	location: PropTypes.string.isRequired,
