@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 import trabajosPintura from '../assets/images/trabajosPintura.png';
-/*import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';*/
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import { ButtonBlue } from '../styledcomponents/Buttons';
@@ -12,11 +10,13 @@ const MainScreen = styled.div`
 	display: grid;
 	grid-template-areas: 'left right';
 	align-items: center;
-	@media (max-width: 920px) {
+	margin-top: 2rem;
+	@media (max-width: 820px) {
 		grid-template-areas: 'left';
 	}
-	gap: 3rem;
-
+	@media (min-width: 1200px) {
+		gap: 2rem;
+	}
 	a {
 		color: var(--primary);
 	}
@@ -27,63 +27,20 @@ const ContainerLeft = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	padding: 1rem;
-	gap: 0.2rem;
 	text-align: center;
 	height: 100%;
+	margin-bottom: 4rem;
+	margin-right: 0;
 `;
 
-/*
-const ContainerSearch = styled.div`
-	display: flex;
-	align-items: center;
-	height: 3rem;
-	border-radius: 23px;
-	border: 1px solid black;
-	padding: 10px;
-	background-color: white;
-`;
-*/
 const StyledSlogan = styled.span`
 	font-weight: 700;
-	font-size: 2.6rem;
+	font-size: 2.8rem;
 	text-align: center;
 	padding-bottom: 4rem;
 	color: rgb(0, 0, 0, 0.8);
 `;
 
-const StyledUl = styled.ul`
-	font-weight: 600;
-	display: flex;
-	gap: 5%;
-	text-decoration: none;
-	list-style: none;
-	text-transform: uppercase;
-	padding-bottom: 2%;
-`;
-
-const Active = styled.li`
-	color: #0e76a8;
-	cursor: pointer;
-`;
-
-/*
-const StyledInput = styled.input`
-	width: 100%;
-	height: 100%;
-	font-size: 15px;
-	border: none;
-	outline: none;
-	padding-left: 2%;
-
-	&:active {
-		border: none;
-	}
-	&:focus {
-		border: 2px solid #0e76a8;
-	}
-`;
-*/
 const StyledP = styled.p`
 	text-align: center;
 	padding: 5%;
@@ -103,14 +60,8 @@ const ContainerRight = styled.div`
 `;
 
 const StyledImg = styled.img`
-	height: auto;
-	max-width: 100%;
-`;
-
-const StyledLink = styled(Link)`
-	&:hover {
-		color: var(--primary);
-	}
+	width: 100%;
+	margin-bottom: 8rem;
 `;
 
 const Select = styled.select`
@@ -131,9 +82,20 @@ const Buscar = styled.div`
 	gap: 0.4rem;
 	align-items: center;
 	flex-direction: row;
+	align-items: stretch;
 
-	@media (max-width: 768px) {
+	@media (max-width: 740px) {
 		flex-direction: column;
+	}
+`;
+
+const StyledButton = styled(ButtonBlue)`
+	height: 100%;
+	min-width: 7rem;
+	font-size: 0.9rem;
+	@media (max-width: 768px) {
+		width: 100%;
+		align-self: center;
 	}
 `;
 
@@ -211,30 +173,11 @@ const Home = () => {
 
 		return url;
 	};
-	const IsLoggedIn = localStorage.token ? true : false;
+
 	return (
 		<MainScreen>
 			<ContainerLeft>
 				<StyledSlogan>Todos los servicios en un solo lugar.</StyledSlogan>
-				<StyledUl>
-					<Active>Contratar</Active>
-					<li>
-						{IsLoggedIn ? (
-							<StyledLink to="/ofrecer-servicio">
-								Ofrecer un servicio
-							</StyledLink>
-						) : (
-							<StyledLink to="/iniciar-sesion">Ofrecer un servicio</StyledLink>
-						)}
-					</li>
-				</StyledUl>
-				{/** <ContainerSearch>
-					<StyledInput type="text" placeholder="Buscar" />
-					<div>
-						<FontAwesomeIcon icon={faMagnifyingGlass} />
-					</div>
-				</ContainerSearch>
-				*/}
 				<Buscar>
 					<Select
 						id="profession"
@@ -270,7 +213,7 @@ const Home = () => {
 						))}
 					</Select>
 					<Link to={generateUrl()}>
-						<ButtonBlue>Buscar</ButtonBlue>
+						<StyledButton>Buscar</StyledButton>
 					</Link>
 				</Buscar>
 				<StyledP>
