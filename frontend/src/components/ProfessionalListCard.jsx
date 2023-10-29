@@ -28,6 +28,7 @@ const Image = styled.img`
 	width: 190px;
 	height: 210px;
 	padding: 1em;
+	border-radius: 1.8rem;
 	object-fit: cover;
 `;
 
@@ -59,6 +60,7 @@ const Valoracion = styled.div`
 	margin-top: auto;
 	color: var(--primary);
 	font-weight: bolder;
+	font-size: 1.2rem;
 `;
 
 const ContentRight = styled.div`
@@ -85,6 +87,7 @@ const ProfessionalListCard = ({
 	info,
 	telephone,
 	location,
+	province,
 	rating,
 }) => {
 	const IsLoggedIn = localStorage.token ? true : false;
@@ -117,13 +120,12 @@ const ProfessionalListCard = ({
 					</Valoracion>
 				)}
 				{info && <Info>{info}</Info>}
-				{location && (
-					<span>
-						<i className="fa-solid fa-location-dot"></i>
-						&nbsp;
-						{location}
-					</span>
-				)}
+				<span>
+					<i className="fa-solid fa-location-dot"></i>
+					&nbsp;
+					{province && province + ', '}
+					{location && location}
+				</span>
 			</Content>
 			<ContentRight>
 				{IsLoggedIn ? (
@@ -145,6 +147,7 @@ ProfessionalListCard.propTypes = {
 	info: PropTypes.string,
 	telephone: PropTypes.string.isRequired,
 	location: PropTypes.string.isRequired,
+	province: PropTypes.string,
 	rating: PropTypes.number,
 };
 
