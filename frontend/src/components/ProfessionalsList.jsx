@@ -82,7 +82,7 @@ const ProfessionalsList = () => {
 			}
 
 			if (location && location !== 'undefined') {
-				query += `serviceLocation=${location}`;
+				query += `location=${location}`;
 			}
 
 			const apiUrl = `https://serviceclub.onrender.com/api/services?${query}`;
