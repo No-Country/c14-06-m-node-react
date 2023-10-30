@@ -1,10 +1,9 @@
 import styled from 'styled-components';
-import Switch from './Switch';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from './Modal';
+import EditService from './EditService';
 
 export default function MyServices() {
-	const [isOn, setIsOn] = useState(false);
 	const [serviceList, setServiceList] = useState(null);
 	const [modalState, changeModalState] = useState(true);
 	const [titulo] = useState('Cargando ...');
@@ -33,8 +32,6 @@ export default function MyServices() {
 
 	console.log(serviceList);
 
-	const toggle = useCallback(() => setIsOn((on) => !on), []);
-
 	return (
 		<ContainerDatos>
 			<Modal
@@ -46,41 +43,20 @@ export default function MyServices() {
 
 			{serviceList && (
 				<>
-					<h1>Mis Servicios</h1>
+					<h2>Mis Servicios</h2>
 					<div>
-						<p>Selecciona los servicios que deseas ofrecer</p>
+						<p>Selecciona los servicios que deseas editar</p>
 
-						<>
-							{serviceList.response.services.map((servicio) => (
-								// eslint-disable-next-line react/jsx-key, react/jsx-no-comment-textnodes
-								<ContainerServicios>
-									<div>
-										<div>
-											<h5>{servicio.category.categoryName}</h5>
-											<p>Servicio</p>
-										</div>
-									</div>
-									<ContainerToggle>
-										<Switch
-											isOn={isOn}
-											handleToggle={toggle}
-											onColor="#0E76A8"
-										/>
-									</ContainerToggle>
-								</ContainerServicios>
-							))}
-						</>
+						{serviceList.response.services.map((servicio) => (
+							// eslint-disable-next-line react/jsx-key, react/jsx-no-comment-textnodes
+							<EditService service={servicio} />
+						))}
 					</div>
 				</>
 			)}
 		</ContainerDatos>
 	);
 }
-
-const ContainerToggle = styled.div`
-	display: flex;
-	align-items: center;
-`;
 
 const ContainerDatos = styled.div`
 	display: flex;
@@ -91,16 +67,10 @@ const ContainerDatos = styled.div`
 	margin: 0 5%;
 	border: 1px solid #33333333;
 
-	h1 {
-		padding-bottom: 5%;
+	h2 {
+		padding-bottom: 3%;
 	}
-`;
-
-const ContainerServicios = styled.div`
-	border: 1px solid black;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	border: 1px solid rgba(212, 212, 212, 1);
-	padding: 2%;
+	p {
+		padding-bottom: 1.5rem;
+	}
 `;
