@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { provincias } from '../assets/usefulData';
-import { ButtonBlue, ButtonGray } from '../styledcomponents/Buttons';
+import { ButtonBlue, ButtonGrayInput } from '../styledcomponents/Buttons';
 import UserProfileCard from './UserProfileCard';
 import { useForm } from 'react-hook-form';
 import UploadAndDisplayImage from './UploAndDisplayImage';
@@ -203,7 +203,7 @@ export default function Profile() {
 						</Select>
 						<ContainerBotones>
 							<ButtonBlue>Guardar</ButtonBlue>
-							<ButtonGray
+							<ButtonGrayInput
 								type="button"
 								onClick={() => setActive()}
 								value="Cancelar"

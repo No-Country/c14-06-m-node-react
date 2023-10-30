@@ -31,3 +31,11 @@ export const ButtonGray = styled.button`
 	border: none;
 	cursor: pointer;
 `;
+export const ButtonGrayInput = styled.input`
+	background-color: #00000033;
+	color: #000000;
+	border-radius: 4px;
+	padding: 0.7rem 1rem;
+	border: none;
+	cursor: pointer;
+`;
