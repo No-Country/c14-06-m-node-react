@@ -43,6 +43,7 @@ const initializePassport = () => {
 						password: hashedPass,
 					};
 					await usersService.createUser(newUser);
+					delete newUser.password;
 					return done(null, newUser);
 				} catch (error) {
 					return done(error);
