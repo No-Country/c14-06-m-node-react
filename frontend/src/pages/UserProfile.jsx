@@ -2,7 +2,6 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Profile from '../components/Profile';
 import MyServices from '../components/MyServices';
-import EditServices from '../components/EditServices';
 import DeleteAccount from '../components/DeleteAccount';
 // import {useForm } from 'react-hook-form';
 
@@ -26,9 +25,6 @@ const UserProfile = () => {
 						{isWorker ? (
 							<>
 								<li onClick={() => setActive('misServicios')}>Mis Servicios</li>
-								<li onClick={() => setActive('editarServicios')}>
-									Editar Servicios
-								</li>
 							</>
 						) : (
 							<Invisible />
@@ -40,7 +36,6 @@ const UserProfile = () => {
 				<>
 					{active === 'miPerfil' && <Profile />}
 					{active === 'misServicios' && <MyServices />}
-					{active === 'editarServicios' && <EditServices />}
 					{active === 'elimnarCuenta' && <DeleteAccount />}
 				</>
 			</ContainerPerfil>
