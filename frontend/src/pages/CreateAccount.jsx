@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
@@ -6,6 +6,7 @@ import Modal from '../components/Modal';
 import { provincias } from '../assets/usefulData';
 
 const endpoint = 'https://serviceclub.onrender.com/api/session/register';
+const login = 'https://serviceclub.onrender.com/api/session/login';
 
 const CreateAccount = () => {
 	const [modalState, changeModalState] = useState(false);
@@ -17,7 +18,8 @@ const CreateAccount = () => {
 		formState: { errors },
 		watch,
 	} = useForm();
-
+	const { state } = useLocation();
+	console.log(state);
 	const onSubmit = handleSubmit((data) => {
 		changeModalState(true);
 
@@ -31,7 +33,7 @@ const CreateAccount = () => {
 			role: 'user',
 		};
 
-		console.log(body);
+		console.log(state);
 
 		const payload = {
 			method: 'POST',
@@ -47,10 +49,37 @@ const CreateAccount = () => {
 				if (response.status === 201) {
 					//APARECE MODEAL DE REGISTRO EXITOSO
 					changeTitulo('Te registraste exitosamente!');
-					changeParrafo('Redirigiendo a la web de ServiciosClub');
-					setTimeout(() => {
-						location.replace('/iniciar-sesion');
-					}, 3000);
+					changeParrafo('Bienvenido');
+					fetch(login, payload)
+						.then((response) => {
+							if (response.ok) {
+								return response.json();
+							} else {
+								changeParrafo('Intenta otra vez');
+								setTimeout(() => {
+									changeModalState(false);
+									changeTitulo('Cargando ...');
+									changeParrafo('Por favor espera.');
+								}, 2000);
+							}
+						})
+						.then((data) => {
+							//Token en localStorage
+							localStorage.setItem('token', data.response.token);
+							localStorage.setItem('user', JSON.stringify(data.response.user));
+							//redireccion
+							if (state) {
+								try {
+									location.replace(window.location.origin + state.returnTo);
+								} catch (error) {
+									location.replace('/');
+								}
+							} else {
+								setTimeout(() => {
+									location.replace('/');
+								}, 2000);
+							}
+						});
 
 					return response.json();
 				} else if (response.status === 400) {

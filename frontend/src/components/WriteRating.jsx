@@ -3,7 +3,7 @@ import { ButtonBlue } from '../styledcomponents/Buttons';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 {
 	/*import Modal from '../components/Modal'*/
 }
@@ -141,7 +141,7 @@ const WriteRating = ({ serviceId }) => {
 				});
 		}
 	});
-
+	const path = useLocation().pathname;
 	return (
 		<WriteRatingContainer>
 			<Form onSubmit={onSubmit}>
@@ -151,7 +151,12 @@ const WriteRating = ({ serviceId }) => {
 				{!IsLoggedIn ? (
 					<LogInOption>
 						Inicia Sesión para poder valorar.
-						<Link to="/iniciar-sesion">
+						<Link
+							to={{
+								pathname: '../iniciar-sesion',
+							}}
+							state={{ returnTo: path }}
+						>
 							<ButtonBlue>Iniciar Sesión</ButtonBlue>
 						</Link>
 					</LogInOption>

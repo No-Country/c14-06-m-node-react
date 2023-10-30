@@ -49,6 +49,17 @@ const Navbar = () => {
 			</NavUl>
 			<NavUl>
 				{IsLoggedIn ? (
+					<HideOnMobile>
+						<Li>
+							<StyledLink to="/ofrecer-servicio">
+								Ofrecer un servicio
+							</StyledLink>
+						</Li>
+					</HideOnMobile>
+				) : (
+					<Invisible />
+				)}
+				{IsLoggedIn ? (
 					<Invisible />
 				) : (
 					<HideOnMobile>
@@ -67,18 +78,6 @@ const Navbar = () => {
 					<Li>
 						<StyledLink to="/iniciar-sesion">Iniciar Sesion</StyledLink>
 					</Li>
-				)}
-
-				{IsLoggedIn ? (
-					<HideOnMobile>
-						<Li>
-							<StyledLink to="/ofrecer-servicio">
-								Ofrecer un servicio
-							</StyledLink>
-						</Li>
-					</HideOnMobile>
-				) : (
-					<Invisible />
 				)}
 			</NavUl>
 		</NavbarPrincipal>
