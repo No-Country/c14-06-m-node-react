@@ -11,7 +11,8 @@ const router = Router();
 router.post(
 	'/register',
 	validateDto(createUserBodyValidator, 'body'),
-	passport.authenticate('register', { failureRedirect: 'failregister' }),
+	passport.authenticate('register'),
+	SessionsController.register,
 	async (req, res) => {
 		const { email, name } = req.body;
 		await gmailTransport.sendMail({
@@ -33,19 +34,15 @@ router.post(
 	}
 );
 
-router.get('/failregister', (req, res, next) => {
-	next({ status: 401, message: 'Error de registro' });
-});
+// router.get('/failregister', (req, res, next) => {
+// 	next({ status: 401, message: 'Error de registro' });
+// });
 
-router.post(
-	'/login',
-	passport.authenticate('login', { failureRedirect: 'faillogin' }),
-	SessionsController.login
-);
+router.post('/login', passport.authenticate('login'), SessionsController.login);
 
-router.get('/faillogin', (req, res, next) => {
-	next({ status: 401, message: 'Error de inicio de sesión' });
-});
+// router.get('/faillogin', (req, res, next) => {
+// 	next({ status: 401, message: 'Error de inicio de sesión' });
+// });
 
 router.get(
 	'/current',
