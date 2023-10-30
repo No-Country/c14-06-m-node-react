@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import verificado from '../assets/images/verificado.png';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import noPhoto from '../assets/images/noPhoto.png';
 import StarRating from './StarRating';
 
@@ -98,6 +98,7 @@ const ProfessionalListCard = ({
 		setImageValid(false);
 	};
 
+	const path = useLocation().pathname;
 	return (
 		<Card>
 			<ImageContainer>
@@ -132,7 +133,14 @@ const ProfessionalListCard = ({
 					<span>✆ {telephone}</span>
 				) : (
 					<span>
-						<StyledLink to="../iniciar-sesion">✆ Ver teléfono</StyledLink>
+						<StyledLink
+							to={{
+								pathname: '../iniciar-sesion',
+							}}
+							state={{ returnTo: path }}
+						>
+							✆ Ver teléfono
+						</StyledLink>
 					</span>
 				)}
 			</ContentRight>

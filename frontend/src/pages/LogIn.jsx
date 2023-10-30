@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import Modal from '../components/Modal';
+import PropTypes from 'prop-types';
 
 const url = 'https://serviceclub.onrender.com/api/session';
 
@@ -10,7 +11,7 @@ const LogIn = () => {
 	const [modalState, changeModalState] = useState(false);
 	const [titulo, changeTitulo] = useState('Cargando ...');
 	const [parrafo, changeParrafo] = useState('Por favor espera.');
-
+	const { state } = useLocation();
 	const {
 		register,
 		handleSubmit,
@@ -50,12 +51,19 @@ const LogIn = () => {
 				localStorage.setItem('token', data.response.token);
 				localStorage.setItem('user', JSON.stringify(data.response.user));
 				//redireccion
-				setTimeout(() => {
-					location.replace('/');
-				}, 3000);
+				if (state) {
+					try {
+						location.replace(window.location.origin + state.returnTo);
+					} catch (error) {
+						location.replace('/');
+					}
+				} else {
+					setTimeout(() => {
+						location.replace('/');
+					}, 2000);
+				}
 			});
 	});
-
 	return (
 		<DivContainer>
 			<Modal
@@ -142,7 +150,9 @@ const LogIn = () => {
 			</StyledForm>
 			<span>
 				¿No tiene una cuenta? Clickea aquí para&nbsp;
-				<Link to="/crear-cuenta">registrarte.</Link>
+				<Link to="/crear-cuenta" state={state}>
+					registrarte.
+				</Link>
 			</span>
 		</DivContainer>
 	);
@@ -263,4 +273,8 @@ const StyledSpanErrores = styled.span`
 // 	font-size: 0.8rem;
 // 	gap: 0.4rem;
 // `;
+
+LogIn.propTypes = {
+	state: PropTypes.string,
+};
 export default LogIn;
