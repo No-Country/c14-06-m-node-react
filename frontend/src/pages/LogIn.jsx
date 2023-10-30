@@ -37,7 +37,7 @@ const LogIn = () => {
 					changeParrafo('Bienvenido!');
 					return response.json();
 				} else {
-					changeTitulo('ERROR: Uno de los datos ingresados es incorrecto');
+					changeTitulo('Error: Los datos ingresados son incorrectos');
 					changeParrafo('Intenta otra vez');
 					setTimeout(() => {
 						changeModalState(false);
