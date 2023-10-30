@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { ButtonBlue } from '../styledcomponents/Buttons';
-import { provincias } from '../assets/usefulData';
 
 const OfrecerServicio = () => {
 	const url = 'https://serviceclub.onrender.com/api/services/';
@@ -80,7 +79,9 @@ const OfrecerServicio = () => {
 			.then((data) => {
 				console.log(data);
 				if (data.status === 'created') {
-					alert('Servicio Creado con éxito');
+					location.replace(
+						window.location.origin + '/servicio/' + data.response.insertedId
+					);
 				} else {
 					alert(data.response);
 				}
@@ -115,14 +116,12 @@ const OfrecerServicio = () => {
 
 				<Column>
 					<Label htmlFor="serviceLocation">Localidad</Label>
-					<Select id="serviceLocation" {...register('serviceLocation')}>
-						<option value="">Selecciona una provincia</option>
-						{provincias.map((provincia) => (
-							<option key={provincia.value} value={provincia.value}>
-								{provincia.label}
-							</option>
-						))}
-					</Select>
+					<input
+						id="serviceLocation"
+						placeholder="Ej: Las Flores"
+						maxLength={20}
+						{...register('serviceLocation')}
+					/>
 				</Column>
 				<ButtonBlue>Publicar</ButtonBlue>
 			</Form>
@@ -150,6 +149,12 @@ const Form = styled.form`
 	align-items: center;
 	gap: 1rem;
 	width: 80%;
+
+	input {
+		padding: 0.6rem;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+	}
 `;
 
 /*const Row = styled.div`
@@ -172,7 +177,6 @@ const TextArea = styled.textarea`
 	padding: 0.5rem;
 	border: 1px solid #ccc;
 	border-radius: 4px;
-	height: 100px;
 	resize: none;
 	width: 100%;
 	height: 10rem;
