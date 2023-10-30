@@ -1,5 +1,6 @@
 export const provincias = [
 	{ label: 'Buenos Aires', value: 'Buenos Aires' },
+	{ label: 'CABA', value: 'CABA' },
 	{ label: 'Catamarca', value: 'Catamarca' },
 	{ label: 'Chaco', value: 'Chaco' },
 	{ label: 'Chubut', value: 'Chubut' },
