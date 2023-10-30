@@ -1,22 +1,27 @@
 import { useState } from 'react';
-// import person1 from '../assets/images/person1.jpg';
 import styled from 'styled-components';
+import noPhoto from '../assets/images/noPhoto.png';
 
 const UploadAndDisplayImage = () => {
-	const [selectedImage, setSelectedImage] = useState(null);
+	const [, /*selectedImage*/ setSelectedImage] = useState(null);
 	const userImg = JSON.parse(localStorage.getItem('user')).profileImg;
+
+	const [imageValid, setImageValid] = useState(true);
+	const handleImageError = () => {
+		setImageValid(false);
+	};
+	console.log(userImg);
 
 	return (
 		<StyledContainer>
-			{!selectedImage && (
-				<div>
-					<img alt="not found" src={userImg} />
-				</div>
-			)}
-			{selectedImage && (
-				<div>
-					<img alt="not found" src={URL.createObjectURL(selectedImage)} />
-				</div>
+			{imageValid ? (
+				<Image
+					src={userImg}
+					alt="Mi imagen de perfil"
+					onError={handleImageError}
+				/>
+			) : (
+				<Image src={noPhoto} alt="Mi perfil sin imagen" />
 			)}
 			<StyledLabel>
 				<StyledInputFile
@@ -49,15 +54,19 @@ const StyledLabel = styled.label`
 
 const StyledContainer = styled.div`
 	align-items: center;
-	margin-left: 5%;
 	width: 100%;
-	padding-top: 5%;
 	display: flex;
-	justify-content: space-between;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 0 2rem 0 3rem;
+	gap: 1rem;
+`;
 
-	img {
-		border-radius: 10px;
-	}
+const Image = styled.img`
+	max-width: 200px;
+	height: auto;
+	object-fit: cover;
 `;
 
 export default UploadAndDisplayImage;

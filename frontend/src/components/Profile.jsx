@@ -173,17 +173,7 @@ export default function Profile() {
 					<UploadAndDisplayImage />
 				</ContainerA>
 				<Label htmlFor="">Email</Label>
-				<Input
-					type="email"
-					name=""
-					id=""
-					{...register('email', {
-						pattern: {
-							value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-							message: 'Correo no válido',
-						},
-					})}
-				/>
+				<Input type="email" name="" id="" disabled />
 				{errors.email && (
 					<StyledSpanErrores>{errors.email.message}</StyledSpanErrores>
 				)}
