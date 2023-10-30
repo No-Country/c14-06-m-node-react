@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import trabajosPintura from '../assets/images/trabajosPintura.png';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import { ButtonBlue } from '../styledcomponents/Buttons';
 import { useState } from 'react';
+import SliderMain from './SliderMain';
 
 const MainScreen = styled.div`
 	min-height: calc(100vh - var(--navbar-height));
@@ -53,16 +53,17 @@ const ContainerRight = styled.div`
 	justify-content: center;
 	align-items: center;
 	padding: 1rem;
+	width: 500px;
 
 	@media (max-width: 920px) {
 		display: none;
 	}
 `;
 
-const StyledImg = styled.img`
-	width: 100%;
-	margin-bottom: 8rem;
-`;
+// const StyledImg = styled.img`
+// 	width: 100%;
+// 	margin-bottom: 8rem;
+// `;
 
 const Select = styled.select`
 	padding: 0.5rem;
@@ -227,7 +228,7 @@ const Home = () => {
 				</StyledP>
 			</ContainerLeft>
 			<ContainerRight>
-				<StyledImg src={trabajosPintura} alt="" />
+				<SliderMain />
 			</ContainerRight>
 		</MainScreen>
 	);

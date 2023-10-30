@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import Profile from '../components/Profile';
 import MyServices from '../components/MyServices';
 import DeleteAccount from '../components/DeleteAccount';
+import UserProfileCard from '../components/UserProfileCard';
 // import {useForm } from 'react-hook-form';
 
 const UserProfile = () => {
@@ -14,13 +14,13 @@ const UserProfile = () => {
 	const getUserRole = JSON.parse(localStorage.getItem('user')).role;
 	const isWorker = getUserRole === 'pro' ? true : false;
 
-	const [active, setActive] = useState('miPerfil');
+	const [active, setActive] = useState('miPerfilCard');
 	return (
 		<>
 			<ContainerPerfil>
 				<ContainerLista>
 					<ListaNavegacion>
-						<li onClick={() => setActive('miPerfil')}>Perfil</li>
+						<li onClick={() => setActive('miPerfilCard')}>Perfil</li>
 
 						{isWorker ? (
 							<>
@@ -34,7 +34,7 @@ const UserProfile = () => {
 					</ListaNavegacion>
 				</ContainerLista>
 				<>
-					{active === 'miPerfil' && <Profile />}
+					{active === 'miPerfilCard' && <UserProfileCard />}
 					{active === 'misServicios' && <MyServices />}
 					{active === 'elimnarCuenta' && <DeleteAccount />}
 				</>

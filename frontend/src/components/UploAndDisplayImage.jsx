@@ -10,7 +10,7 @@ const UploadAndDisplayImage = () => {
 	const handleImageError = () => {
 		setImageValid(false);
 	};
-	console.log(userImg);
+	// console.log(userImg);
 
 	return (
 		<StyledContainer>
@@ -68,5 +68,9 @@ const Image = styled.img`
 	height: auto;
 	object-fit: cover;
 `;
+
+// const uploadImage = (img) => {
+// 	fetch().then().then();
+// };
 
 export default UploadAndDisplayImage;
