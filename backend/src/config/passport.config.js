@@ -42,8 +42,8 @@ const initializePassport = () => {
 						...req.body,
 						password: hashedPass,
 					};
-					const createdUser = await usersService.createUser(newUser);
-					return done(null, createdUser);
+					await usersService.createUser(newUser);
+					return done(null, newUser);
 				} catch (error) {
 					return done(error);
 				}
