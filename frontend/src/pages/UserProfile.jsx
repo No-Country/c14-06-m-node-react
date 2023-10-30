@@ -14,31 +14,29 @@ const UserProfile = () => {
 	const getUserRole = JSON.parse(localStorage.getItem('user')).role;
 	const isWorker = getUserRole === 'pro' ? true : false;
 
-	const [activar, setActivar] = useState('miPerfilCard');
+	const [active, setActive] = useState('miPerfilCard');
 	return (
 		<>
 			<ContainerPerfil>
 				<ContainerLista>
 					<ListaNavegacion>
-						<li onClick={() => setActivar('miPerfilCard')}>Perfil</li>
+						<li onClick={() => setActive('miPerfilCard')}>Perfil</li>
 
 						{isWorker ? (
 							<>
-								<li onClick={() => setActivar('misServicios')}>
-									Mis Servicios
-								</li>
+								<li onClick={() => setActive('misServicios')}>Mis Servicios</li>
 							</>
 						) : (
 							<Invisible />
 						)}
 
-						<li onClick={() => setActivar('elimnarCuenta')}>Eliminar Cuenta</li>
+						<li onClick={() => setActive('elimnarCuenta')}>Eliminar Cuenta</li>
 					</ListaNavegacion>
 				</ContainerLista>
 				<>
-					{activar === 'miPerfilCard' && <UserProfileCard />}
-					{activar === 'misServicios' && <MyServices />}
-					{activar === 'elimnarCuenta' && <DeleteAccount />}
+					{active === 'miPerfilCard' && <UserProfileCard />}
+					{active === 'misServicios' && <MyServices />}
+					{active === 'elimnarCuenta' && <DeleteAccount />}
 				</>
 			</ContainerPerfil>
 		</>
