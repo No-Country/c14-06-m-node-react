@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ButtonBlue } from '../styledcomponents/Buttons';
 import logo from '../assets/logo/logo.png';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { HashLink } from 'react-router-hash-link';
@@ -14,6 +14,8 @@ const loggedOut = () => {
 };
 
 const Navbar = () => {
+	const path = useLocation().pathname;
+	console.log(path);
 	return (
 		<NavbarPrincipal>
 			<Link to="/">
@@ -64,7 +66,12 @@ const Navbar = () => {
 				) : (
 					<HideOnMobile>
 						<Li>
-							<Link to="/crear-cuenta">
+							<Link
+								to={{
+									pathname: '../crear-cuenta',
+								}}
+								state={{ returnTo: path }}
+							>
 								<ButtonBlue>Registrarse</ButtonBlue>
 							</Link>
 						</Li>
@@ -72,11 +79,18 @@ const Navbar = () => {
 				)}
 				{IsLoggedIn ? (
 					<Link onClick={loggedOut}>
-						<ButtonBlue>Cerrar Sesión</ButtonBlue>
+						<StyledButtonBlue>Cerrar Sesión</StyledButtonBlue>
 					</Link>
 				) : (
 					<Li>
-						<StyledLink to="/iniciar-sesion">Iniciar Sesion</StyledLink>
+						<StyledLink
+							to={{
+								pathname: '../iniciar-sesion',
+							}}
+							state={{ returnTo: path }}
+						>
+							Iniciar Sesion
+						</StyledLink>
 					</Li>
 				)}
 			</NavUl>
@@ -110,6 +124,9 @@ const TextLogo = styled.div`
 	font-weight: bolder;
 	padding-left: 1rem;
 	padding-top: 4px;
+	@media (max-width: 460px) {
+		display: none;
+	}
 `;
 const BlueText = styled.span`
 	color: var(--primary);
@@ -151,6 +168,10 @@ const StyledLink = styled(NavLink)`
 	&.active {
 		border-bottom: 3px solid var(--primary);
 	}
+`;
+
+const StyledButtonBlue = styled(ButtonBlue)`
+	padding: 0.7rem 0.4rem;
 `;
 
 const ArrowIcon = styled(FontAwesomeIcon)`

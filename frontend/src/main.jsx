@@ -26,6 +26,12 @@ const GlobalStyles = createGlobalStyle`
   a {
   text-decoration: none; 
   color: inherit;
+
+}
+a:active{
+  background-color: none;
+  background: none;
+  opacity: 1;
 }
 `;
 

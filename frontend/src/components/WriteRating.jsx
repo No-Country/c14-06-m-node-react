@@ -174,11 +174,11 @@ const WriteRating = ({ serviceId }) => {
 								},
 								minLength: {
 									value: 12,
-									message: '*Debe tener al menos 12 caracteres',
+									message: '*El comentario debe tener al menos 12 caracteres',
 								},
 								maxLength: {
-									value: 60,
-									message: '*Debe ser menor a 60 caracteres',
+									value: 180,
+									message: '*El comentario debe ser menor a 180 caracteres',
 								},
 								pattern: {
 									value: /^[^<>]*$/,

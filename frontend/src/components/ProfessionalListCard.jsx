@@ -56,6 +56,9 @@ const Info = styled.p`
 	margin: 10px 0;
 `;
 
+const BlueText = styled.span`
+	color: var(--primary);
+`;
 const Valoracion = styled.div`
 	margin-top: auto;
 	color: var(--primary);
@@ -82,6 +85,7 @@ const StyledLink = styled(Link)`
 
 const ProfessionalListCard = ({
 	name,
+	surname,
 	imgUrl,
 	certified,
 	info,
@@ -89,6 +93,7 @@ const ProfessionalListCard = ({
 	location,
 	province,
 	rating,
+	category,
 }) => {
 	const IsLoggedIn = localStorage.token ? true : false;
 
@@ -109,12 +114,15 @@ const ProfessionalListCard = ({
 				)}
 			</ImageContainer>
 			<Content>
-				<Title>{name}</Title>
+				<Title>
+					{name && name} {surname && surname}
+				</Title>
 				{certified && (
 					<SubTitle>
 						Profesional Certificado <VerificadoImage src={verificado} alt="" />
 					</SubTitle>
 				)}
+				{category && <BlueText>{category}</BlueText>}
 				{rating && (
 					<Valoracion>
 						<StarRating rating={rating} />
@@ -150,6 +158,7 @@ const ProfessionalListCard = ({
 
 ProfessionalListCard.propTypes = {
 	name: PropTypes.string.isRequired,
+	surname: PropTypes.string,
 	imgUrl: PropTypes.string.isRequired,
 	certified: PropTypes.bool,
 	info: PropTypes.string,
@@ -157,6 +166,7 @@ ProfessionalListCard.propTypes = {
 	location: PropTypes.string.isRequired,
 	province: PropTypes.string,
 	rating: PropTypes.number,
+	category: PropTypes.string,
 };
 
 export default ProfessionalListCard;

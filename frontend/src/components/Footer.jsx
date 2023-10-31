@@ -38,14 +38,23 @@ const DivLogo = styled.div`
 		justify-content: center;
 		align-items: center;
 	}
+	@media (max-width: 300px) {
+		a {
+			display: flex;
+			flex-direction: column;
+		}
+	}
 `;
 
 const TextLogo = styled.div`
 	color: rgb(0, 0, 0, 0.8);
-	font-size: 1.5rem;
+	font-size: 1.5em;
 	font-weight: bolder;
 	padding-left: 1rem;
 	padding-top: 4px;
+	@media (max-width: 500px) {
+		font-size: 1rem;
+	}
 `;
 
 const BlueText = styled.span`
