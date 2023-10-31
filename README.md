@@ -66,7 +66,7 @@ You can visit the web application at https://www.serviciosclub.com.
 [![NodeJS](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org)
 [![ExpressJS](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge)](https://expressjs.com)
 [![JWT](https://img.shields.io/badge/JWT-gray?style=for-the-badge&logo=JSON%20web%20tokens)](https://jwt.io)
-[![JSON-Schema](https://img.shields.io/badge/JSON%20Schema-000000?style=for-the-badge&logo=json&logoColor=yellow)](https://jwt.io)
+[![JSON-Schema](https://img.shields.io/badge/JSON%20Schema-000000?style=for-the-badge&logo=json&logoColor=yellow)](https://json-schema.org)
 [![MongoDB](https://img.shields.io/badge/MongoDB-white?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/es)
 
 | <img src="docs/GabrielAlthaparro.jpeg" width=50>| <img src="docs/JuanNebbia.jpeg" width=50>|
