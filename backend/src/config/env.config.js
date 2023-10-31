@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export default {
-	MONGODB_USER: process.env.MONGODB_USER,
-	MONGODB_PASS: process.env.MONGODB_PASS,
+	PORT: process.env.PORT || 3001,
+	MONGO_URI: process.env.MONGO_URI,
 	SECRET_KEY: process.env.SECRET_KEY,
 	SESSION_KEY: process.env.SESSION_KEY,
 	GMAIL_ACCOUNT: process.env.GMAIL_ACCOUNT,
