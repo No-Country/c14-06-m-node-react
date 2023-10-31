@@ -35,13 +35,13 @@ const Calificaciones = styled.div`
 	margin-top: 1rem;
 `;
 
-const ShowReview = ({ reviews }) => {
+const ShowReview = ({ reviews, isMyOwnService }) => {
 	if (!reviews || reviews.length === 0) {
 		return (
 			<RatingCardsDiv>
 				<p>
-					Este servicio aún no tiene calificaciones. ¡Sé el primero en
-					calificar!
+					Este servicio aún no tiene calificaciones.
+					{!isMyOwnService && '¡Sé el primero en calificar!'}
 				</p>
 			</RatingCardsDiv>
 		);
@@ -70,5 +70,6 @@ const ShowReview = ({ reviews }) => {
 
 ShowReview.propTypes = {
 	reviews: PropTypes.array,
+	isMyOwnService: PropTypes.bool,
 };
 export default ShowReview;

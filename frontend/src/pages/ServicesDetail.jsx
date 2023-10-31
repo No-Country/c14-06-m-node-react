@@ -95,6 +95,7 @@ const ServicesDetail = () => {
 						serviceId={serviceDetail._id}
 						rating={serviceDetail.rating}
 						qualifications={serviceDetail.qualifications}
+						userId={serviceDetail.user._id}
 					/>
 				</ServiceDetailContainer>
 			)}
