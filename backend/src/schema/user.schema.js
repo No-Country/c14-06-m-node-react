@@ -16,7 +16,7 @@ export const userSchema = {
 		minLength: 1,
 		maxLength: 50,
 		pattern:
-			'^[a-z-A-Z0-9ñÑáéíóúÁÉÍÓÚüÜ]{1}[a-z-A-Z0-9ñÑáéíóúÁÉÍÓÚüÜ ]*[a-z-A-Z0-9ñÑáéíóúÁÉÍÓÚüÜ]{1}$',
+			'^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚüÜ]{1}[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚüÜ ]*[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚüÜ]{1}$',
 		errorMessage: {
 			minLength: 'Nombre inválido, no puede estar vacío',
 			maxLength: 'Nombre inválido, máximo 50 caracteres',
@@ -31,7 +31,7 @@ export const userSchema = {
 		minLength: 1,
 		maxLength: 50,
 		pattern:
-			'^[a-z-A-Z0-9ñÑáéíóúÁÉÍÓÚüÜ]{1}[a-z-A-Z0-9ñÑáéíóúÁÉÍÓÚüÜ ]*[a-z-A-Z0-9ñÑáéíóúÁÉÍÓÚüÜ]{1}$',
+			'^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚüÜ]{1}[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚüÜ ]*[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚüÜ]{1}$',
 		errorMessage: {
 			minLength: 'Apellido inválido, no puede estar vacío',
 			maxLength: 'Apellido inválido, máximo 50 caracteres',
