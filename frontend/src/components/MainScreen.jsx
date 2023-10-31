@@ -40,6 +40,9 @@ const StyledSlogan = styled.span`
 	text-align: center;
 	padding-bottom: 4rem;
 	color: rgb(0, 0, 0, 0.8);
+	@media (max-width: 500px) {
+		font-size: 1.8rem;
+	}
 `;
 
 const StyledP = styled.p`

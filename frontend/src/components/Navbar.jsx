@@ -72,7 +72,7 @@ const Navbar = () => {
 				)}
 				{IsLoggedIn ? (
 					<Link onClick={loggedOut}>
-						<ButtonBlue>Cerrar Sesión</ButtonBlue>
+						<StyledButtonBlue>Cerrar Sesión</StyledButtonBlue>
 					</Link>
 				) : (
 					<Li>
@@ -110,6 +110,9 @@ const TextLogo = styled.div`
 	font-weight: bolder;
 	padding-left: 1rem;
 	padding-top: 4px;
+	@media (max-width: 460px) {
+		display: none;
+	}
 `;
 const BlueText = styled.span`
 	color: var(--primary);
@@ -151,6 +154,10 @@ const StyledLink = styled(NavLink)`
 	&.active {
 		border-bottom: 3px solid var(--primary);
 	}
+`;
+
+const StyledButtonBlue = styled(ButtonBlue)`
+	padding: 0.7rem 0.4rem;
 `;
 
 const ArrowIcon = styled(FontAwesomeIcon)`

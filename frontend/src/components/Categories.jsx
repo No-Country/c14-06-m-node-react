@@ -23,6 +23,9 @@ const CategoriesListContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 	gap: 1rem;
+	@media (max-width: 180px) {
+		grid-template-columns: repeat(auto-fit, 1fr);
+	}
 `;
 
 const PreTitle = styled.div`
@@ -32,6 +35,13 @@ const PreTitle = styled.div`
 	padding-top: 2.5rem;
 	color: rgb(0, 0, 0, 0.8);
 	gap: 1.2rem;
+
+	@media (max-width: 500px) {
+		font-size: 1rem;
+		h1 {
+			font-size: 1.8rem;
+		}
+	}
 `;
 
 const Card = styled.div`
@@ -47,7 +57,6 @@ const Card = styled.div`
 	&:hover {
 		box-shadow: rgba(0, 0, 0, 0.12) 0px 5px 9px 4px;
 	}
-	min-height: 180px;
 `;
 const Icon = styled.img`
 	width: 4rem;
