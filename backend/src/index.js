@@ -31,4 +31,4 @@ app.use(passport.session());
 app.use('/api', apiRouter);
 
 //Listen
-app.listen(3001, () => console.log('Server started'));
+app.listen(envs.PORT, () => console.log('Server started at port ' + envs.PORT));
