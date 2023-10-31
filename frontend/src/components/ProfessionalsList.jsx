@@ -3,41 +3,8 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ProfessionalListCard from './ProfessionalListCard';
 import { Link } from 'react-router-dom';
-
-const ProfessionalsListContainer = styled.div`
-	width: 100%;
-	margin: 0 auto;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-`;
-
-const Title = styled.div`
-	font-size: 1.2rem;
-	padding: 1rem 1rem 2rem 1rem;
-	margin-top: 3rem;
-`;
-
-const TextBlue = styled.span`
-	color: var(--primary);
-`;
-
-const LoadingMessage = styled.div`
-	font-size: 1.2rem;
-	padding: 1rem;
-	margin: auto;
-`;
-
-const NoServicesMessage = styled.div`
-	font-size: 1.2rem;
-	padding: 1rem;
-	margin: auto;
-`;
-
-const StyledLink = styled(Link)`
-	width: 100%;
-`;
+import Modal from './Modal';
+import NotServicesError from './NotServicesError';
 
 const professions = [
 	{ label: 'Albañiles', value: 'bricklayer' },
@@ -63,9 +30,15 @@ const findLabelByValue = (value) => {
 };
 
 const ProfessionalsList = () => {
+	const [modalState, changeModalState] = useState(true);
+	const [error, setError] = useState(false);
+	const [message /*setMessage*/] = useState(
+		'No se encontraron servicios disponibles.'
+	);
+	const [titulo /*setTitulo*/] = useState('Cargando ...');
+	const [parrafo /*setParrafo*/] = useState('Por favor espera.');
 	const [professionalList, setProfessionalList] = useState(null);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
+	// const [loading, setLoading] = useState(true);
 
 	let { categoryTitle, location } = useParams();
 
@@ -91,35 +64,51 @@ const ProfessionalsList = () => {
 				const response = await fetch(apiUrl);
 
 				if (!response.ok) {
+					setError(true);
+					changeModalState(false);
 					throw new Error(`HTTP Error: ${response.status}`);
 				}
 
 				const data = await response.json();
 				setProfessionalList(data);
-				setLoading(false);
-			} catch (error) {
-				setError(error);
-				setLoading(false);
+				changeModalState(false);
+
+				// setLoading(false);
+			} catch (e) {
+				console.log(e);
+				// setError(error);
+				// setLoading(false);
 			}
+
+			// if (error) {
+			// 	return (
+			// 		<NoServicesMessage state={setError}>
+			// 			No se encontraron servicios disponibles.
+			// 		</NoServicesMessage>
+			// 	);
+			// }
 		};
 
 		fetchData();
+
+		// if (professionalList === null) {
+		// 	alert('hi');
+		// }
 	}, [categoryTitle, location]);
 
-	if (loading) {
-		return <LoadingMessage>Buscando servicios...</LoadingMessage>;
-	}
-
-	if (error) {
-		return (
-			<NoServicesMessage>
-				No se encontraron servicios disponibles.
-			</NoServicesMessage>
-		);
-	}
+	// console.log(professionalList);
+	// if (loading) {
+	// 	return <LoadingMessage>Buscando servicios...</LoadingMessage>;
+	// }
 
 	return (
 		<ProfessionalsListContainer>
+			<Modal
+				state={modalState}
+				changeState={changeModalState}
+				titulo={titulo}
+				parrafo={parrafo}
+			></Modal>
 			<Title>
 				Listado de <TextBlue>{findLabelByValue(categoryTitle)}</TextBlue>
 				{location && (
@@ -129,12 +118,9 @@ const ProfessionalsList = () => {
 					</span>
 				)}
 			</Title>
+			<NotServicesError state={error} message={message}></NotServicesError>
 
-			{!professionalList || !professionalList.response.length ? (
-				<NoServicesMessage>
-					No se encontraron servicios disponibles
-				</NoServicesMessage>
-			) : (
+			{professionalList &&
 				professionalList.response.map(
 					(professional) =>
 						professional.category.code === categoryTitle &&
@@ -161,10 +147,44 @@ const ProfessionalsList = () => {
 								</StyledLink>
 							</>
 						)
-				)
-			)}
+				)}
 		</ProfessionalsListContainer>
 	);
 };
 
 export default ProfessionalsList;
+
+const ProfessionalsListContainer = styled.div`
+	width: 100%;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+`;
+
+const Title = styled.div`
+	font-size: 1.2rem;
+	padding: 1rem 1rem 2rem 1rem;
+	margin-top: 3rem;
+`;
+
+const TextBlue = styled.span`
+	color: var(--primary);
+`;
+
+// const LoadingMessage = styled.div`
+// 	font-size: 1.2rem;
+// 	padding: 1rem;
+// 	margin: auto;
+// `;
+
+// const NoServicesMessage = styled.div`
+// 	font-size: 1.2rem;
+// 	padding: 1rem;
+// 	margin: auto;
+// `;
+
+const StyledLink = styled(Link)`
+	width: 100%;
+`;
