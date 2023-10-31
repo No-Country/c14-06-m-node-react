@@ -68,6 +68,7 @@ You can visit the web application at https://www.serviciosclub.com.
 [![JWT](https://img.shields.io/badge/JWT-gray?style=for-the-badge&logo=JSON%20web%20tokens)](https://jwt.io)
 [![JSON-Schema](https://img.shields.io/badge/JSON%20Schema-000000?style=for-the-badge&logo=json&logoColor=yellow)](https://json-schema.org)
 [![MongoDB](https://img.shields.io/badge/MongoDB-white?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/es)
+[![Nodemailer](https://img.shields.io/badge/Nodemailer-0F9DCE?style=for-the-badge&logo=Nodemailer)](https://nodemailer.com)
 
 | <img src="docs/GabrielAlthaparro.jpeg" width=50>| <img src="docs/JuanNebbia.jpeg" width=50>|
 |:-:|:-:|
@@ -100,7 +101,7 @@ To run the web application locally you can clone the project from github followi
 
 ## 🚀 Setup
 
-Install and configure dependencies:
+Install dependencies:
 
 ```bash
 git clone https://github.com/No-Country/c14-06-m-node-react
@@ -109,7 +110,7 @@ cat backend/example.env > backend/.env
 pnpm install
 ```
 
-Then, complete the key-value pairs in the `backend/.env` file:
+Then, configure the key-value pairs in the `backend/.env` file:
 
 ##### _backend/.env_
 
