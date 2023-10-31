@@ -119,7 +119,7 @@ export default function Profile() {
 									type="text"
 									name="name"
 									id=""
-									placeholder={user.name}
+									defaultValue={user.name}
 									{...register('name', {
 										minLength: {
 											value: 2,
@@ -130,7 +130,8 @@ export default function Profile() {
 											message: 'Nombre no puede tener mas de 30 caracteres',
 										},
 										pattern: {
-											value: /^[a-zA-Z]+$/,
+											value:
+												/^([a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]{2,60}[\,\-\.]{0,1}[\s]{0,1}){1,3}$/, //eslint-disable-line
 											message: 'Nombre solo acepta letras',
 										},
 									})}
@@ -143,18 +144,19 @@ export default function Profile() {
 									type="text"
 									name=""
 									id=""
-									placeholder={user.surname}
+									defaultValue={user.surname}
 									{...register('surname', {
 										minLength: {
 											value: 2,
 											message: 'Apellido debe tener al menos 2 caracteres',
 										},
 										maxLength: {
-											value: 20,
+											value: 30,
 											message: 'Apellido no puede tener mas de 30 caracteres',
 										},
 										pattern: {
-											value: /^[a-zA-Z]+$/,
+											value:
+												/^([a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]{2,60}[\,\-\.]{0,1}[\s]{0,1}){1,3}$/, //eslint-disable-line
 											message: 'Apellido solo acepta letras',
 										},
 									})}
@@ -171,7 +173,7 @@ export default function Profile() {
 										type="tel"
 										name=""
 										id=""
-										placeholder={user.phone.slice(4)}
+										defaultValue={user.phone.slice(4)}
 										{...register('phone', {
 											pattern: {
 												value: /^\d{10}$/,
@@ -187,11 +189,11 @@ export default function Profile() {
 
 							<UploadAndDisplayImage />
 						</ContainerA>
-						<Label htmlFor="">Email</Label>
+						{/* <Label htmlFor="">Email</Label>
 						<Input type="email" name="" id="" value={user.email} disabled />
 						{errors.email && (
 							<StyledSpanErrores>{errors.email.message}</StyledSpanErrores>
-						)}
+						)} */}
 						<Label htmlFor="">Provincia</Label>
 						<Select {...register('location')}>
 							<option value="">{user.location}</option>

@@ -116,7 +116,7 @@ const CreateAccount = () => {
 						type="text"
 						name="name"
 						id="name"
-						placeholder="Bruno"
+						placeholder="Nombre"
 						{...register('name', {
 							required: { value: true, message: 'Nombre es requerido' },
 							minLength: {
@@ -128,7 +128,8 @@ const CreateAccount = () => {
 								message: 'Nombre no puede tener mas de 30 caracteres',
 							},
 							pattern: {
-								value: /^[a-zA-Z]+$/,
+								value:
+									/^([a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]{2,60}[\,\-\.]{0,1}[\s]{0,1}){1,3}$/, //eslint-disable-line
 								message: 'Nombre solo acepta letras',
 							},
 						})}
@@ -145,7 +146,7 @@ const CreateAccount = () => {
 						type="text"
 						name="surname"
 						id="surname"
-						placeholder="Diaz"
+						placeholder="Apellido"
 						{...register('surname', {
 							required: { value: true, message: 'Apellido es requerido' },
 							minLength: {
@@ -153,11 +154,12 @@ const CreateAccount = () => {
 								message: 'Apellido debe tener al menos 2 caracteres',
 							},
 							maxLength: {
-								value: 20,
+								value: 30,
 								message: 'Apellido no puede tener mas de 30 caracteres',
 							},
 							pattern: {
-								value: /^[a-zA-Z]+$/,
+								value:
+									/^([a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]{2,60}[\,\-\.]{0,1}[\s]{0,1}){1,3}$/, //eslint-disable-line
 								message: 'Apellido solo acepta letras',
 							},
 						})}
@@ -175,7 +177,7 @@ const CreateAccount = () => {
 						type="email"
 						name="email"
 						id="email"
-						placeholder="gotham@city.go"
+						placeholder="correo@gmail.com"
 						{...register('email', {
 							required: { value: true, message: 'Correo es requerido' },
 							pattern: {

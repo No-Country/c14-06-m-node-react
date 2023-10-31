@@ -106,11 +106,11 @@ const LogIn = () => {
 								message: 'Contraseña es requerida',
 							},
 							minLength: {
-								value: 6,
+								value: 8,
 								message: 'Contraseña debe tener al menos 6 caracteres',
 							},
 							maxLength: {
-								value: 12,
+								value: 50,
 								message: 'Contraseña no debe tener mas de 12 caracteres',
 							},
 						})}
