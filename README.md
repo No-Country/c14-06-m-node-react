@@ -1,14 +1,13 @@
-<center>
+<h1 align="center">🚀 c14-06-m-node-react</h1>
 
-# 🚀 c14-06-m-node-react
+<p align="center">
+  <img src="frontend/src/assets/logo/logo.png" alt="ServiciosClub logo"/>
+</p>
 
-![Aquí la descripción de la imagen por si no carga](frontend/src/assets/logo/logo.png).
+<h1 align="center">🏠 Servicios Club</h1>
 
 
-# 🏠 Servicios Club
-</center>
-
-Servicios Club is a web application designed to assist people with their home maintenance. It provides the opportunity to find professionals who can help, and also allows users to rate the professionals' work, providing recommendations for others based on previous jobs.
+Servicios Club is a web application designed to assist people in finding professionals to help with their home maintenance. It provides a list of professionals according to the user's location, and allows users to rate and comment on the service received so as to help others find the best worker for their own needs.
 
 You can visit the web application at https://www.serviciosclub.com.
 
@@ -31,7 +30,8 @@ You can visit the web application at https://www.serviciosclub.com.
 | <img src="docs/CarolinaSaggio.png" width=50>
 |:-:|
 | **Carolina Saggio**|
-[![Linkedin](https://img.shields.io/badge/linkedin%20-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/carolina-saggio-78338923)
+[![Linkedin](https://img.shields.io/badge/linkedin%20-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/carolina-saggio-78338923)|
+[![Github](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](https://github.com/csaggio74)
 
 <br>
 
@@ -58,7 +58,7 @@ You can visit the web application at https://www.serviciosclub.com.
 | <img src="docs/RubenGonzalez.jpeg" width=50>| <img src="docs/AndresBoni.jpeg" width=50>|
 |:-:|:-:|
 | **Ruben Gonzalez**| **Andrés Boni**|
-<a href="https://github.com/Ruben0x"><img src="https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/></a> <a href="#"><img src="https://img.shields.io/badge/linkedin%20-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white"/></a>|<a href="https://github.com/AndresBoni"><img src="https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/></a> <a href="https://www.linkedin.com/in/andresboni"><img src="https://img.shields.io/badge/linkedin%20-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white"/></a> |
+<a href="https://github.com/Ruben0x"><img src="https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/></a> <a href="https://www.linkedin.com/in/ruben-gonzalez-navarro"><img src="https://img.shields.io/badge/linkedin%20-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white"/></a>|<a href="https://github.com/AndresBoni"><img src="https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/></a> <a href="https://www.linkedin.com/in/andresboni"><img src="https://img.shields.io/badge/linkedin%20-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white"/></a> |
 
 <br>
 
@@ -72,7 +72,7 @@ You can visit the web application at https://www.serviciosclub.com.
 | <img src="docs/GabrielAlthaparro.jpeg" width=50>| <img src="docs/JuanNebbia.jpeg" width=50>|
 |:-:|:-:|
 | **Gabriel Althaparro**| **Juan Nebbia**|
-<a href="https://github.com/GabrielAlthaparro"><img src="https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/></a> <a href="https://www.linkedin.com/in/gabriel-althaparro-simoni-b59b1a1b5"><img src="https://img.shields.io/badge/linkedin%20-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white"/></a>| <a href="https://github.com/JuanNebbia"><img src="https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/></a> <a href="https://www.linkedin.com/in/juan-nebbia"><img src="https://img.shields.io/badge/linkedin%20-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white"/></a> |
+<a href="https://github.com/GabrielAlthaparro"><img src="https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/></a> <a href="https://www.linkedin.com/in/gabriel-althaparro-simoni-b59b1a1b5"><img src="https://img.shields.io/badge/linkedin%20-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white"/></a> <a href="https://gitlab.com/GabrielAlthaparro"><img src="https://img.shields.io/badge/GitLab-FCA121?style=for-the-badge&logo=gitlab&logoColor=white"/></a>|<a href="https://github.com/JuanNebbia"><img src="https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/></a> <a href="https://www.linkedin.com/in/juan-nebbia"><img src="https://img.shields.io/badge/linkedin%20-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white"/></a>|
 
 <br>
 
