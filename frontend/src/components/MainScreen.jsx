@@ -4,6 +4,7 @@ import { HashLink } from 'react-router-hash-link';
 import { ButtonBlue } from '../styledcomponents/Buttons';
 import { useState } from 'react';
 import SliderMain from './SliderMain';
+import { provincias } from '../assets/usefulData';
 
 const MainScreen = styled.div`
 	min-height: calc(100vh - var(--navbar-height));
@@ -119,31 +120,31 @@ const Home = () => {
 		{ label: 'Técnicos en Electrodomesticos', value: 'appliance' },
 	];
 
-	const provincias = [
-		{ label: 'Buenos Aires', value: 'Buenos Aires' },
-		{ label: 'Catamarca', value: 'Catamarca' },
-		{ label: 'Chaco', value: 'Chaco' },
-		{ label: 'Chubut', value: 'Chubut' },
-		{ label: 'Córdoba', value: 'Córdoba' },
-		{ label: 'Corrientes', value: 'Corrientes' },
-		{ label: 'Entre Ríos', value: 'Entre Ríos' },
-		{ label: 'Formosa', value: 'Formosa' },
-		{ label: 'Jujuy', value: 'Jujuy' },
-		{ label: 'La Pampa', value: 'La Pampa' },
-		{ label: 'La Rioja', value: 'La Rioja' },
-		{ label: 'Mendoza', value: 'Mendoza' },
-		{ label: 'Misiones', value: 'Misiones' },
-		{ label: 'Neuquén', value: 'Neuquén' },
-		{ label: 'Río Negro', value: 'Río Negro' },
-		{ label: 'Salta', value: 'Salta' },
-		{ label: 'San Juan', value: 'San Juan' },
-		{ label: 'San Luis', value: 'San Luis' },
-		{ label: 'Santa Cruz', value: 'Santa Cruz' },
-		{ label: 'Santa Fe', value: 'Santa Fe' },
-		{ label: 'Santiago del Estero', value: 'Santiago del Estero' },
-		{ label: 'Tierra del Fuego', value: 'Tierra del Fuego' },
-		{ label: 'Tucumán', value: 'Tucumán' },
-	];
+	// const provincias = [
+	// 	{ label: 'Buenos Aires', value: 'Buenos Aires' },
+	// 	{ label: 'Catamarca', value: 'Catamarca' },
+	// 	{ label: 'Chaco', value: 'Chaco' },
+	// 	{ label: 'Chubut', value: 'Chubut' },
+	// 	{ label: 'Córdoba', value: 'Córdoba' },
+	// 	{ label: 'Corrientes', value: 'Corrientes' },
+	// 	{ label: 'Entre Ríos', value: 'Entre Ríos' },
+	// 	{ label: 'Formosa', value: 'Formosa' },
+	// 	{ label: 'Jujuy', value: 'Jujuy' },
+	// 	{ label: 'La Pampa', value: 'La Pampa' },
+	// 	{ label: 'La Rioja', value: 'La Rioja' },
+	// 	{ label: 'Mendoza', value: 'Mendoza' },
+	// 	{ label: 'Misiones', value: 'Misiones' },
+	// 	{ label: 'Neuquén', value: 'Neuquén' },
+	// 	{ label: 'Río Negro', value: 'Río Negro' },
+	// 	{ label: 'Salta', value: 'Salta' },
+	// 	{ label: 'San Juan', value: 'San Juan' },
+	// 	{ label: 'San Luis', value: 'San Luis' },
+	// 	{ label: 'Santa Cruz', value: 'Santa Cruz' },
+	// 	{ label: 'Santa Fe', value: 'Santa Fe' },
+	// 	{ label: 'Santiago del Estero', value: 'Santiago del Estero' },
+	// 	{ label: 'Tierra del Fuego', value: 'Tierra del Fuego' },
+	// 	{ label: 'Tucumán', value: 'Tucumán' },
+	// ];
 
 	const [selectedProfession, setSelectedProfession] = useState('');
 	const [selectedProvince, setSelectedProvince] = useState('');
@@ -184,7 +185,7 @@ const Home = () => {
 						id="profession"
 						value={selectedProfession}
 						onChange={handleProfessionChange}
-						defaultValue=""
+						// defaultValue=""
 						placeholder="Selecciona una categoría"
 					>
 						<option value="" disabled>
@@ -198,7 +199,7 @@ const Home = () => {
 					</Select>
 					<Select
 						id="province"
-						defaultValue=""
+						// defaultValue=""
 						placeholder="Selecciona una provincia"
 						value={selectedProvince}
 						onChange={handleProvinceChange}
