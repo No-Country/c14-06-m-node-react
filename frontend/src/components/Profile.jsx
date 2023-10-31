@@ -77,8 +77,8 @@ export default function Profile() {
 
 			fetch(`${url}/${user._id}`, payload)
 				.then((response) => {
-					console.log(response);
-					console.log(data);
+					// console.log(response);
+					// console.log(data);
 
 					if (response.ok) {
 						changeTitulo('Cambios realizados con éxito');
