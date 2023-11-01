@@ -263,6 +263,7 @@ class UsersService {
 				filter,
 				updateDocument
 			);
+			userUpdated.profileImg = secureUrl;
 			return userUpdated;
 		} catch (error) {
 			throw new Error('Ocurrió un error al intentar subir la imágen');
