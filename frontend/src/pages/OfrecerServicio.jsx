@@ -5,6 +5,7 @@ import { ButtonBlue } from '../styledcomponents/Buttons';
 const OfrecerServicio = () => {
 	const url = 'https://serviceclub.onrender.com/api/services/';
 	const getToken = localStorage.getItem('token');
+	let user = JSON.parse(localStorage.getItem('user'));
 
 	if (!getToken) {
 		location.replace('/');
@@ -79,6 +80,8 @@ const OfrecerServicio = () => {
 			.then((data) => {
 				console.log(data);
 				if (data.status === 'created') {
+					user.role = 'pro';
+					localStorage.setItem('user', JSON.stringify(user));
 					location.replace(
 						window.location.origin + '/servicio/' + data.response.insertedId
 					);
