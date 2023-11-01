@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Toaster, toast } from 'sonner';
 {
 	/*import Modal from '../components/Modal'*/
 }
@@ -126,7 +127,7 @@ const WriteRating = ({ serviceId }) => {
 					if (data.status === 'success') {
 						changeTitulo('Valoración registrada con éxito');
 						changeParrafo('¡Muchas gracias!');
-						alert('Valoración registrada con éxito');
+						toast.info('VALORACIÓN REGISTRADA CON ÉXITO');
 						window.location.reload();
 					} else {
 						changeTitulo('Error al cargar la valoración');
@@ -136,7 +137,7 @@ const WriteRating = ({ serviceId }) => {
 							changeTitulo('Cargando ...');
 							changeParrafo('Por favor espera.');
 						}, 2000);
-						alert(data.response);
+						toast.warning(data.response.toUpperCase());
 					}
 				});
 		}
@@ -206,6 +207,7 @@ const WriteRating = ({ serviceId }) => {
 							)}
 						</Stars>
 						<ButtonBlue type="submit">Valorar</ButtonBlue>
+						<Toaster richColors position="bottom-center" duration={5000} />
 					</>
 				)}
 			</Form>

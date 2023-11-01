@@ -27,10 +27,9 @@ export default function MyServices() {
 			.then((data) => {
 				setServiceList(data);
 				changeModalState(false);
+				console.log(serviceList);
 			});
 	}, []);
-
-	console.log(serviceList);
 
 	return (
 		<ContainerDatos>
@@ -41,7 +40,7 @@ export default function MyServices() {
 				parrafo={parrafo}
 			></Modal>
 
-			{serviceList && (
+			{serviceList != null ? (
 				<>
 					<h2>Mis Servicios</h2>
 					<div>
@@ -53,6 +52,8 @@ export default function MyServices() {
 						))}
 					</div>
 				</>
+			) : (
+				<>No tienes servicios creados</>
 			)}
 		</ContainerDatos>
 	);
