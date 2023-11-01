@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import noIcon from '../assets/images/noIcon.png';
+import noPhoto from '../assets/images/noPhoto.png';
 import PropTypes from 'prop-types';
 import StarRating from './StarRating';
 
@@ -27,6 +27,7 @@ const UserImage = styled.img`
 	border-radius: 50%;
 	top: -45px;
 	right: calc(50% - 2.7rem);
+	object-fit: cover;
 `;
 
 const RatingStars = styled.div`
@@ -39,7 +40,7 @@ const RaitingCard = ({ comment, score, userId, username, profileImg }) => {
 	return (
 		<RatingCardDiv>
 			{!profileImg || profileImg == '' || profileImg == undefined ? (
-				<UserImage src={noIcon} alt="Imagen de usuario del comentario" />
+				<UserImage src={noPhoto} alt="Imagen de usuario del comentario" />
 			) : (
 				<UserImage src={profileImg} alt="Imagen de usuario del comentario" />
 			)}
