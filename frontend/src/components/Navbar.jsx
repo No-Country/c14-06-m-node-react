@@ -37,11 +37,9 @@ const Navbar = () => {
 					</Li>
 				</HideOnMobile>
 				{IsLoggedIn ? (
-					<HideOnMobile>
-						<Li>
-							<StyledLink to="/mi-perfil">Mi Perfil</StyledLink>
-						</Li>
-					</HideOnMobile>
+					<Li>
+						<StyledLink to="/mi-perfil">Mi Perfil</StyledLink>
+					</Li>
 				) : (
 					<Invisible />
 				)}
@@ -133,7 +131,7 @@ const TextLogo = styled.div`
 	font-weight: bolder;
 	padding-left: 1rem;
 	padding-top: 4px;
-	@media (max-width: 460px) {
+	@media (max-width: 520px) {
 		display: none;
 	}
 `;
@@ -198,7 +196,7 @@ const HideOnMobile = styled.div`
 
 const HideOnXsMobile = styled.div`
 	display: block;
-	@media (max-width: 600px) {
+	@media (max-width: 640px) {
 		display: none;
 	}
 `;

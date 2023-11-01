@@ -87,6 +87,7 @@ const ServicesDetail = () => {
 						telephone={serviceDetail.user.phone}
 						location={serviceDetail.serviceLocation}
 						province={serviceDetail.user.location}
+						serviceId={serviceDetail._id}
 					/>
 					<div>
 						<Title>Descripción del servicio:</Title>

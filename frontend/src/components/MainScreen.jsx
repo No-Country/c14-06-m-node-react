@@ -11,8 +11,8 @@ const MainScreen = styled.div`
 	display: grid;
 	grid-template-areas: 'left right';
 	align-items: center;
-	margin-top: 2rem;
-	@media (max-width: 820px) {
+	@media (max-width: 920px) {
+		min-height: auto;
 		grid-template-areas: 'left';
 	}
 	@media (min-width: 1200px) {
@@ -30,7 +30,7 @@ const ContainerLeft = styled.div`
 	justify-content: center;
 	text-align: center;
 	height: 100%;
-	margin-bottom: 4rem;
+	margin-bottom: 3rem;
 	margin-right: 0;
 `;
 
@@ -38,7 +38,8 @@ const StyledSlogan = styled.span`
 	font-weight: 700;
 	font-size: 2.8rem;
 	text-align: center;
-	padding-bottom: 4rem;
+	padding-top: 2.4rem;
+	padding-bottom: 3rem;
 	color: rgb(0, 0, 0, 0.8);
 	@media (max-width: 500px) {
 		font-size: 1.8rem;
@@ -53,12 +54,10 @@ const StyledP = styled.p`
 const ContainerRight = styled.div`
 	grid-area: right;
 	display: flex;
-	height: 100%;
 	justify-content: center;
 	align-items: center;
 	padding: 1rem;
 	width: 500px;
-
 	@media (max-width: 920px) {
 		display: none;
 	}
@@ -89,7 +88,7 @@ const Buscar = styled.div`
 	flex-direction: row;
 	align-items: stretch;
 
-	@media (max-width: 740px) {
+	@media (max-width: 1100px) {
 		flex-direction: column;
 	}
 `;
@@ -98,7 +97,7 @@ const StyledButton = styled(ButtonBlue)`
 	height: 100%;
 	min-width: 7rem;
 	font-size: 0.9rem;
-	@media (max-width: 768px) {
+	@media (max-width: 640px) {
 		width: 100%;
 		align-self: center;
 	}
