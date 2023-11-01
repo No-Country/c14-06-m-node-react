@@ -3,6 +3,8 @@ import { ButtonBlue, ButtonGray } from '../styledcomponents/Buttons';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { Toaster, toast } from 'sonner';
 
 const EditService = ({ service }) => {
 	const [edit, setEdit] = useState(false);
@@ -31,7 +33,8 @@ const EditService = ({ service }) => {
 			.then((data) => {
 				console.log(data);
 				if (data.status === 'success') {
-					location.replace(window.location.origin + '/servicio/' + service._id);
+					toast.info('SERVICIO EDITADO CON ÉXITO');
+					setEdit(false);
 				} else {
 					console.log(data.response);
 					alert(
@@ -47,12 +50,16 @@ const EditService = ({ service }) => {
 					<h5>{service.category.categoryName}</h5>
 					<span>Servicio</span>
 				</div>
-				<div>
+				<ButtonsContainer>
+					<Link to={`/servicio/${service._id}`}>
+						<ButtonGray>Ver</ButtonGray>
+					</Link>
 					{!edit && (
 						<ButtonBlue onClick={() => setEdit(!edit)}>Editar</ButtonBlue>
 					)}
-				</div>
+				</ButtonsContainer>
 			</Service>
+			<Toaster richColors position="bottom-center" />
 			{edit && (
 				<Edit>
 					<Form onSubmit={onSubmit}>
@@ -121,6 +128,11 @@ const Service = styled.div`
 	justify-content: space-between;
 	align-items: center;
 `;
+const ButtonsContainer = styled.div`
+	display: flex;
+	gap: 0.5rem;
+`;
+
 const Edit = styled.div``;
 
 const Form = styled.form`
