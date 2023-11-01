@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ProfessionalListCard from './ProfessionalListCard';
-import { Link } from 'react-router-dom';
 import Modal from './Modal';
 import NotServicesError from './NotServicesError';
 
@@ -125,28 +124,20 @@ const ProfessionalsList = () => {
 					(professional) =>
 						professional.category.code === categoryTitle &&
 						professional.active && (
-							<>
-								<StyledLink
-									to={{
-										pathname: `/servicio/${professional._id}`,
-									}}
-								>
-									<ProfessionalListCard
-										key={professional._id}
-										imgUrl={professional.user.profileImg}
-										name={professional.user.name}
-										surname={professional.user.surname}
-										certified={professional.certified}
-										info={professional.description}
-										telephone={professional.user.phone}
-										location={professional.serviceLocation}
-										province={professional.user.location}
-										rating={
-											professional.rating > 0 ? professional.rating : null
-										}
-									/>
-								</StyledLink>
-							</>
+							<ProfessionalListCard
+								key={professional._id}
+								imgUrl={professional.user.profileImg}
+								name={professional.user.name}
+								surname={professional.user.surname}
+								certified={professional.certified}
+								info={professional.description}
+								telephone={professional.user.phone}
+								location={professional.serviceLocation}
+								province={professional.user.location}
+								rating={professional.rating > 0 ? professional.rating : null}
+								clickeable={true}
+								serviceId={professional._id}
+							/>
 						)
 				)}
 		</ProfessionalsListContainer>
@@ -185,7 +176,3 @@ const TextBlue = styled.span`
 // 	padding: 1rem;
 // 	margin: auto;
 // `;
-
-const StyledLink = styled(Link)`
-	width: 100%;
-`;

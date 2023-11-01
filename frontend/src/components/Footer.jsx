@@ -61,7 +61,7 @@ const BlueText = styled.span`
 	color: var(--primary);
 `;
 
-/*const About = styled.div`
+const About = styled.div`
 	grid-area: about;
 	display: flex;
 	flex-direction: column;
@@ -71,14 +71,14 @@ const Support = styled.div`
 	grid-area: support;
 	display: flex;
 	flex-direction: column;
-`;*/
+`;
 const SocialMedia = styled.div`
 	grid-area: socialmedia;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 `;
-/*
+
 const SectionTitle = styled.span`
 	color: #0e76a8;
 	font-weight: 700;
@@ -94,7 +94,7 @@ const StyledUl = styled.ul`
 		padding-top: 8px;
 	}
 `;
-*/
+
 const IconsUl = styled.ul`
 	display: flex;
 	gap: 1rem;
@@ -128,7 +128,7 @@ const Footer = () => {
 					</TextLogo>
 				</Link>
 			</DivLogo>
-			{/* <About>
+			<About>
 				<SectionTitle>Sobre Nosotros</SectionTitle>
 				<StyledUl>
 					<li>
@@ -152,7 +152,7 @@ const Footer = () => {
 						<Link to="/terminos-y-condiciones">Termino y condiciones</Link>
 					</li>
 				</StyledUl>
-			</Support>*/}
+			</Support>
 			<SocialMedia>
 				<IconsUl>
 					<a href="https://www.facebook.com/servici0sclub" target="_">

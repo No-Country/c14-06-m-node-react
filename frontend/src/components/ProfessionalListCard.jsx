@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import verificado from '../assets/images/verificado.png';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import noPhoto from '../assets/images/noPhoto.png';
 import StarRating from './StarRating';
 
@@ -18,6 +18,7 @@ const Card = styled.div`
 	@media (max-width: 768px) {
 		flex-direction: column;
 	}
+	cursor: ${(props) => (props.clickeable ? 'pointer' : 'default')};
 `;
 
 const ImageContainer = styled.div`
@@ -94,6 +95,8 @@ const ProfessionalListCard = ({
 	province,
 	rating,
 	category,
+	clickeable,
+	serviceId,
 }) => {
 	const IsLoggedIn = localStorage.token ? true : false;
 
@@ -103,9 +106,14 @@ const ProfessionalListCard = ({
 		setImageValid(false);
 	};
 
-	const path = useLocation().pathname;
+	const navigate = useNavigate();
+	const handleCardClick = () => {
+		if (clickeable) {
+			navigate(`/servicio/${serviceId}`);
+		}
+	};
 	return (
-		<Card>
+		<Card onClick={() => handleCardClick()}>
 			<ImageContainer>
 				{imageValid ? (
 					<Image src={imgUrl} alt="Imagen" onError={handleImageError} />
@@ -136,7 +144,7 @@ const ProfessionalListCard = ({
 					{location && location}
 				</span>
 			</Content>
-			<ContentRight>
+			<ContentRight onClick={(e) => e.stopPropagation()}>
 				{IsLoggedIn ? (
 					<span>✆ {telephone}</span>
 				) : (
@@ -145,7 +153,7 @@ const ProfessionalListCard = ({
 							to={{
 								pathname: '../iniciar-sesion',
 							}}
-							state={{ returnTo: path }}
+							state={{ returnTo: `/servicio/${serviceId}` }}
 						>
 							✆ Ver teléfono
 						</StyledLink>
@@ -167,6 +175,8 @@ ProfessionalListCard.propTypes = {
 	province: PropTypes.string,
 	rating: PropTypes.number,
 	category: PropTypes.string,
+	serviceId: PropTypes.string,
+	clickeable: PropTypes.bool,
 };
 
 export default ProfessionalListCard;
