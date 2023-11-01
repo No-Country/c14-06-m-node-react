@@ -25,6 +25,11 @@ const Navbar = () => {
 					<BlueText>Club</BlueText>
 				</TextLogo>
 			</Link>
+			{/* <Burger>
+				<BurgerSpan></BurgerSpan>
+				<BurgerSpan></BurgerSpan>
+				<BurgerSpan></BurgerSpan>
+			</Burger> */}
 			<NavUl>
 				<HideOnMobile>
 					<Li>
@@ -111,6 +116,10 @@ const NavbarPrincipal = styled.nav`
 	border-bottom: 1px solid #cdcdcd;
 	color: rgb(0, 0, 0, 0.8);
 	gap: 10px;
+	position: sticky;
+	top: 0;
+	background-color: #ffffff;
+	z-index: 1100;
 `;
 
 const Logo = styled.img`
@@ -193,4 +202,23 @@ const HideOnXsMobile = styled.div`
 		display: none;
 	}
 `;
+
+// const Burger = styled.div`
+// 	display: flex;
+// 	position: absolute;
+// 	top: 1rem;
+// 	right: 1.75rem;
+// 	flex-direction: column;
+// 	justify-content: space-between;
+// 	width: 2.25rem;
+// 	height: 2rem;
+// `;
+
+// const BurgerSpan = styled.span`
+// 	height: 0.4rem;
+// 	width: 100%;
+// 	background-color: #333333;
+// 	border-radius: 0.2rem;
+// `;
+
 export default Navbar;

@@ -3,13 +3,15 @@ import { provincias } from '../assets/usefulData';
 import { ButtonBlue, ButtonGrayInput } from '../styledcomponents/Buttons';
 import UserProfileCard from './UserProfileCard';
 import { useForm } from 'react-hook-form';
-import UploadAndDisplayImage from './UploAndDisplayImage';
+
 import Modal from './Modal';
 import { useState } from 'react';
+import noPhoto from '../assets/images/noPhoto.png';
 
 export default function Profile() {
 	let user = JSON.parse(localStorage.getItem('user'));
 	const userToken = localStorage.getItem('token');
+	const userImg = user.profileImg;
 	const [active, setActive] = useState(true);
 	const [modalState, changeModalState] = useState(false);
 	const [titulo, changeTitulo] = useState('Cargando ...');
@@ -58,6 +60,80 @@ export default function Profile() {
 		});
 	};
 
+	//ESTADO BOTON ENVIAR FOTO
+	const [hideImgButton, setImgButton] = useState(true);
+
+	const [imageValid, setImageValid] = useState(true);
+	const handleImageError = () => {
+		setImageValid(false);
+	};
+	// console.log(userImg);
+	const [selectedImage, setSelectedImage] = useState(null);
+
+	const userHasPhoto = (valid) => {
+		if (valid) {
+			return (
+				<Image
+					src={userImg}
+					// src={URL.createObjectURL(selectedImage)}
+					alt="Mi imagen de perfil"
+					onError={handleImageError}
+				/>
+			);
+		} else {
+			return <Image src={noPhoto} alt="Mi perfil sin imagen" />;
+		}
+	};
+
+	const fileSelectedHandler = (event) => {
+		// console.log(userImg);
+		const imgSeleccionada = event.target.files[0];
+
+		if (imgSeleccionada.size < 5242880) {
+			console.log(imgSeleccionada);
+			setSelectedImage(imgSeleccionada);
+			setImgButton(false);
+		} else {
+			alert('Tamaño de imagen no puede ser superior a 5 mb');
+		}
+	};
+
+	const fileUploadHandler = () => {
+		changeModalState(true);
+		const formData = new FormData();
+		formData.append('image', selectedImage, selectedImage.name);
+
+		const payload = {
+			method: 'PATCH',
+			body: formData,
+			headers: {
+				Authorization: userToken,
+			},
+		};
+
+		fetch(`${url}/${user._id}/image`, payload)
+			.then((response) => {
+				// console.log(response);
+				if (response.ok) {
+					changeTitulo('Imagen cambiada con éxito');
+					return response.json();
+				} else {
+					changeTitulo('Error al cargar la foto');
+					setTimeout(() => {
+						changeModalState(false);
+					}, 2000);
+				}
+			})
+			.then((data) => {
+				user.profileImg = data.response.profileImg;
+				localStorage.setItem('user', JSON.stringify(user));
+				setTimeout(() => {
+					changeModalState(false);
+					setActive(false);
+				}, 2000);
+			});
+	};
+
 	const onSubmit = handleSubmit((data) => {
 		addCodeToPhone(data);
 		removeEmptyFields(data);
@@ -85,13 +161,13 @@ export default function Profile() {
 						dataToLocalStorage(data);
 						setTimeout(() => {
 							changeModalState(false);
-						}, 1000);
+						}, 3000);
 						return response.json();
 					} else {
 						changeTitulo('ERROR');
 						setTimeout(() => {
 							changeModalState(false);
-						}, 1000);
+						}, 3000);
 					}
 				})
 				.then(() => {
@@ -186,8 +262,45 @@ export default function Profile() {
 									<StyledSpanErrores>{errors.phone.message}</StyledSpanErrores>
 								)}
 							</SubContainer>
+							<StyledContainer>
+								{/* <Modal
+				state={modal}
+				changeState={changeModal}
+				titulo={titulo}
+				parrafo={parrafo}
+			></Modal> */}
+								{!selectedImage && userHasPhoto(imageValid)}
+								{selectedImage && (
+									<div>
+										<img
+											alt="not found"
+											src={URL.createObjectURL(selectedImage)}
+										/>
+									</div>
+								)}
+								<StyledLabel>
+									<StyledInputFile
+										type="file"
+										name="myImage"
+										accept="image/png, image/jpeg"
+										onChange={fileSelectedHandler}
+									/>
+									Editar
+								</StyledLabel>
+								{hideImgButton ? (
+									<Invisible />
+								) : (
+									<>
+										<ButtonGrayInput
+											type="button"
+											onClick={fileUploadHandler}
+											value="Cambiar Imagen"
+										/>
+									</>
+								)}
+							</StyledContainer>
 
-							<UploadAndDisplayImage />
+							{/* <UploadAndDisplayImage /> */}
 						</ContainerA>
 						{/* <Label htmlFor="">Email</Label>
 						<Input type="email" name="" id="" value={user.email} disabled />
@@ -296,4 +409,38 @@ const ContainerPhone = styled.section`
 
 const AreaCode = styled.p`
 	padding-right: 1%;
+`;
+
+const StyledInputFile = styled.input`
+	display: none;
+`;
+
+const StyledLabel = styled.label`
+	background-color: var(--primary);
+	color: #ffffff;
+	border-radius: 4px;
+	padding: 0.7rem 1rem;
+	border: none;
+	cursor: pointer;
+`;
+
+const StyledContainer = styled.div`
+	align-items: center;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 0 2rem 0 3rem;
+	gap: 1rem;
+`;
+
+const Image = styled.img`
+	max-width: 200px;
+	height: auto;
+	object-fit: cover;
+`;
+const Invisible = styled.div`
+	display: none;
+	visibility: hidden;
 `;
