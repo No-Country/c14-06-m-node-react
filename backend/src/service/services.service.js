@@ -61,6 +61,11 @@ class ServicesService {
 				},
 			},
 			{
+				$addFields: {
+					profilePicNotEmpty: { $ne: ['$user_info.profileImg', ''] },
+				},
+			},
+			{
 				$project: {
 					_id: 1,
 					qualifications: 1,
@@ -83,11 +88,20 @@ class ServicesService {
 						profileImg: '$user_info.profileImg',
 						location: '$user_info.location',
 					},
+					profilePicNotEmpty: {
+						$cond: {
+							if: { $eq: ['$profilePicNotEmpty', false] }, // Comprueba si profilePicNotEmpty es false
+							then: false, // Si es false, establece profilePicNotEmpty en false
+							else: '$profilePicNotEmpty', // De lo contrario, mantiene el valor existente
+						},
+					},
 				},
 			},
 			{
 				$sort: {
+					certified: -1,
 					rating: -1,
+					profilePicNotEmpty: -1,
 					_id: 1,
 				},
 			},
