@@ -17,6 +17,8 @@ const Card = styled.div`
 	width: 100%;
 	@media (max-width: 768px) {
 		flex-direction: column;
+		text-align: center;
+		padding: 1rem;
 	}
 	cursor: ${(props) => (props.clickeable ? 'pointer' : 'default')};
 `;

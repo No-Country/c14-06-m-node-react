@@ -18,6 +18,8 @@ const StyledFooter = styled.footer`
 		grid-template-areas:
 			'logo'
 			'socialmedia'
+			'about'
+			'support'
 			'copyright';
 		text-align: center;
 	}

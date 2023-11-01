@@ -32,7 +32,7 @@ const PreTitle = styled.div`
 	display: flex;
 	flex-direction: column;
 	text-align: center;
-	padding-top: 2.5rem;
+	padding: 5rem 0 2rem 0;
 	color: rgb(0, 0, 0, 0.8);
 	gap: 1.2rem;
 
@@ -41,6 +41,10 @@ const PreTitle = styled.div`
 		h1 {
 			font-size: 1.8rem;
 		}
+	}
+
+	@media (max-width: 920px) {
+		padding: 0 0 1rem 0;
 	}
 `;
 
@@ -57,6 +61,7 @@ const Card = styled.div`
 	&:hover {
 		box-shadow: rgba(0, 0, 0, 0.12) 0px 5px 9px 4px;
 	}
+	height: 100%;
 `;
 const Icon = styled.img`
 	width: 4rem;
