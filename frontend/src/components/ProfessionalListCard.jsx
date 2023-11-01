@@ -20,7 +20,6 @@ const Card = styled.div`
 		text-align: center;
 		padding: 1rem;
 	}
-	cursor: ${(props) => (props.clickeable ? 'pointer' : 'default')};
 `;
 
 const ImageContainer = styled.div`
@@ -115,7 +114,10 @@ const ProfessionalListCard = ({
 		}
 	};
 	return (
-		<Card onClick={() => handleCardClick()}>
+		<Card
+			onClick={() => handleCardClick()}
+			style={clickeable && { cursor: 'pointer' }}
+		>
 			<ImageContainer>
 				{imageValid ? (
 					<Image src={imgUrl} alt="Imagen" onError={handleImageError} />
