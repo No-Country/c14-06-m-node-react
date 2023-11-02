@@ -40,21 +40,23 @@ export default function MyServices() {
 				parrafo={parrafo}
 			></Modal>
 
-			{serviceList != null ? (
-				<>
-					<h2>Mis Servicios</h2>
-					<div>
-						<p>Selecciona los servicios que deseas editar</p>
+			{serviceList !== null ? (
+				serviceList.response.services.length > 0 ? (
+					<>
+						<h2>Mis Servicios</h2>
+						<div>
+							<p>Selecciona los servicios que deseas editar</p>
 
-						{serviceList.response.services.map((servicio) => (
-							// eslint-disable-next-line react/jsx-key, react/jsx-no-comment-textnodes
-							<EditService service={servicio} />
-						))}
-					</div>
-				</>
-			) : (
-				<>No tienes servicios creados</>
-			)}
+							{serviceList.response.services.map((servicio) => (
+								// eslint-disable-next-line react/jsx-key, react/jsx-no-comment-textnodes
+								<EditService service={servicio} />
+							))}
+						</div>
+					</>
+				) : (
+					<p>No tienes servicios creados</p>
+				)
+			) : null}
 		</ContainerDatos>
 	);
 }
