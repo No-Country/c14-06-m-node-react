@@ -228,16 +228,42 @@ class ServicesService {
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
-		for (const qualification of service.qualifications) {
-			const userObjectId = new ObjectId(qualification.userId);
+
+		const populatedQualifications = [];
+		const ratingsToRemove = [];
+		for (let i = 0; i < service.qualifications?.length; i++) {
+			const userObjectId = new ObjectId(service.qualifications[i].userId);
 			const user = await usersCollection.findOne({ _id: userObjectId });
-			qualification.user = {
-				name: user.name,
-				surname: user.surname,
-				email: user.email,
-				profileImg: user.profileImg,
-			};
+			if (!user) {
+				ratingsToRemove.push(service.qualifications[i].score);
+			}
+			if (user) {
+				const newQualification = service.qualifications[i];
+				newQualification.user = {
+					name: user.name,
+					surname: user.surname,
+					email: user.email,
+					profileImg: user.profileImg,
+				};
+				populatedQualifications.push(newQualification);
+			}
 		}
+		if (ratingsToRemove.length > 0) {
+			const actualRatingSum = service.qualifications.reduce(
+				(acc, qualification) => {
+					return acc + qualification.score;
+				},
+				0
+			);
+			const removingRatingSum = ratingsToRemove.reduce((acc, score) => {
+				return acc + score;
+			}, 0);
+			const newRating =
+				(actualRatingSum - removingRatingSum) /
+				(service.qualifications.length - ratingsToRemove.length);
+			service.rating = newRating;
+		}
+		service.qualifications = [...populatedQualifications];
 		return service;
 	}
 
