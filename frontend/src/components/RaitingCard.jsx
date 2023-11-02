@@ -23,7 +23,7 @@ const RatingCardDiv = styled.div`
 const UserImage = styled.img`
 	position: absolute;
 	width: 5.4rem;
-	height: 5.4rem;
+	height: auto;
 	border-radius: 50%;
 	top: -45px;
 	right: calc(50% - 2.7rem);
