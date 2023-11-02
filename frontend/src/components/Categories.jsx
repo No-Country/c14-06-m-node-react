@@ -32,7 +32,7 @@ const PreTitle = styled.div`
 	display: flex;
 	flex-direction: column;
 	text-align: center;
-	padding: 5rem 0 2rem 0;
+	padding: 0 0 2rem 0;
 	color: rgb(0, 0, 0, 0.8);
 	gap: 1.2rem;
 
@@ -141,7 +141,7 @@ const Categories = () => {
 		<CategoriesContainer id="categories">
 			<PreTitle>
 				<h1>¿Qué necesitas?</h1>
-				Contratá el servicio que estás buscando
+				Contrata el servicio que estás buscando
 			</PreTitle>
 			<CategoriesListContainer>
 				{CategoriesList.map((category) => (

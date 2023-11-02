@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import { ButtonBlue } from '../styledcomponents/Buttons';
 import logo from '../assets/logo/logo.png';
 import { NavLink, useLocation } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { HashLink } from 'react-router-hash-link';
 
 const IsLoggedIn = localStorage.token ? true : false;
@@ -47,7 +45,7 @@ const Navbar = () => {
 				<HideOnXsMobile>
 					<Li>
 						<HashLink smooth to="/#categories">
-							Categorias <ArrowIcon icon={faChevronDown} />
+							Categorias
 						</HashLink>
 					</Li>
 				</HideOnXsMobile>
@@ -172,6 +170,7 @@ const StyledLink = styled(NavLink)`
 	justify-content: center;
 	align-items: center;
 	height: 100%;
+
 	&.active {
 		border-bottom: 3px solid var(--primary);
 	}
@@ -179,11 +178,6 @@ const StyledLink = styled(NavLink)`
 
 const StyledButtonBlue = styled(ButtonBlue)`
 	padding: 0.7rem 0.4rem;
-`;
-
-const ArrowIcon = styled(FontAwesomeIcon)`
-	font-size: 0.6rem;
-	margin-left: 4px;
 `;
 
 const HideOnMobile = styled.div`

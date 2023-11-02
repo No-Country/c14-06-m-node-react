@@ -24,16 +24,22 @@ const ScrollToTop = ({ children }) => {
 ScrollToTop.propTypes = {
 	children: PropTypes.node.isRequired,
 };
+const MainContainer = styled.div`
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+	min-height: 100vh;
+`;
 
 const Container = styled.div`
 	max-width: 1200px;
 	margin: 0 auto;
-	min-height: calc(100vh - var(--navbar-height));
 	padding: 0rem 1.5rem;
+	width: 100%;
 `;
+
 const App = () => {
 	return (
-		<>
+		<MainContainer>
 			<Navbar />
 			<ScrollToTop>
 				<Container>
@@ -54,10 +60,10 @@ const App = () => {
 						<Route path="/servicio/:serviceId" element={<ServicesDetail />} />
 						<Route path="/mi-perfil" element={<UserProfile />} />
 					</Routes>
-					<Footer />
 				</Container>
 			</ScrollToTop>
-		</>
+			<Footer />
+		</MainContainer>
 	);
 };
 

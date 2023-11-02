@@ -13,7 +13,10 @@ const StyledFooter = styled.footer`
 		'copyright copyright copyright copyright';
 	gap: 2rem;
 	text-align: justify;
-
+	margin-top: 2rem;
+	max-width: 1200px;
+	width: 100%;
+	margin: auto;
 	@media (max-width: 900px) {
 		grid-template-areas:
 			'logo'
@@ -54,9 +57,6 @@ const TextLogo = styled.div`
 	font-weight: bolder;
 	padding-left: 1rem;
 	padding-top: 4px;
-	@media (max-width: 500px) {
-		font-size: 1rem;
-	}
 `;
 
 const BlueText = styled.span`
@@ -133,26 +133,16 @@ const Footer = () => {
 			<About>
 				<SectionTitle>Sobre Nosotros</SectionTitle>
 				<StyledUl>
-					<li>
-						<Link to="/sobre-nosotros">Nuestro equipo</Link>
-					</li>
-					<li>
-						<Link to="/contacto">Contacto</Link>
-					</li>
+					<li>Nuestro equipo</li>
+					<li>Contacto</li>
 				</StyledUl>
 			</About>
 			<Support>
 				<SectionTitle>Soporte</SectionTitle>
 				<StyledUl>
-					<li>
-						<Link to="/como-funciona">¿Cómo funciona?</Link>
-					</li>
-					<li>
-						<Link to="/ayuda">Ayuda</Link>
-					</li>
-					<li>
-						<Link to="/terminos-y-condiciones">Termino y condiciones</Link>
-					</li>
+					<li>¿Cómo funciona?</li>
+					<li>Ayuda</li>
+					<li>Términos y condiciones</li>
 				</StyledUl>
 			</Support>
 			<SocialMedia>
