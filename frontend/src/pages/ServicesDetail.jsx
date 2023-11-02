@@ -83,6 +83,7 @@ const ServicesDetail = () => {
 						key={serviceDetail._id}
 						imgUrl={serviceDetail.user.profileImg}
 						name={serviceDetail.user.name}
+						surname={serviceDetail.user.surname}
 						category={serviceDetail.category.categoryName}
 						telephone={serviceDetail.user.phone}
 						location={serviceDetail.serviceLocation}
