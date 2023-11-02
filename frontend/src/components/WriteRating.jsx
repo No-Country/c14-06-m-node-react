@@ -32,10 +32,6 @@ const Title = styled.span`
 	font-weight: bold;
 `;
 
-const TextBlue = styled.span`
-	color: var(--primary);
-`;
-
 const Stars = styled.span`
 	color: var(--primary);
 	font-size: 2rem;
@@ -146,9 +142,7 @@ const WriteRating = ({ serviceId }) => {
 	return (
 		<WriteRatingContainer>
 			<Form onSubmit={onSubmit}>
-				<Title>
-					<TextBlue>Valorar</TextBlue> servicio del profesional
-				</Title>
+				<Title>Valorar servicio del profesional</Title>
 				{!IsLoggedIn ? (
 					<LogInOption>
 						Inicia Sesión para poder valorar.

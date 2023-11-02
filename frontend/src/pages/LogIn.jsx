@@ -72,9 +72,10 @@ const LogIn = () => {
 				titulo={titulo}
 				parrafo={parrafo}
 			></Modal>
-			<StyledTitle>
-				Bienvenido a Servicios<StyledSpan>Club</StyledSpan>
-			</StyledTitle>
+			<TextLogo>
+				Bienvenidos a Servicios
+				<BlueText>Club</BlueText>
+			</TextLogo>
 			<StyledForm onSubmit={onSubmit}>
 				<LabelDiv>
 					<label htmlFor="">Email</label>
@@ -149,7 +150,7 @@ const LogIn = () => {
 				</DivSecundario> */}
 			</StyledForm>
 			<span>
-				¿No tiene una cuenta? Clickea aquí para&nbsp;
+				¿No tienes una cuenta? Clickea aquí para&nbsp;
 				<Link to="/crear-cuenta" state={state}>
 					registrarte.
 				</Link>
@@ -173,13 +174,13 @@ const DivContainer = styled.div`
 	}
 `;
 
-const StyledTitle = styled.span`
-	padding-bottom: 1rem;
-	font-size: 1.8rem;
-	font-weight: bold;
+const TextLogo = styled.span`
+	color: rgb(0, 0, 0, 0.8);
+	font-size: 1.5rem;
+	font-weight: bolder;
 `;
-
-const StyledSpan = styled.span`
+const BlueText = styled.span`
+	padding: 0 !important;
 	color: var(--primary);
 `;
 

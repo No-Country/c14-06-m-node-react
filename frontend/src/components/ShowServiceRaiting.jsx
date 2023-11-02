@@ -36,7 +36,7 @@ const ShowServiceRaiting = ({ serviceId, rating, qualifications, userId }) => {
 		let message = '';
 		switch (qualifications.length) {
 			case 0:
-				message = '(Nadie ha valorado este servicio aún)';
+				//message = '(Nadie ha valorado este servicio aún)';
 				break;
 			case 1:
 				message = '(1 valoración)';
@@ -80,9 +80,12 @@ const ShowServiceRaiting = ({ serviceId, rating, qualifications, userId }) => {
 		<>
 			<RatingDiv>
 				<b>Valoración: {rating >= 1 && <Text>{rating + '/5'}</Text>}</b>
-				<RaitingStars>
-					<StarRating rating={rating} />
-				</RaitingStars>
+
+				{rating >= 1 && (
+					<RaitingStars>
+						<StarRating rating={rating} />
+					</RaitingStars>
+				)}
 				<RaitingCaption>{valoraciones(qualifications)}</RaitingCaption>
 			</RatingDiv>
 

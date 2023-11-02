@@ -41,7 +41,7 @@ const ShowReview = ({ reviews, isMyOwnService }) => {
 			<RatingCardsDiv>
 				<p>
 					Este servicio aún no tiene calificaciones.
-					{!isMyOwnService && '¡Sé el primero en calificar!'}
+					{!isMyOwnService && ' ¡Sé el primero en calificar!'}
 				</p>
 			</RatingCardsDiv>
 		);
