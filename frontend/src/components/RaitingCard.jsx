@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import StarRating from './StarRating';
 
 const RatingCardDiv = styled.div`
-	margin-top: 2.5rem;
-	margin-bottom: 2rem;
+	margin: 50px 0;
 	position: relative;
 	padding: 50px 20px 20px 20px;
 	border-radius: 10px;
@@ -18,6 +17,8 @@ const RatingCardDiv = styled.div`
 	text-align: center;
 	font-size: 0.8rem;
 	line-height: 1.4rem;
+	width: 100%;
+	max-width: 400px;
 `;
 
 const UserImage = styled.img`
@@ -35,8 +36,7 @@ const RatingStars = styled.div`
 	font-weight: bolder;
 	font-size: 1.5rem;
 `;
-const RaitingCard = ({ comment, score, userId, username, profileImg }) => {
-	console.log(comment, score, userId, username, profileImg);
+const RaitingCard = ({ comment, score, username, profileImg }) => {
 	return (
 		<RatingCardDiv>
 			{!profileImg || profileImg == '' || profileImg == undefined ? (

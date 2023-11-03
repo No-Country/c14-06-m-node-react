@@ -75,15 +75,18 @@ const ShowServiceRaiting = ({ serviceId, rating, qualifications, userId }) => {
 			}
 		}
 	}, [qualifications, IsLoggedIn, myId]);
-	console.log(serviceId, userId);
+	const serviceRating = Math.round(rating);
 	return (
 		<>
 			<RatingDiv>
-				<b>Valoración: {rating >= 1 && <Text>{rating + '/5'}</Text>}</b>
+				<b>
+					Valoración:{' '}
+					{serviceRating >= 1 && <Text>{serviceRating + '/5'}</Text>}
+				</b>
 
-				{rating >= 1 && (
+				{serviceRating >= 1 && (
 					<RaitingStars>
-						<StarRating rating={rating} />
+						<StarRating rating={serviceRating} />
 					</RaitingStars>
 				)}
 				<RaitingCaption>{valoraciones(qualifications)}</RaitingCaption>

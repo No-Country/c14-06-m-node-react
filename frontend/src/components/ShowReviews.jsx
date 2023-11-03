@@ -1,14 +1,19 @@
 import styled from 'styled-components';
 import RaitingCard from './RaitingCard';
 import PropTypes from 'prop-types';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper/modules';
+import '../styledcomponents/reviewsSlider.css';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 const RatingCardsDiv = styled.div`
 	display: flex;
-	justify-content: space-around;
+	padding: 0 0rem 1rem;
 	width: 100%;
 `;
 
-const CardDiv = styled.div`
+/*const CardDiv = styled.div`
 	flex: 0 0 calc(33.333% - 20px);
 	justify-content: center;
 	align-items: center;
@@ -27,7 +32,7 @@ const CardDiv = styled.div`
 			display: none;
 		}
 	}
-`;
+`;*/
 
 const Calificaciones = styled.div`
 	text-align: center;
@@ -46,23 +51,37 @@ const ShowReview = ({ reviews, isMyOwnService }) => {
 			</RatingCardsDiv>
 		);
 	}
-
+	const slidesPerView = reviews.length >= 3 ? 3 : 'auto'; // Condición para centrar o no
 	return (
 		<>
 			<Calificaciones>Comentarios: </Calificaciones>
 			<RatingCardsDiv>
-				{reviews.map((review, index) => (
-					<CardDiv key={index}>
-						<RaitingCard
-							comment={review.comment}
-							score={review.score}
-							userId={review.userId}
-							username={review.user.name + ' ' + review.user.surname}
-							profileImg={review.user.profileImg}
-							index={index}
-						/>
-					</CardDiv>
-				))}
+				<Swiper
+					slidesPerView={slidesPerView}
+					spaceBetween={30}
+					autoplay={{
+						delay: 2500,
+						disableOnInteraction: false,
+					}}
+					pagination={{
+						clickable: true,
+					}}
+					modules={[Pagination, Autoplay]}
+					className="mySwiper"
+				>
+					{reviews.map((review, index) => (
+						<SwiperSlide key={index}>
+							<RaitingCard
+								comment={review.comment}
+								score={review.score}
+								userId={review.userId}
+								username={review.user.name + ' ' + review.user.surname}
+								profileImg={review.user.profileImg}
+								index={index}
+							/>
+						</SwiperSlide>
+					))}
+				</Swiper>
 			</RatingCardsDiv>
 		</>
 	);
