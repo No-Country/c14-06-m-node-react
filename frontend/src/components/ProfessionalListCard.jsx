@@ -120,9 +120,14 @@ const ProfessionalListCard = ({
 		>
 			<ImageContainer>
 				{imageValid ? (
-					<Image src={imgUrl} alt="Imagen" onError={handleImageError} />
+					<Image
+						src={imgUrl}
+						alt="Imagen"
+						onError={handleImageError}
+						loading="lazy"
+					/>
 				) : (
-					<Image src={noPhoto} alt="Imagen" />
+					<Image src={noPhoto} alt="Imagen" loading="lazy" />
 				)}
 			</ImageContainer>
 			<Content>
