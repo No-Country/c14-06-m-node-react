@@ -32,7 +32,7 @@ const PreTitle = styled.div`
 	display: flex;
 	flex-direction: column;
 	text-align: center;
-	padding: 0 0 2rem 0;
+	padding: 4rem 0 2.2rem 0;
 	color: rgb(0, 0, 0, 0.8);
 	gap: 1.2rem;
 
