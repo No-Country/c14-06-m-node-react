@@ -11,6 +11,7 @@ const RatingCardsDiv = styled.div`
 	display: flex;
 	padding: 0 0rem 1rem;
 	width: 100%;
+	justify-content: center;
 `;
 
 /*const CardDiv = styled.div`
@@ -51,13 +52,13 @@ const ShowReview = ({ reviews, isMyOwnService }) => {
 			</RatingCardsDiv>
 		);
 	}
-	const slidesPerView = reviews.length >= 3 ? 3 : 'auto'; // Condición para centrar o no
+	//const slidesPerView = reviews.length >= 3 ? 3 : 'auto'; // Condición para centrar o no
 	return (
 		<>
 			<Calificaciones>Comentarios: </Calificaciones>
 			<RatingCardsDiv>
 				<Swiper
-					slidesPerView={slidesPerView}
+					slidesPerView={'auto'}
 					spaceBetween={30}
 					autoplay={{
 						delay: 2500,

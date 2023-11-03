@@ -6,7 +6,7 @@ import StarRating from './StarRating';
 const RatingCardDiv = styled.div`
 	margin: 50px 0;
 	position: relative;
-	padding: 50px 20px 20px 20px;
+	padding: 50px 0px 20px 00px;
 	border-radius: 10px;
 	border: 1px solid gray;
 	box-shadow: rgba(149, 157, 165, 0.4) 0px 8px 24px;
