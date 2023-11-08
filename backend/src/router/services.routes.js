@@ -36,7 +36,7 @@ router.post(
 	ServicesController.addOne
 );
 
-router.post(
+router.patch(
 	'/:serviceId/qualifications',
 	passport.authenticate('jwt', { session: false }),
 	validateDto(addQualificationBodyValidator, 'body'),
