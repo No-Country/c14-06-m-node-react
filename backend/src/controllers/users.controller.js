@@ -1,5 +1,6 @@
 import UsersService from '../service/users.service.js';
 import ServicesService from '../service/services.service.js';
+import QualificationsService from '../service/qualifications.service.js';
 import HTTP_STATUS from '../utils/http-constants.js';
 import { validatePhoneNumber } from '../utils/validate-phone.js';
 import { deleteTempFilesBuffers } from '../utils/cloudinary.js';
@@ -7,6 +8,7 @@ import { validateFileExtension } from '../utils/validate-file-extension.js';
 
 const usersService = new UsersService();
 const servicesService = new ServicesService();
+const qualificationsService = new QualificationsService();
 
 class UsersController {
 	static async getAll(req, res, next) {
@@ -104,6 +106,11 @@ class UsersController {
 			const deletedUser = await usersService.deleteUser(userId, userIdToken);
 			deletedUser.servicesRef?.forEach(async (service) => {
 				await servicesService.deleteService(service._id);
+			});
+			const qualificationsToDelete =
+				await qualificationsService.deleteQualificationByUser(userId);
+			qualificationsToDelete.forEach(async (qualification) => {
+				await servicesService.removeQualification(qualification);
 			});
 			res.status(200).json({
 				status: 'success',

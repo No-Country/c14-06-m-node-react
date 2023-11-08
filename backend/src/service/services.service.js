@@ -182,6 +182,20 @@ class ServicesService {
 				$unwind: '$category_info',
 			},
 			{
+				$lookup: {
+					from: 'qualifications',
+					localField: 'qualifications',
+					foreignField: '_id',
+					as: 'qualification_info',
+				},
+			},
+			{
+				$unwind: {
+					path: '$qualification_info',
+					preserveNullAndEmptyArrays: true,
+				},
+			},
+			{
 				$group: {
 					_id: '$_id',
 					description: { $first: '$description' },
@@ -189,7 +203,7 @@ class ServicesService {
 					certificate: { $first: '$certificate' },
 					serviceLocation: { $first: '$serviceLocation' },
 					active: { $first: '$active' },
-					qualifications: { $first: '$qualifications' },
+					qualifications: { $push: '$qualification_info' },
 					user_info: { $first: '$user_info' },
 					category_info: { $first: '$category_info' },
 					rating: { $first: '$rating' },
@@ -198,7 +212,6 @@ class ServicesService {
 			{
 				$project: {
 					_id: 1,
-					qualifications: 1,
 					certified: 1,
 					certificate: 1,
 					description: 1,
@@ -218,6 +231,19 @@ class ServicesService {
 						profileImg: '$user_info.profileImg',
 						location: '$user_info.location',
 					},
+					qualifications: {
+						$map: {
+							input: '$qualifications',
+							as: 'qualification',
+							in: {
+								_id: '$$qualification._id',
+								score: '$$qualification.score',
+								comment: '$$qualification.comment',
+								userRef: '$$qualification.userRef',
+								date: '$$qualification.date',
+							},
+						},
+					},
 				},
 			},
 		];
@@ -228,15 +254,10 @@ class ServicesService {
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
-
 		const populatedQualifications = [];
-		const ratingsToRemove = [];
 		for (let i = 0; i < service.qualifications?.length; i++) {
-			const userObjectId = new ObjectId(service.qualifications[i].userId);
+			const userObjectId = new ObjectId(service.qualifications[i].userRef);
 			const user = await usersCollection.findOne({ _id: userObjectId });
-			if (!user) {
-				ratingsToRemove.push(service.qualifications[i].score);
-			}
 			if (user) {
 				const newQualification = service.qualifications[i];
 				newQualification.user = {
@@ -248,22 +269,12 @@ class ServicesService {
 				populatedQualifications.push(newQualification);
 			}
 		}
-		if (ratingsToRemove.length > 0) {
-			const actualRatingSum = service.qualifications.reduce(
-				(acc, qualification) => {
-					return acc + qualification.score;
-				},
-				0
-			);
-			const removingRatingSum = ratingsToRemove.reduce((acc, score) => {
-				return acc + score;
-			}, 0);
-			const newRating =
-				(actualRatingSum - removingRatingSum) /
-				(service.qualifications.length - ratingsToRemove.length);
-			service.rating = newRating;
-		}
-		service.qualifications = [...populatedQualifications];
+		const sortedQualifications = populatedQualifications.sort((a, b) => {
+			const dateA = new Date(a.date);
+			const dateB = new Date(b.date);
+			return dateB - dateA;
+		});
+		service.qualifications = [...sortedQualifications];
 		return service;
 	}
 
@@ -330,22 +341,8 @@ class ServicesService {
 		return createdService;
 	}
 
-	async qualifyService(serviceId, qualificationPayload, userId) {
-		const { servicesCollection, usersCollection } =
-			await getServicesCollection();
-		const { comment, score } = qualificationPayload;
-		if (!userId || !comment || score === undefined) {
-			const customError = new Error('Campos obligatorios incompletos');
-			customError.status = HTTP_STATUS.BAD_REQUEST;
-			throw customError;
-		}
-		const userObjectId = new ObjectId(userId);
-		const user = await usersCollection.findOne({ _id: userObjectId });
-		if (!user) {
-			const customError = new Error('No se encuentra al usuario');
-			customError.status = HTTP_STATUS.NOT_FOUND;
-			throw customError;
-		}
+	async qualifyService(serviceId, qualification) {
+		const { servicesCollection } = await getServicesCollection();
 		const serviceObjectId = new ObjectId(serviceId);
 		const service = await servicesCollection.findOne({ _id: serviceObjectId });
 		if (!service) {
@@ -353,52 +350,41 @@ class ServicesService {
 			customError.status = HTTP_STATUS.NOT_FOUND;
 			throw customError;
 		}
-		if (JSON.stringify(service.userRef) === JSON.stringify(userObjectId)) {
-			const customError = new Error('No se puede calificar un servicio propio');
-			customError.status = HTTP_STATUS.FORBIDDEN;
-			throw customError;
-		}
-		const registeredCategories = [];
-		if (user.servicesRef) {
-			for (const serviceRef of user.servicesRef) {
-				const userService = await servicesCollection.findOne({
-					_id: serviceRef,
-				});
-				let stringId = JSON.stringify(userService?.categoryRef);
-				registeredCategories.push(stringId);
-			}
-			if (registeredCategories.includes(JSON.stringify(service.categoryRef))) {
-				const customError = new Error(
-					'No se puede calificar servicios de la misma categoría que son ofrecidos por el usuario'
-				);
-				customError.status = HTTP_STATUS.FORBIDDEN;
-				throw customError;
-			}
-		}
-		service.qualifications?.forEach((qualification) => {
-			if (
-				JSON.stringify(userObjectId) === JSON.stringify(qualification.userId)
-			) {
-				const customError = new Error(
-					'No se puede calificar dos veces al mismo servicio'
-				);
-				customError.status = HTTP_STATUS.FORBIDDEN;
-				throw customError;
-			}
-		});
-		qualificationPayload.userId = userId;
 		const ratedService = await servicesCollection.updateOne(
 			{ _id: serviceObjectId },
-			{ $push: { qualifications: qualificationPayload } }
+			{ $push: { qualifications: qualification._id } }
 		);
 		const newRating =
-			(service.rating * service.qualifications.length + score) /
+			(service.rating * service.qualifications.length + qualification.score) /
 			(service.qualifications.length + 1);
+		const fixedRating = +newRating.toFixed(2);
 		await servicesCollection.findOneAndUpdate(
 			{ _id: serviceObjectId },
-			{ $set: { rating: newRating } }
+			{ $set: { rating: fixedRating } }
 		);
 		return ratedService;
+	}
+
+	async removeQualification(qualification) {
+		const { servicesCollection } = await getServicesCollection();
+		const serviceObjectId = new ObjectId(qualification.serviceRef);
+		const service = await servicesCollection.findOne({ _id: serviceObjectId });
+		if (!service) {
+			const customError = new Error('No se encuentra al servicio');
+			customError.status = HTTP_STATUS.NOT_FOUND;
+			throw customError;
+		}
+		const newRating =
+			(service.rating * service.qualifications.length - qualification.score) /
+			(service.qualifications.length - 1);
+		const fixedRating = +newRating.toFixed(2);
+		servicesCollection.updateOne(
+			{ _id: serviceObjectId },
+			{
+				$pull: { qualifications: qualification._id },
+				$set: { rating: fixedRating },
+			}
+		);
 	}
 
 	async updateService(serviceId, servicePayload, userId) {

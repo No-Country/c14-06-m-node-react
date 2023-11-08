@@ -1,8 +1,10 @@
 import ServicesService from '../service/services.service.js';
+import QualificationsService from '../service/qualifications.service.js';
 import { deleteTempFilesBuffers } from '../utils/cloudinary.js';
 import { validateFileExtension } from '../utils/validate-file-extension.js';
 
 const servicesService = new ServicesService();
+const qualificationsService = new QualificationsService();
 
 class ServicesController {
 	static async getAll(req, res, next) {
@@ -53,14 +55,19 @@ class ServicesController {
 		const qualificationPayload = req.body;
 		const userId = req.user._id;
 		try {
-			const ratedService = await servicesService.qualifyService(
+			const createdQualification =
+				await qualificationsService.createQualification(
+					userId,
+					serviceId,
+					qualificationPayload
+				);
+			const updatedService = await servicesService.qualifyService(
 				serviceId,
-				qualificationPayload,
-				userId
+				createdQualification
 			);
-			res.status(200).json({
-				status: 'success',
-				response: ratedService,
+			res.status(201).json({
+				status: 'created',
+				response: updatedService,
 			});
 		} catch (error) {
 			next(error);
