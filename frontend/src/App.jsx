@@ -59,6 +59,7 @@ const App = () => {
 						<Route path="/iniciar-sesion" element={<LogIn />} />
 						<Route path="/servicio/:serviceId" element={<ServicesDetail />} />
 						<Route path="/mi-perfil" element={<UserProfile />} />
+						<Route path="/mi-perfil/:seccion" element={<UserProfile />} />
 					</Routes>
 				</Container>
 			</ScrollToTop>

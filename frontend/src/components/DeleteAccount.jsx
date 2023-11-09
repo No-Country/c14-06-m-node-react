@@ -3,7 +3,6 @@ import { ButtonBlue, ButtonGrayInput } from '../styledcomponents/Buttons';
 import Modal from './Modal';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import UserProfileCard from './UserProfileCard';
 
 export default function DeleteAccount() {
 	const { register, handleSubmit } = useForm();
@@ -44,7 +43,7 @@ export default function DeleteAccount() {
 	return (
 		<>
 			{volver ? (
-				<ContainerDelete>
+				<>
 					<Modal
 						state={modalState}
 						changeState={changeModalState}
@@ -94,9 +93,9 @@ export default function DeleteAccount() {
 							</form>
 						</ContainerCheck>
 					</ContainerInfo>
-				</ContainerDelete>
+				</>
 			) : (
-				<UserProfileCard />
+				location.replace('/mi-perfil/informacion')
 			)}
 		</>
 	);
@@ -111,15 +110,10 @@ const ContainerButton = styled.div`
 	gap: 1rem;
 `;
 
-const ContainerDelete = styled.div`
-	padding: 5%;
-	border: 1px solid #33333333;
-	box-shadow: 0px 0px 4px 0px #00000040;
-	width: 80%;
-`;
-
 const ContainerInfo = styled.div`
-	padding: 5%;
+	@media (max-width: 700px) {
+		padding: 5%;
+	}
 `;
 
 const ServiciosSpan = styled.span`

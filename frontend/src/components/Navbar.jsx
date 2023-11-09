@@ -29,11 +29,10 @@ const Navbar = () => {
 				<BurgerSpan></BurgerSpan>
 			</Burger> */}
 			<NavUl>
-				<HideOnMobile>
-					<Li>
-						<StyledLink to="/">Home</StyledLink>
-					</Li>
-				</HideOnMobile>
+				<Li>
+					<StyledLink to="/">Home</StyledLink>
+				</Li>
+
 				{IsLoggedIn ? (
 					<Li>
 						<StyledLink to="/mi-perfil">Mi Perfil</StyledLink>
@@ -129,7 +128,7 @@ const TextLogo = styled.div`
 	font-weight: bolder;
 	padding-left: 1rem;
 	padding-top: 4px;
-	@media (max-width: 520px) {
+	@media (max-width: 600px) {
 		display: none;
 	}
 `;
@@ -190,7 +189,7 @@ const HideOnMobile = styled.div`
 
 const HideOnXsMobile = styled.div`
 	display: block;
-	@media (max-width: 640px) {
+	@media (max-width: 720px) {
 		display: none;
 	}
 `;

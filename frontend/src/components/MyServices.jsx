@@ -62,14 +62,6 @@ export default function MyServices() {
 }
 
 const ContainerDatos = styled.div`
-	display: flex;
-	flex-direction: column;
-	width: 75%;
-	background-color: #ffffff;
-	padding: 5%;
-	margin: 0 5%;
-	border: 1px solid #33333333;
-
 	h2 {
 		padding-bottom: 3%;
 	}
