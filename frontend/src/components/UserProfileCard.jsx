@@ -25,7 +25,7 @@ export default function UserProfileCard() {
 	return (
 		<>
 			{active ? (
-				<ContainerProfileCard>
+				<>
 					<ContainerTop>
 						{displayBadge ?? (
 							<ContainerCertified>
@@ -64,23 +64,13 @@ export default function UserProfileCard() {
 							Editar perfil
 						</ButtonBlue>
 					</ContainerBottom>
-				</ContainerProfileCard>
+				</>
 			) : (
 				<Profile />
 			)}
 		</>
 	);
 }
-
-const ContainerProfileCard = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 80%;
-	padding: 5%;
-	border: 1px solid #33333333;
-	box-shadow: 0px 0px 4px 0px #00000040;
-`;
 
 const ContainerTop = styled.div`
 	display: flex;

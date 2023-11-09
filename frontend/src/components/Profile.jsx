@@ -335,12 +335,24 @@ export default function Profile() {
 
 const ContainerA = styled.div`
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	div {
-		width: 50%;
+		width: 100%;
 		gap: 1rem;
 		display: flex;
 		flex-direction: column;
+		div {
+			order: 2;
+		}
+	}
+	@media (min-width: 700px) {
+		flex-direction: row;
+		div {
+			width: 50%;
+		}
+		div {
+			order: 1;
+		}
 	}
 `;
 
@@ -360,14 +372,15 @@ const Select = styled.select`
 const ContainerDatos = styled.div`
 	display: flex;
 	flex-direction: column;
-	width: 75%;
-	background-color: #ffffff;
-	padding: 5%;
-	margin: 0 5%;
-	border: 1px solid #33333333;
-
 	h1 {
+		text-align: center;
 		padding-bottom: 5%;
+	}
+	@media (min-width: 700px) {
+		h1 {
+			text-align: start;
+			align-items: start;
+		}
 	}
 `;
 
@@ -433,9 +446,12 @@ const StyledContainer = styled.div`
 	align-items: center;
 	padding: 0 2rem 0 3rem;
 	gap: 1rem;
+	order: -1;
 `;
 
 const Image = styled.img`
+	min-width: 120px;
+	width: 100%;
 	max-width: 200px;
 	height: auto;
 	object-fit: cover;
