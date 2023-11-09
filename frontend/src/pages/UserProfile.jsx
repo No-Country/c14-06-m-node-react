@@ -31,7 +31,7 @@ const UserProfile = () => {
 						case 'eliminar-cuenta':
 							return <DeleteAccount />;
 						default:
-							location.replace('/mi-perfil/informacion');
+							return <UserProfileCard />;
 					}
 				})()}
 			</ContainerSeccion>

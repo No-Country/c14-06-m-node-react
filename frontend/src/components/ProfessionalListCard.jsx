@@ -19,6 +19,10 @@ const Card = styled.div`
 		flex-direction: column;
 		text-align: center;
 		padding: 1rem;
+
+		h2 {
+			justify-content: center;
+		}
 	}
 `;
 
@@ -51,7 +55,7 @@ const SubTitle = styled.h2`
 	color: rgba(0, 0, 0, 0.6);
 	display: flex;
 	align-items: center;
-	gap: 2px;
+	gap: 6px;
 `;
 
 const Info = styled.p`
