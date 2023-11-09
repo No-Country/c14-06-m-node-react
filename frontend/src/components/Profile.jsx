@@ -89,12 +89,12 @@ export default function Profile() {
 		// console.log(userImg);
 		const imgSeleccionada = event.target.files[0];
 
-		if (imgSeleccionada.size < 5242880) {
+		if (imgSeleccionada.size < 3145728) {
 			console.log(imgSeleccionada);
 			setSelectedImage(imgSeleccionada);
 			setImgButton(false);
 		} else {
-			alert('Tamaño de imagen no puede ser superior a 5 mb');
+			alert('Tamaño de imagen no puede ser superior a 3 mb');
 		}
 	};
 
@@ -285,7 +285,7 @@ export default function Profile() {
 										accept="image/png, image/jpeg"
 										onChange={fileSelectedHandler}
 									/>
-									Editar
+									Editar Imagen
 								</StyledLabel>
 								{hideImgButton ? (
 									<Invisible />
