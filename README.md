@@ -59,7 +59,7 @@ You can visit the web application at https://www.serviciosclub.com.
 |:-:|:-:|
 | **Ruben Gonzalez**| **Andrés Boni**|
 <a href="https://github.com/Ruben0x"><img src="https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/></a> <a href="https://www.linkedin.com/in/ruben-gonzalez-navarro"><img src="https://img.shields.io/badge/linkedin%20-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white"/></a>|<a href="https://github.com/AndresBoni"><img src="https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white"/></a> <a href="https://www.linkedin.com/in/andresboni"><img src="https://img.shields.io/badge/linkedin%20-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white"/></a> [![Portfolio](https://img.shields.io/badge/Portfolio-4CAF50?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABzklEQVR4nMWVT0tbURDF/bNuxbXtxqTrIipdSD9PbeMHEElQEXWt0NpSTEVKt5JiNCa4rRoVDeJKwZVxYWl37ab1JwMndHjc95LaFAcG3j0z95x739w7t6Pjvg1IAWNAHlgHPgOvhT36F+JhYBu44Y99lTfMYiXg6d8QdwNzmnwJzAA/gBrwAHgInAA/lXcF/AamgM5WyD9pde9ENqrxiMt7LsxiPfp9ZquJIsC8EscdtgNUA7n7FnPjrOZOxpE/01aXHdYL/LLJgfysYr0O+yCOgZBARSv4om/zqrBjhzX8SLGqw2yuWSlK3qeiRokuhFdi/EY5HqsJf+wFXko5FRFeAL4l1Ow7sBjBnogr48E3QD1A8BE4SxA4t5wAbkf3rQcKdioCiZvAboLAHrARwA/sxntgzcBA4oaRJAhYgYsxAoX/+YvqwJIHGrc13YYip8X1KnRMa208pn3R1ZTbeNHKoe0O6ZrnA60iF8jPJbSKwbh/aq3ZbMJhuzFH+NBWHGh2083atbVcs/cttOsXatfLGq8AXbECTmRGW60Ds3pcTiRohKfCZt2DM92UPFCTrciTeS33T6blDLVMHBDq1wNvBSzK7TtjsTsTt8tuAegVDuLJC2RjAAAAAElFTkSuQmCC)](https://boni.nz)
-|
+
 
 <br>
 
